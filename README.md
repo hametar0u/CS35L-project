@@ -1,0 +1,1 @@
+# IMPORTANT: make sure you're not on UCLA_WEB when working with the app; the database won't connect properly. 
