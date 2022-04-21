@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import axios from 'axios';
  
 const Record = (props) => (
  <tr>
@@ -25,48 +26,19 @@ export default function RecordList() {
  // This method fetches the records from the database.
  useEffect(() => {
    async function getRecords() {
-     const response = await fetch(`http://localhost:5001/record/`, {
-       credentials: 'omit'
-     });
- 
-     if (!response.ok) {
-       const message = `An error occurred: ${response.statusText}`;
-       window.alert(message);
-       return;
-     }
- 
-     const records = await response.json();
-     await console.log("records fetched")
-     setRecords(records);
+     const response = await axios.get(`http://localhost:5001/listings`);
+     const json = await response.data;
+     console.log(json);
+     setRecords(json);
    }
  
    getRecords();
  
    return;
- }, [records.length]);
- 
- // This method will delete a record
- async function deleteRecord(id) {
-   await fetch(`http://localhost:5000/${id}`, {
-     method: "DELETE"
-   });
- 
-   const newRecords = records.filter((el) => el._id !== id);
-   setRecords(newRecords);
- }
+ }, [/*records.length*/]);
  
  // This method will map out the records on the table
- function recordList() {
-   return records.map((record) => {
-     return (
-       <Record
-         record={record}
-         deleteRecord={() => deleteRecord(record._id)}
-         key={record._id}
-       />
-     );
-   });
- }
+
  
  // This following section will display the table with the records of individuals.
  return (
@@ -86,7 +58,6 @@ export default function RecordList() {
             return (
               <Record
                 record={record}
-                // deleteRecord={() => deleteRecord(record._id)}
                 key={record._id}
               />
             );
