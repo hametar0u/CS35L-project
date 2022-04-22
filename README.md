@@ -33,7 +33,10 @@ Open http://localhost:3000 to view it in your browser
 - put "await" in front of the axios fetch and response
 
 
-# TODO: sessions, auth
 
-# ISSUES:
+
+
+### TODO: sessions, auth
+
+### ISSUES:
 - my create button adds entry to db properly, but for some reason its throwing a 400 error
