@@ -19,6 +19,12 @@ const Record = (props) => (
        Delete
      </button>
    </td> */}
+   <td>
+      <Create 
+        id={props.record._id}
+        session_id={props.record._id}
+      />
+   </td>
  </tr>
 );
  
@@ -28,7 +34,7 @@ export default function RecordList() {
  // This method fetches the records from the database.
  useEffect(() => {
    async function getRecords() {
-     const response = await axios.get(`http://localhost:5001/listings`);
+     const response = await axios.get('/listings');
      const json = await response.data;
      console.log(json);
      setRecords(json);
@@ -52,23 +58,16 @@ export default function RecordList() {
            <th>Name</th>
            <th>Summary</th>
            <th>Listing Url</th>
-           {/* <th>Action</th> */}
+           <th>Action</th>
          </tr>
        </thead>
         <tbody>
-          {records.map((record) => {
+          {records.map((record, i) => {
             return (
-              <tr>
-                <td>
-                  <Record
-                    record={record}
-                    key={record._id}
-                  />
-                </td>
-                <td>
-                  <Create />
-                </td>
-              </tr>
+              <Record
+                record={record}
+                key={record._id}
+              />
             );
           })}
         </tbody>
