@@ -24,4 +24,25 @@ recordRoutes.route("/listings").get(async function (req, res) {
     });
 });
 
+//creates a new document
+recordRoutes.route("/listings/add").post(function (req, res) {
+  const dbConnect = dbo.getDb();
+  const matchDocument = {
+    listing_id: req.body.id,
+    last_modified: new Date(),
+    session_id: req.body.session_id,
+  };
+
+  dbConnect
+    .collection("matches")
+    .insertOne(matchDocument, function (err, result) {
+      if (err) {
+        res.status(400).send("error inserting matches!");
+      } else {
+        console.log(`Added a new match with id ${result.insertedId}`);
+        res.status(204).send();
+      }
+    });
+});
+
 module.exports = recordRoutes;

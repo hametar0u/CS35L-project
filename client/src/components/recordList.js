@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from 'axios';
+
+import Create from "./create";
  
 const Record = (props) => (
  <tr>
@@ -56,10 +58,17 @@ export default function RecordList() {
         <tbody>
           {records.map((record) => {
             return (
-              <Record
-                record={record}
-                key={record._id}
-              />
+              <tr>
+                <td>
+                  <Record
+                    record={record}
+                    key={record._id}
+                  />
+                </td>
+                <td>
+                  <Create />
+                </td>
+              </tr>
             );
           })}
         </tbody>
