@@ -25,7 +25,9 @@ app.use(require("./routes/record"));
 const dbo = require("./db/conn");
 
 //letterbox interaction
-app.use(require("./routes/letterbox"));
+// app.use(require("./routes/letterbox"));
+//MAL interaction
+app.use(require("./routes/MAL"));
 
 app.listen(port, () => {
   dbo.connectToServer(function (err) {

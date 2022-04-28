@@ -1,7 +1,7 @@
 import { Route, Routes } from "react-router-dom";
 
 import RecordList from "./components/recordList";
-import AuthTest from "./testpages/AuthTest";
+import MALAuthTest from "./testpages/MALAuthTest";
 import HomePage from "./pages/HomePage";
 
 const App = () => {
@@ -9,7 +9,7 @@ const App = () => {
     <div>
       <Routes>
         <Route exact path="/" element={<RecordList />} />
-        <Route path="/auth" element={<AuthTest />} />
+        <Route path="/auth" element={<MALAuthTest />} />
         <Route path="/home" element={<HomePage />} />
       </Routes>
     </div>
