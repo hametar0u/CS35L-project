@@ -36,7 +36,9 @@ Open http://localhost:3000 to view it in your browser
 
 
 
-### TODO: sessions, auth
+### TODO:
+- authentication
+- letterbox api handling/testing
 
 ### ISSUES:
 - my create button adds entry to db properly, but for some reason its throwing a 400 error
