@@ -19,7 +19,7 @@ const MALAuthTest = () => {
 
     const response = await axios.post("/auth", params);
     const json = await response.data;
-    console.log(json);
+    // console.log(json);
     window.location.assign(json.url);
   }
 
