@@ -9,4 +9,9 @@ MALRoutes.route("/auth").post(async (req, res) => {
   res.send({ url });
 });
 
+MALRoutes.route("/auth/token").post(async (req, res) => {
+  const code = req.body.code;
+  // const url = `https://myanimelist.net/v1/oauth2/token?client_id=${process.env.CLIENT_ID}?client_secret=${process.env.CLIENT_SECRET}?code=${code}?code_verifier=${}`;
+});
+
 module.exports = MALRoutes;
