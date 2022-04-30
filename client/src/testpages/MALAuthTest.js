@@ -33,10 +33,11 @@ const MALAuthTest = (props) => {
   }
 
   const loginUser = async () => {
-    const response = await axios.get("/get-user", userAuth);
+    const params = userAuth;
+    const response = await axios.post("/get-user", params);
     const json = await response.data;
     console.log(json);
-    setUser(json.user.name);
+    setUser(json.name);
   };
 
   return(

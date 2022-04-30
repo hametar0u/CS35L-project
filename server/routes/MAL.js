@@ -27,13 +27,16 @@ MALRoutes.route("/auth/token").post(async (req, res) => {
   res.send(json);
 });
 
-MALRoutes.route("/get-user").get(async (req, res) => {
+MALRoutes.route("/get-user").post(async (req, res) => {
+  // console.log(req.body);
   const url = 'https://api.myanimelist.net/v2/users/@me';
-  const headers = {
-    Authorization: 'Bearer ' + req.body.access_token
+  const config = {
+    headers: {
+      Authorization: 'Bearer ' + req.body.access_token
+    }
   };
 
-  const response = await axios.get(url, headers);
+  const response = await axios.get(url, config);
   const json = await response.data;
   console.log(json);
   res.send(json);
