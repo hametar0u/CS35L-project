@@ -32,12 +32,6 @@ const MALAuthTest = (props) => {
       code_verifier: userData.code_challenge
     };
     
-<<<<<<< Updated upstream
-    const response = await axios.post("/auth/token", params);
-    const json = await response.data;
-    console.log(json);
-    setUserAuth(json);
-=======
     await axios.post("/auth/token", params)
       .then(res => {
         // Work with the response...
@@ -51,7 +45,6 @@ const MALAuthTest = (props) => {
         console.log(err);
       });
     
->>>>>>> Stashed changes
   }
 
   const loginUser = async () => {
