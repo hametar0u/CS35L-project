@@ -4,6 +4,10 @@ const querystring = require('querystring');
 
 const MALRoutes = express.Router();
 
+MALRoutes.route("/auth/get-code-verifier").get((req, res) => {
+  res.send({code_challenge: "bo0UcvCfQD9npT8Sg55wUFEBEZYoTYSqGYXsUzTo8XfpsStmKP96PeH4SlQ2GIrA5Qdz_2cwKxbNxRpLr6EVuyYmI5S_qvX1yMPEbRkYtgFg8HCwYO9ykLLT09GU1D20"});
+});
+
 MALRoutes.route("/auth").post(async (req, res) => {
   const code_challenge = req.body.code_challenge.trim();
   console.log("verifier in auth: ", req.body.code_challenge);
