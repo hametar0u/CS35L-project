@@ -11,7 +11,6 @@ MALRoutes.route("/auth").post(async (req, res) => {
 });
 
 MALRoutes.route("/auth/token").post(async (req, res) => {
-  console.log("code_verifier:",req.body.code_verifier);
   const params = querystring.stringify({
     client_id: process.env.CLIENT_ID,
     client_secret: process.env.CLIENT_SECRET,
@@ -21,11 +20,24 @@ MALRoutes.route("/auth/token").post(async (req, res) => {
     
   });
 
-  const url = `https://myanimelist.net/v2/oauth2/token`;
+  const url = `https://myanimelist.net/v1/oauth2/token`;
   const response = await axios.post(url, params);
   const json = await response.data;
   // console.log(json);
   res.send(json);
+});
+
+MALRoutes.route("/get-user").get(async (req, res) => {
+  const url = 'https://api.myanimelist.net/v2/users/@me';
+  const headers = {
+    Authorization: 'Bearer ' + req.body.access_token
+  };
+
+  const response = await axios.get(url, headers);
+  const json = await response.data;
+  console.log(json);
+  res.send(json);
+  
 });
 
 module.exports = MALRoutes;
