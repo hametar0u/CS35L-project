@@ -24,10 +24,16 @@ MALRoutes.route("/auth/token").post(async (req, res) => {
   console.log("verifier in auth token: ", req.body.code_verifier);
 
   const url = `https://myanimelist.net/v1/oauth2/token`;
-  const response = await axios.post(url, params);
-  const json = await response.data;
-  // console.log(json);
-  res.send(json);
+  const response = await axios.post(url, params)
+    .then(response => {
+      // Work with the response...
+      const json = response.data;
+      console.log(json);
+      res.send(json);
+    }).catch(err => {
+      // Handle error
+      console.log(err);
+    });
 });
 
 MALRoutes.route("/get-user").post(async (req, res) => {
