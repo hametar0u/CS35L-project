@@ -3,15 +3,20 @@ import { UserContext } from '../App';
 import axios from 'axios';
 
 const MALAuthTest = (props) => {
-  const userData = useContext(UserContext);
+  const { userData, setUserData } = useContext(UserContext);
   const [userAuth, setUserAuth] = useState();
   const [user, setUser] = useState();
 
   const handleClick = async () => {
+    const code_challenge = generateCodeVerifier();
+    setUserData({
+      code_challenge: code_challenge
+    });
 
     const params = {
       code_challenge: userData.code_challenge
     };
+    console.log("code challenge: ", userData.code_challenge);
 
     const response = await axios.post("/auth", params);
     const json = await response.data;
@@ -20,6 +25,7 @@ const MALAuthTest = (props) => {
   }
 
   const getAccessToken = async () => {
+
     const params = {
       code: props.code,
       state: props.state,
@@ -53,5 +59,17 @@ const MALAuthTest = (props) => {
     </>
   );
 }
+
+
+// GENERATING CODE VERIFIER
+const dec2hex = (dec) => {
+  return ("0" + dec.toString(16)).substr(-2);
+}
+const generateCodeVerifier = () => {
+  var array = new Uint32Array(56 / 2);
+  window.crypto.getRandomValues(array);
+  return Array.from(array, dec2hex).join("");
+}
+
 
 export default MALAuthTest;

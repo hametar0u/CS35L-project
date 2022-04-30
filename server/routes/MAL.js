@@ -6,6 +6,7 @@ const MALRoutes = express.Router();
 
 MALRoutes.route("/auth").post(async (req, res) => {
   const code_challenge = req.body.code_challenge.trim();
+  console.log("verifier in auth: ", req.body.code_challenge);
   const url = `https://myanimelist.net/v1/oauth2/authorize?response_type=code&client_id=${process.env.CLIENT_ID}&code_challenge=${code_challenge}&code_challenge_method=plain&state=RequestID42`;
   res.send({ url });
 });
@@ -19,6 +20,8 @@ MALRoutes.route("/auth/token").post(async (req, res) => {
     code_verifier: req.body.code_verifier.trim(),
     
   });
+
+  console.log("verifier in auth token: ", req.body.code_verifier);
 
   const url = `https://myanimelist.net/v1/oauth2/token`;
   const response = await axios.post(url, params);
