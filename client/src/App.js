@@ -16,7 +16,9 @@ const useQuery = () => {
 
 export const UserContext = createContext({
   userData: {
-    code_challenge: ""
+    code_challenge: "",
+    user: null,
+    tokens: null
   },
   setUserData: () => {}
 });
@@ -25,7 +27,9 @@ const App = () => {
   const query = useQuery();
 
   const [userData, setUserData] = useState({
-    code_challenge: ""
+    code_challenge: "",
+    user: null,
+    tokens: null
   });
 
   const value = { userData, setUserData };
@@ -34,7 +38,8 @@ const App = () => {
     const response = await axios.get("/auth/get-code-verifier");
     const json = await response.data;
     setUserData({
-      code_challenge: json
+      ...userData,
+      code_challenge: json.code_challenge
     });
   }
 
