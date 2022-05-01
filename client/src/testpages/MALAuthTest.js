@@ -1,22 +1,18 @@
-import { useContext, useState } from 'react';
+import { useContext, useState, useEffect } from 'react';
 import { UserContext } from '../App';
 import axios from 'axios';
 
 const MALAuthTest = (props) => {
   const { userData, setUserData } = useContext(UserContext);
-  const [userAuth, setUserAuth] = useState();
+  const [tokens, setTokens] = useState();
   const [user, setUser] = useState();
 
   const handleClick = async () => {
-    const code_challenge = generateCodeVerifier();
-    setUserData({
-      code_challenge: code_challenge
-    });
 
     const params = {
       code_challenge: userData.code_challenge
     };
-    console.log("code challenge: ", userData.code_challenge);
+    // console.log("code challenge: ", userData.code_challenge);
 
     const response = await axios.post("/auth", params);
     const json = await response.data;
@@ -47,23 +43,32 @@ const MALAuthTest = (props) => {
     
   }
 
-  const loginUser = async () => {
+  const loginUser = async (userAuth) => {
+    console.log(userData);
     const params = userAuth;
     const response = await axios.post("/get-user", params);
     const json = await response.data;
     console.log(json);
-    setUser(json.name);
+    setUser(json);
   };
+
+  useEffect(() => {
+    setUserData({
+      ...userData,
+      tokens: tokens,
+      user: user
+    });
+  }, [tokens, user]);
+
 
   return(
     <>
       <button onClick={handleClick}>go to auth</button>
-      <h1>code challenge: {userData.code_challenge}</h1>
+      {/* <h1>code challenge: {userData.code_challenge}</h1> */}
 
       <p>code: {props.code}</p>
       <button onClick={getAccessToken}>get access token</button>
-      <button onClick={loginUser}>login</button>
-      {user && <p>welcome {user}</p>}
+      {user && <p>welcome {user.name}</p>}
 
     </>
   );
