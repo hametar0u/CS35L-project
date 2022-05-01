@@ -22,10 +22,10 @@ const MALAuthTest = (props) => {
 
   const getAccessToken = async () => {
 
-    const params = {
+    let params = {
       code: props.code,
       state: props.state,
-      code_verifier: userData.code_challenge
+      code_verifier: userData.code_challenge,
     };
     
     await axios.post("/auth/token", params)
@@ -37,8 +37,10 @@ const MALAuthTest = (props) => {
         loginUser(json);
       }).catch(err => {
         // Handle error
-        
-        console.log(err);
+        console.log(err.response.status);
+        // if (err.response && err.response.status === 401) {
+        //   getAccessToken("refresh_token");
+        // }
       });
     
   }

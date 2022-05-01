@@ -29,6 +29,13 @@ const dbo = require("./db/conn");
 //MAL interaction
 app.use(require("./routes/MAL"));
 
+app.use(function (err, req, res, next) {
+  console.error(err.stack);
+  res.status(432).send('this shit again!!');
+  next(err);
+});
+
+
 app.listen(port, () => {
   dbo.connectToServer(function (err) {
     if (err) console.error(err);
