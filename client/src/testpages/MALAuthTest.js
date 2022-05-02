@@ -7,12 +7,11 @@ const MALAuthTest = (props) => {
   const [user, setUser] = useState();
   const [error, setError] = useState();
 
-  const handleClick = async () => {
+  const getAuthorization = async () => {
 
     const params = {
       code_challenge: userData.code_challenge
     };
-    // console.log("code challenge: ", userData.code_challenge);
 
     const response = await axios.post("/auth", params);
     const json = await response.data;
@@ -22,7 +21,7 @@ const MALAuthTest = (props) => {
 
   const getAccessToken = async () => {
 
-    let params = {
+    const params = {
       code: props.code,
       state: props.state,
       code_verifier: userData.code_challenge,
@@ -35,29 +34,26 @@ const MALAuthTest = (props) => {
         setUser(json);
         setError({});
       }).catch(err => {
-        setError(err.response);
-        
+        if (err.response.data === "Cannot decrypt the authorization code") {
+          getAuthorization();
+        }
+        else {
+          setError(err.response);
+          console.log(err.response);
+        }
       });
     
   }
 
-  const loginUser = async (userAuth) => {
-    console.log(userData);
-    const params = userAuth;
-    const response = await axios.post("/get-user", params);
-    const json = await response.data;
-    console.log(json);
-    setUser(json);
-  };
+
 
 
   return(
     <>
-      <button onClick={handleClick}>go to auth</button>
       {/* <h1>code challenge: {userData.code_challenge}</h1> */}
 
-      <p>code: {props.code}</p>
-      <button onClick={getAccessToken}>get access token</button>
+      {/* <p>code: {props.code}</p> */}
+      <button onClick={getAccessToken}>Login</button>
       {user && <p>welcome {user.name}</p>}
       {error && <p>{error.data}</p>}
 
