@@ -4,8 +4,8 @@ import axios from 'axios';
 
 const MALAuthTest = (props) => {
   const { userData, setUserData } = useContext(UserContext);
-  const [tokens, setTokens] = useState();
   const [user, setUser] = useState();
+  const [error, setError] = useState();
 
   const handleClick = async () => {
 
@@ -33,14 +33,11 @@ const MALAuthTest = (props) => {
         // Work with the response...
         const json = res.data;
         console.log(json);
-        setTokens(json);
-        loginUser(json);
+        setUser(json);
       }).catch(err => {
         // Handle error
-        console.log(err.response.status);
-        // if (err.response && err.response.status === 401) {
-        //   getAccessToken("refresh_token");
-        // }
+        setError(err.response);
+        
       });
     
   }
@@ -54,14 +51,6 @@ const MALAuthTest = (props) => {
     setUser(json);
   };
 
-  useEffect(() => {
-    setUserData({
-      ...userData,
-      tokens: tokens,
-      user: user
-    });
-  }, [tokens, user]);
-
 
   return(
     <>
@@ -71,6 +60,7 @@ const MALAuthTest = (props) => {
       <p>code: {props.code}</p>
       <button onClick={getAccessToken}>get access token</button>
       {user && <p>welcome {user.name}</p>}
+      {error && <p>{error.data}</p>}
 
     </>
   );
