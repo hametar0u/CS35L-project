@@ -33,23 +33,30 @@ MALRoutes.route("/auth/token").post(async (req, res, next) => {
       res.redirect(307, `/get-user?Authorization=${json.access_token}`);
     })
     .catch(err => {
-      if (err.response && err.response.status === 400) {
-        res.status(400).send(err.response.data.hint); //this will either be invalid code, expired code, or invalid refresh token
+      if(!err.response) {
+        next(err);
       }
-      else{
-        next(err); //failsafe
+      else if (err.response.status === 400 && err.response.data.hint === "Authorization code has expired") {
+        res.redirect(307, `/auth/refresh-token?token=${json.refresh_token}`);
+      }
+      else {
+        res.status(err.response.status).send(err.response); //failsafe
       }
     });
 });
 
 
 MALRoutes.route("/auth/refresh-token").post(async (req, res, next) => {
+  const urlParams = new URLSearchParams(req._parsedUrl.search);
+  const refresh_token = urlParams.get("token");
+
   const params = querystring.stringify({
     client_id: process.env.CLIENT_ID,
     client_secret: process.env.CLIENT_SECRET,
-    grant_type: "authorization_code",
+    grant_type: "refresh_token",
     code: req.body.code,
     code_verifier: req.body.code_verifier.trim(),
+    refresh_token: refresh_token
   });
 
   const url = `https://myanimelist.net/v1/oauth2/token`;
@@ -58,14 +65,14 @@ MALRoutes.route("/auth/refresh-token").post(async (req, res, next) => {
     .then(response => {
       const json = response.data;
       console.log(json);
-      res.status(200).send(json);
+      res.redirect(307, `/get-user?Authorization=${json.access_token}`);
     })
     .catch(err => {
-      if (err.response && err.response.status === 400) {
-        res.status(400).send(err.response.data.hint); //this will either be invalid code, expired code, or invalid refresh token
+      if (!err.response) {
+        next(err);
       }
       else{
-        next(err); //failsafe
+        res.status(err.response.status).send(err.response); //failsafe
       }
     });
 });
@@ -87,18 +94,6 @@ MALRoutes.route("/get-user").post(async (req, res) => {
   console.log(json);
   res.send(json);
   
-});
-
-//REDIRECT TESTING
-MALRoutes.route("/redirect").post((req, res) => {
-  const urlParams = new URLSearchParams(req._parsedUrl.search);
-  const access_token = urlParams.get("Authorization");
-  console.log(access_token);
-  res.redirect(307, "/redirect2");
-});
-
-MALRoutes.route("/redirect2").post((req, res) => {
-  res.status(200).send("you did it");
 });
 
 module.exports = MALRoutes;

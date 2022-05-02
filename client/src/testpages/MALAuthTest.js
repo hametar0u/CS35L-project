@@ -30,12 +30,11 @@ const MALAuthTest = (props) => {
     
     await axios.post("/auth/token", params)
       .then(res => {
-        // Work with the response...
         const json = res.data;
         console.log(json);
         setUser(json);
+        setError({});
       }).catch(err => {
-        // Handle error
         setError(err.response);
         
       });

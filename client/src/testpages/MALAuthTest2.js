@@ -15,24 +15,10 @@ const MALAuthTest2 = (props) => {
   const [data, setData] = useState();
   const [error, setError] = useState();
 
-  const handleClick = async () => {
-    const params = {
-      hi: "hi"
-    };
-    await axios.post("/redirect", params)
-      .then(response => {
-        setData(response.data);
-      })
-      .catch(err => {
-        setError(err.response);
-      })
-  };
 
   return (
     <>
-      <button onClick={handleClick}>redirect!</button>
-      {data && <p>{data}</p>}
-      {error && <p>{error.data}</p>}
+      hi
     </>
   );
 };
