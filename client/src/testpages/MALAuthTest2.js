@@ -15,6 +15,7 @@ const MALAuthTest2 = (props) => {
   const input = useRef();
   const [data, setData] = useState();
   const [name, setName] = useState();
+  const [count, setCount] = useState();
   const [error, setError] = useState();
 
   const handleClick = async () => {
@@ -37,7 +38,7 @@ const MALAuthTest2 = (props) => {
     })
     .then(response => {
       console.log(response.data);
-      setName(response.data);
+      setName(response.data.message);
     })
     .catch(err => {
       console.log(err);
@@ -45,13 +46,41 @@ const MALAuthTest2 = (props) => {
     });
   };
   
+  const getPageViews = async () => {
+    await axios.get("/sessioncount", {
+      withCredentials: true
+    })
+    .then(response => {
+      console.log(response.data);
+      setCount(response.data);
+    })
+    .catch(err => {
+      console.log(err);
+      setError(err.response);
+    });
+  };
+
+  const resetSession = async () => {
+    await axios.get("/end", {
+      withCredentials: true
+    })
+    .then(response => {
+      console.log(response.data);
+    })
+    .catch(err => {
+      console.log(err);
+      setError(err.response);
+    });
+  };
 
   return (
     <>
-      {/* <p>{name}</p> */}
+      <p>{name} {count}</p>
       <input ref={input} />
       <button onClick={handleClick}>click for vBucks</button>
       <button onClick={handleGetName}>check whats in session</button>
+      <button onClick={getPageViews}>check times visited</button>
+      <button onClick={resetSession}>reset</button>
     </>
   );
 };
