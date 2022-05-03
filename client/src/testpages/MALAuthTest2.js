@@ -15,10 +15,38 @@ const MALAuthTest2 = (props) => {
   const [data, setData] = useState();
   const [error, setError] = useState();
 
+  const handleClick = async () => {
+    const params = {
+      userid: "1234"
+    };
+
+    await axios.post("/session/add", params)
+      .then(response => {
+        console.log(response.data);
+        setData(response.data);
+      })
+      .catch(err => {
+        console.log(err.response);
+        setError(err.response);
+      })
+  };
+
+  const checkSession = async () => {
+    await axios.get("/session")
+      .then(response => {
+        console.log(response.data);
+        setData(response.data);
+      })
+      .catch(err => {
+        console.log(err.response);
+        setError(err.response);
+      });
+  };
 
   return (
     <>
-      hi
+      <button onClick={handleClick}>click for vBucks</button>
+      <button onClick={checkSession}>check whats in session</button>
     </>
   );
 };
