@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import axios from 'axios';
 
 // GENERATING CODE VERIFIER
@@ -12,41 +12,46 @@ const generateCodeVerifier = () => {
 }
 
 const MALAuthTest2 = (props) => {
+  const input = useRef();
   const [data, setData] = useState();
+  const [name, setName] = useState();
   const [error, setError] = useState();
 
   const handleClick = async () => {
-    const params = {
-      userid: "1234"
-    };
-
-    await axios.post("/session/add", params)
-      .then(response => {
-        console.log(response.data);
-        setData(response.data);
-      })
-      .catch(err => {
-        console.log(err.response);
-        setError(err.response);
-      })
+    const obj = { name: input.current.value };
+    await axios.post("/new", obj, {
+      withCredentials: true
+    })
+    .then(response => {
+      console.log(response.data);
+    })
+    .catch(err => {
+      console.log(err);
+      setError(err.response);
+    });
   };
 
-  const checkSession = async () => {
-    await axios.get("/session")
-      .then(response => {
-        console.log(response.data);
-        setData(response.data);
-      })
-      .catch(err => {
-        console.log(err.response);
-        setError(err.response);
-      });
+  const handleGetName = async () => {
+    await axios.get("/name", {
+      withCredentials: true
+    })
+    .then(response => {
+      console.log(response.data);
+      setName(response.data);
+    })
+    .catch(err => {
+      console.log(err);
+      setError(err.response);
+    });
   };
+  
 
   return (
     <>
+      {/* <p>{name}</p> */}
+      <input ref={input} />
       <button onClick={handleClick}>click for vBucks</button>
-      <button onClick={checkSession}>check whats in session</button>
+      <button onClick={handleGetName}>check whats in session</button>
     </>
   );
 };

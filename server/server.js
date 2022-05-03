@@ -5,18 +5,20 @@ require("dotenv").config({ path: "./config.env" });
 const port = process.env.PORT || 5001;
 
 var whitelist = ['http://localhost:3000'];
-// var corsOptions = {
-//   origin: function (origin, callback) {
-//     if (whitelist.indexOf(origin) !== -1) {
-//       callback(null, true)
-//     } else {
-//       callback(new Error('Not allowed by CORS'))
-//     }
-//   }
-// }
+var corsOptions = {
+  // origin: function (origin, callback) {
+  //   if (whitelist.indexOf(origin) !== -1) {
+  //     callback(null, true)
+  //   } else {
+  //     callback(new Error('Not allowed by CORS'))
+  //   }
+  // }
+  origin: "http://localhost:3000",
+  credentials: true,
+}
 
-// app.use(cors(corsOptions));
-app.use(cors());
+app.use(cors(corsOptions));
+// app.use(cors());
 app.use(express.json());
 
 //DB stuff
@@ -31,25 +33,19 @@ app.use(require("./routes/MAL"));
 // app.use(require("./routes/sessionTestRoutes"));
 
 //session imports
-const cookieParser = require("cookie-parser");
 const session = require("express-session");
-const MongoStore = require('connect-mongo');
 
 //session middleware
 const oneMonthIsh = 1000 * 60 * 60 * 24 * 31;
-app.use(session({
-  secret: process.env.SESSION_SECRET,
-  resave: false,
-  saveUninitialized: true,
-  store: MongoStore.create({
-    mongoUrl: process.env.MONGO_URI
-  }),
-  cookie: { maxAge: oneMonthIsh }
-}));
+app.use(
+  session({
+    resave: false,
+    saveUninitialized: true,
+    secret: process.env.SESSION_SECRET,
+  })
+);
 
-//app.use(express.urlencoded({ extended: true }));
-//cookie parser middleware
-app.use(cookieParser());
+
 
 app.use(function (err, req, res, next) {
   console.error(err.stack);
@@ -57,21 +53,38 @@ app.use(function (err, req, res, next) {
   next(err);
 });
 
-
-app.post("/session/add", (req, res) => {
-  console.log(req.body.userid);
-  req.session.userid = req.body.userid;
-  console.log(req.session);
-  res.send("updated session");
+app.get('/sessioncount', (req, res) => {
+  if (req.session.page_views) {
+     req.session.page_views++;
+     res.send("You visited this page " + req.session.page_views + " times");
+  } else {
+     req.session.page_views = 1;
+     res.send("Welcome to this page for the first time!");
+  }
 });
 
-app.get("/session", (req, res) => {
+
+app.post("/new", async (req, res) => {
+  try {
+    console.log(req.body.name);
+    req.session.name = req.body.name;
+    res.send({ message: "saved" }).status(201);
+  } catch (error) {
+    console.log(error);
+    res.status(500);
+    res.send(error);
+  }
+});
+
+app.get("/name", async (req, res) => {
   console.log(req.session);
-  req.session = req.session;
-  if (req.session.userid === "1234") {
-    res.send(`Welcome User ${session.userid}`);
-  } else {
-    res.send("You're not welcome");
+  try {
+    console.log(req.session.name);
+    res.send({ message: req.session.name });
+  } catch (error) {
+    console.log(error);
+    res.status(500);
+    res.send(error);
   }
 });
 
