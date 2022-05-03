@@ -55,8 +55,9 @@ const App = () => {
         <Route exact path="/" element={<RecordList />} />
         {/* <Route path="/auth" element={<MALAuthTest2 code={query.get("code")}/>} /> */}
         <Route path="/auth" element={<MALAuthTest code={query.get("code")}/>} />
-        <Route path="/redirect" element={<MALAuthTest2 code={query.get("code")}/>} />
+        <Route path="/session" element={<MALAuthTest2 code={query.get("code")}/>} />
         <Route path="/home" element={<HomePage />} />
+        <Route path="*" element={<HomePage />} />
       </Routes>
     </UserContext.Provider>
   );
