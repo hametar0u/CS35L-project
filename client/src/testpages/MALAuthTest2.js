@@ -1,4 +1,5 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useContext, useEffect } from 'react';
+import { UserContext } from "../App";
 import axios from 'axios';
 
 // GENERATING CODE VERIFIER
@@ -13,22 +14,29 @@ const generateCodeVerifier = () => {
 
 const MALAuthTest2 = (props) => {
   const input = useRef();
+  const { userData, setUserData } = useContext(UserContext);
+  const [challenge, setChallenge] = useState();
   const [data, setData] = useState();
   const [name, setName] = useState();
   const [count, setCount] = useState();
   const [error, setError] = useState();
 
+  useEffect(() => {
+    setChallenge(userData.code_challenge);
+  }, [userData]);
+
   const handleClick = async () => {
     const obj = { 
       name: input.current.value,
-      // code: "abc123",
-      // code_challenge: "9876fdsa"
+      code: props.code,
+      code_challenge: challenge
     };
     await axios.post("/auth/v2/login", obj, {
       withCredentials: true
     })
     .then(response => {
       console.log(response.data);
+      window.location.assign(response.data.url);
     })
     .catch(err => {
       console.log(err);

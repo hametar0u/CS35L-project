@@ -43,7 +43,12 @@ MAL.route("/auth/v2/login").post(async (req, res, next) => {
         //TODO: if access token expired, redirect to /auth/refresh-token
         console.log(err.response);
         if (err.response.status === 401) {
-          res.redirect(307, "/auth/v2"); //TODO: TEMPORARY
+          if (!req.body.code_challenge) {
+            res.status(400).send("bad code challenge")
+          }
+          else {
+            res.redirect(307, "/auth/v2"); //TODO: TEMPORARY
+          }
         }
         next(err);
       });
@@ -52,7 +57,7 @@ MAL.route("/auth/v2/login").post(async (req, res, next) => {
 
 MAL.route("/auth/v2/token").post(async (req, res) => {
   console.log("token: ", req.session);
-  if (!req.session.codes) {
+  if (!req.session.codes.code_challenge) {
     res.redirect(307, "/auth/v2");
   }
   else {
@@ -67,14 +72,13 @@ MAL.route("/auth/v2/token").post(async (req, res) => {
 
 MAL.route("/auth/v2").post(async (req, res) => {
   console.log("/auth: ", req.session);
-  try {
+  if (!req.session.codes.code_verifier) {
+    res.status(400).send("bad code challenge");
+  }
+  else {
     const code_challenge = req.session.codes.code_verifier;
     const url = `https://myanimelist.net/v1/oauth2/authorize?response_type=code&client_id=${process.env.CLIENT_ID}&code_challenge=${code_challenge}&code_challenge_method=plain&state=RequestID42`;
     res.send({ url });
-  }
-  catch (error) {
-    console.log(error);
-    res.status(400).send(error);
   }
 });
 
