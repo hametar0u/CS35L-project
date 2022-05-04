@@ -19,7 +19,11 @@ const MALAuthTest2 = (props) => {
   const [error, setError] = useState();
 
   const handleClick = async () => {
-    const obj = { name: input.current.value };
+    const obj = { 
+      name: input.current.value,
+      // code: "abc123",
+      // code_challenge: "9876fdsa"
+    };
     await axios.post("/auth/v2/login", obj, {
       withCredentials: true
     })
@@ -33,7 +37,7 @@ const MALAuthTest2 = (props) => {
   };
 
   const handleGetName = async () => {
-    await axios.get("/auth/v2", {
+    await axios.get("/checksession", {
       withCredentials: true
     })
     .then(response => {

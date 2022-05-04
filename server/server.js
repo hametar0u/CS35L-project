@@ -44,7 +44,7 @@ const dbo = require("./db/conn");
 // app.use(require("./routes/letterbox"));
 //MAL interaction
 app.use(require("./routes/MAL"));
-app.use(require("./routes/sessionTestRoutes"));
+app.use(require("./routes/MALV2"));
 
 
 app.use(function (err, req, res, next) {
