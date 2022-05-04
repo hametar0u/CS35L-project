@@ -29,13 +29,12 @@ const App = () => {
   const [userData, setUserData] = useState({
     code_challenge: "",
     user: null,
-    tokens: null
   });
 
   const value = { userData, setUserData };
 
   const getCodeVerifier = async() => {
-    const response = await axios.get("/auth/get-code-verifier");
+    const response = await axios.get("/auth/v2/get-code-verifier");
     const json = await response.data;
     setUserData({
       ...userData,
