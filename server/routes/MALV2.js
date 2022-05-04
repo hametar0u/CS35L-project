@@ -1,6 +1,7 @@
 const express = require("express");
 const session = require("express-session");
 const axios = require("axios");
+const querystring = require("querystring");
 const MAL = express.Router();
 
 MAL.route('/sessioncount').get((req, res) => {
@@ -37,7 +38,8 @@ MAL.route("/auth/v2/login").post(async (req, res, next) => {
     await axios.get(url, config)
       .then(response => {
         console.log(response.data);
-        res.status(200).send(response.data);
+        // res.status(200).send(response.data);
+        res.send("ok");
       })
       .catch(err => {
         //TODO: if access token expired, redirect to /auth/refresh-token
@@ -55,17 +57,40 @@ MAL.route("/auth/v2/login").post(async (req, res, next) => {
   }
 });
 
-MAL.route("/auth/v2/token").post(async (req, res) => {
+MAL.route("/auth/v2/token").post(async (req, res, next) => {
   console.log("token: ", req.session);
-  if (!req.session.codes.code_challenge) {
+  if (!req.session.codes.code_verifier) {
     res.redirect(307, "/auth/v2");
   }
   else {
-    req.session.tokens = {
-      access_token: "access token",
-      refresh_token: "refresh token"
-    };
-    res.send(`new tokens: ${req.session.tokens.access_token}, ${req.session.tokens.refresh_token}`);
+    const params = querystring.stringify({
+      client_id: process.env.CLIENT_ID,
+      client_secret: process.env.CLIENT_SECRET,
+      grant_type: "authorization_code",
+      code: req.session.codes.code,
+      code_verifier: req.session.codes.code_verifier
+    });
+
+    const url = `https://myanimelist.net/v1/oauth2/token`;
+
+    await axios.post(url, params)
+      .then(response => {
+        req.session.tokens = response.data;
+        console.log(req.session);
+        console.log("token retrieval successful");
+        res.redirect(307, "/auth/v2/login");
+      })
+      .catch(err => {
+        console.log(err.response.data);
+        if (err.response && err.response.status === 400) {
+          res.redirect(307, "/auth/v2");
+        }
+        else {
+          next(err);
+        }
+        
+      })
+
   }
 
 });

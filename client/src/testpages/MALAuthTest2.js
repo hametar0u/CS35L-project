@@ -36,7 +36,9 @@ const MALAuthTest2 = (props) => {
     })
     .then(response => {
       console.log(response.data);
-      window.location.assign(response.data.url);
+      if (response.data.url) {
+        window.location.assign(response.data.url);
+      }
     })
     .catch(err => {
       console.log(err);
