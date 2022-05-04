@@ -2,7 +2,7 @@ const express = require("express");
 const session = require("express-session");
 const sRoutes = express.Router();
 
-sRoutes.get('/sessioncount', (req, res) => {
+sRoutes.route('/sessioncount').get((req, res) => {
   if (req.session.page_views) {
      req.session.page_views++;
      res.send("You visited this page " + req.session.page_views + " times");
@@ -13,11 +13,12 @@ sRoutes.get('/sessioncount', (req, res) => {
 });
 
 
-sRoutes.post("/new", async (req, res) => {
+sRoutes.route("/new").post(async (req, res) => {
   try {
     console.log(req.body.name);
     req.session.name = req.body.name;
-    res.send({ message: "saved" }).status(201);
+    res.redirect(307, "/new2");
+    // res.send({ message: "saved" }).status(201);
   } catch (error) {
     console.log(error);
     res.status(500);
@@ -25,7 +26,17 @@ sRoutes.post("/new", async (req, res) => {
   }
 });
 
-sRoutes.get("/name", async (req, res) => {
+sRoutes.route("/new2").post(async (req, res) => {
+  console.log(req.session);
+  if (req.session.name) {
+    res.send({ name: req.session.name });
+  }
+  else {
+    res.status(500).send("oh no");
+  }
+});
+
+sRoutes.route("/name").get(async (req, res) => {
   console.log(req.session);
   try {
     console.log(req.session.name);
