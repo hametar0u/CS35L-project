@@ -1,8 +1,8 @@
 const express = require("express");
 const session = require("express-session");
-const sRoutes = express.Router();
+const MAL = express.Router();
 
-sRoutes.route('/sessioncount').get((req, res) => {
+MAL.route('/sessioncount').get((req, res) => {
   if (req.session.page_views) {
      req.session.page_views++;
      res.send("You visited this page " + req.session.page_views + " times");
@@ -13,7 +13,7 @@ sRoutes.route('/sessioncount').get((req, res) => {
 });
 
 
-sRoutes.route("/new").post(async (req, res) => {
+MAL.route("/auth/v2/login").post(async (req, res) => {
   try {
     console.log(req.body.name);
     req.session.name = req.body.name;
@@ -26,7 +26,7 @@ sRoutes.route("/new").post(async (req, res) => {
   }
 });
 
-sRoutes.route("/new2").post(async (req, res) => {
+MAL.route("/new2").post(async (req, res) => {
   console.log(req.session);
   if (req.session.name) {
     res.send({ name: req.session.name });
@@ -36,7 +36,7 @@ sRoutes.route("/new2").post(async (req, res) => {
   }
 });
 
-sRoutes.route("/name").get(async (req, res) => {
+MAL.route("/auth/v2").get(async (req, res) => {
   console.log(req.session);
   try {
     console.log(req.session.name);
@@ -48,7 +48,7 @@ sRoutes.route("/name").get(async (req, res) => {
   }
 });
 
-sRoutes.get('/end', (req,res,next) => {
+MAL.get('/end', (req,res,next) => {
   req.session.destroy(err => {
     if(err){
         console.log(err);
@@ -58,4 +58,4 @@ sRoutes.get('/end', (req,res,next) => {
   }); //DESTROYS SESSION
 })
 
-module.exports = sRoutes;
+module.exports = MAL;

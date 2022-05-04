@@ -20,7 +20,7 @@ const MALAuthTest2 = (props) => {
 
   const handleClick = async () => {
     const obj = { name: input.current.value };
-    await axios.post("/new", obj, {
+    await axios.post("/auth/v2/login", obj, {
       withCredentials: true
     })
     .then(response => {
@@ -33,7 +33,7 @@ const MALAuthTest2 = (props) => {
   };
 
   const handleGetName = async () => {
-    await axios.get("/name", {
+    await axios.get("/auth/v2", {
       withCredentials: true
     })
     .then(response => {
