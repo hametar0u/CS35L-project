@@ -38,8 +38,7 @@ MAL.route("/auth/v2/login").post(async (req, res, next) => {
     await axios.get(url, config)
       .then(response => {
         console.log(response.data);
-        // res.status(200).send(response.data);
-        res.send("ok");
+        res.status(200).send(response.data);
       })
       .catch(err => {
         //TODO: if access token expired, redirect to /auth/refresh-token

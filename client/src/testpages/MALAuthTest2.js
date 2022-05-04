@@ -18,6 +18,7 @@ const MALAuthTest2 = (props) => {
   const [challenge, setChallenge] = useState();
   const [data, setData] = useState();
   const [name, setName] = useState();
+  const [user, setUser] = useState();
   const [count, setCount] = useState();
   const [error, setError] = useState();
 
@@ -38,6 +39,9 @@ const MALAuthTest2 = (props) => {
       console.log(response.data);
       if (response.data.url) {
         window.location.assign(response.data.url);
+      }
+      else {
+        setUser(response.data);
       }
     })
     .catch(err => {
@@ -89,7 +93,8 @@ const MALAuthTest2 = (props) => {
 
   return (
     <>
-      <p>{name} {count}</p>
+      {user && <p>welcome {user.name}</p>}
+      <p>{count}</p>
       <input ref={input} />
       <button onClick={handleClick}>click for vBucks</button>
       <button onClick={handleGetName}>check whats in session</button>
