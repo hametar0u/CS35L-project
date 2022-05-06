@@ -4,6 +4,10 @@ const axios = require("axios");
 const querystring = require("querystring");
 const MAL = express.Router();
 
+//Mongodb
+const dbo = require("../db/conn");
+const { ConnectionPoolClearedEvent } = require("mongodb");
+
 MAL.route("/sessioncount").get((req, res) => {
   if (req.session.page_views) {
     req.session.page_views++;
@@ -21,7 +25,6 @@ MAL.route("/auth/v2/get-code-verifier").get((req, res) => {
       "bo0UcvCfQD9npT8Sg55wUFEBEZYoTYSqGYXsUzTo8XfpsStmKP96PeH4SlQ2GIrA5Qdz_2cwKxbNxRpLr6EVuyYmI5S_qvX1yMPEbRkYtgFg8HCwYO9ykLLT09GU1D20",
   });
 });
-
 MAL.route("/auth/v2/login").post(async (req, res, next) => {
   console.log(req.body.name);
   req.session.name = req.body.name;
@@ -29,6 +32,7 @@ MAL.route("/auth/v2/login").post(async (req, res, next) => {
     code: req.body.code,
     code_verifier: req.body.code_challenge,
   };
+
 
   if (!req.session.tokens) {
     res.redirect(307, "/auth/v2/token");
@@ -46,6 +50,11 @@ MAL.route("/auth/v2/login").post(async (req, res, next) => {
       .then((response) => {
         console.log(response.data);
         res.status(200).send(response.data);
+        const dbConnect = dbo.getDb();
+
+        dbConnect
+          .collection("UserList")
+          .insertOne(response.data, () => {});
       })
       .catch((err) => {
         //TODO: if access token expired, redirect to /auth/refresh-token
