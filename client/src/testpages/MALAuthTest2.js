@@ -105,6 +105,7 @@ const MALAuthTest2 = (props) => {
       <button onClick={getPageViews}>check times visited</button>
       <button onClick={resetSession}>reset</button>
       <Link to="/session">go to another page</Link>
+      <Link to="/usertest">go to user test</Link>
     </>
   );
 };
