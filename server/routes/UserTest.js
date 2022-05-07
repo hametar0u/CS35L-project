@@ -64,23 +64,21 @@ UserTest.route("/deleteFromList/:id").delete(async (req, res) => {
   });
 
 
-  UserTest.route("/addToList/:id").post(async (req, res) => {
+  UserTest.route("/addToList/:id").post(async (req, res, next) => {
     console.log("i got to post");
     console.log(req.session);
 
-    // if(!req.session.tokens) res.redirect(307,"/auth/v2/login");
-    // else {
-        
-    // }
-    const access_token = req.session.tokens.access_token;
-    const url = `https://api.myanimelist.net/v2/anime/${req.body.id}/my_list_status`;
-    const config = {
-        headers: {
-          Authorization: "Bearer " + access_token,
-        },
-        
-    };
-  
+    if(!req.session.tokens) res.send("no tokens");
+    else {
+      const access_token = req.session.tokens.access_token;
+      const url = `https://api.myanimelist.net/v2/anime/${req.body.id}/my_list_status`;
+      const config = {
+          headers: {
+            Authorization: "Bearer " + access_token,
+          },
+          
+      };
+    
       await axios
         .post(url, config)
         .then((response) => {
@@ -95,6 +93,7 @@ UserTest.route("/deleteFromList/:id").delete(async (req, res) => {
           }
           next(err);
         });
+    }
   
   });
 

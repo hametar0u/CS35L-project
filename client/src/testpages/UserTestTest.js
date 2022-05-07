@@ -5,6 +5,18 @@ const UserTestTest = (props) => {
   const [error, setError] = useState();
   const [userList, setUserList] = useState();
 
+  const checkSession = async () => {
+    await axios.get("/checksession", {
+      withCredentials: true
+    })
+    .then(response => {
+      console.log(response.data);
+    })
+    .catch(err => {
+      console.log(err);
+      setError(err.response);
+    });
+  };
 
   const getUserTest = async () => {
     await axios.get("/usertest", {
@@ -21,9 +33,16 @@ const UserTestTest = (props) => {
 
   const deleteFromList = async () => {
       console.log("i got to del")
-    await axios.delete(`/deleteFromList/28977`, { //replace the id
-      withCredentials: true,
 
+    const params = {
+      id: 28977
+    };
+    const config = {
+      withCredentials: true,
+    };
+
+    await axios.delete(`/deleteFromList/28977`, {
+      withCredentials: true,
       data: {
         id: 28977
       }
@@ -39,13 +58,14 @@ const UserTestTest = (props) => {
 
   const addToList = async () => {
     console.log("i got to post")
-  await axios.post(`/addToList/28977`, { //replace the id
-    withCredentials: true,
-
-    data: {
-      id: 28977
-    }
-  })
+  
+  const config = {
+    withCredentials: true
+  };
+  const params = {
+    id: 28977
+  };
+  await axios.post(`/addToList/28977`, params, config)
   .then(response => {
     console.log(response.data);
   })
@@ -60,6 +80,7 @@ const UserTestTest = (props) => {
       <button onClick={getUserTest}>get user list</button>
       <button onClick={deleteFromList}>delete from list</button>
       <button onClick={addToList}>add to list</button>
+      <button onClick={checkSession}>check whats in session</button>
     </>
   );
 };
