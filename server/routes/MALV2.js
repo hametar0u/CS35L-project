@@ -7,6 +7,7 @@ const MAL = express.Router();
 //Mongodb
 const dbo = require("../db/conn");
 const { ConnectionPoolClearedEvent } = require("mongodb");
+const { rmSync } = require("fs");
 
 MAL.route("/sessioncount").get((req, res) => {
   if (req.session.page_views) {
@@ -26,13 +27,13 @@ MAL.route("/auth/v2/get-code-verifier").get((req, res) => {
   });
 });
 MAL.route("/auth/v2/login").post(async (req, res, next) => {
-  console.log(req.body.name);
+  //console.log(req.body.name);
   req.session.name = req.body.name;
   req.session.codes = {
     code: req.body.code,
     code_verifier: req.body.code_challenge,
   };
-
+  console.log(req.session.tokens);
 
   if (!req.session.tokens) {
     res.redirect(307, "/auth/v2/token");
@@ -44,17 +45,18 @@ MAL.route("/auth/v2/login").post(async (req, res, next) => {
         Authorization: "Bearer " + access_token,
       },
     };
-
     await axios
       .get(url, config)
       .then((response) => {
-        console.log(response.data);
+        //console.log(response.data);
         res.status(200).send(response.data);
         const dbConnect = dbo.getDb();
 
         dbConnect
           .collection("UserList")
-          .insertOne(response.data, () => {});
+          .findOneAndUpdate({id: response.data.id},
+            {$set: {info: response.data, access_token: access_token}},
+            {upsert: true});
       })
       .catch((err) => {
         //TODO: if access token expired, redirect to /auth/refresh-token
@@ -72,7 +74,7 @@ MAL.route("/auth/v2/login").post(async (req, res, next) => {
 });
 
 MAL.route("/auth/v2/token").post(async (req, res, next) => {
-  console.log("token: ", req.session);
+  //console.log("token: ", req.session);
   if (!req.session.codes.code_verifier) {
     res.redirect(307, "/auth/v2");
   } else {
@@ -90,8 +92,8 @@ MAL.route("/auth/v2/token").post(async (req, res, next) => {
       .post(url, params)
       .then((response) => {
         req.session.tokens = response.data;
-        console.log(req.session);
-        console.log("token retrieval successful");
+        //console.log(req.session);
+        //console.log("token retrieval successful");
         res.redirect(307, "/auth/v2/login");
       })
       .catch((err) => {
@@ -106,7 +108,7 @@ MAL.route("/auth/v2/token").post(async (req, res, next) => {
 });
 
 MAL.route("/auth/v2").post(async (req, res) => {
-  console.log("/auth: ", req.session);
+  //console.log("/auth: ", req.session);
   if (!req.session.codes.code_verifier) {
     res.status(400).send("bad code challenge");
   } else {

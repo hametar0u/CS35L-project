@@ -2,7 +2,7 @@ const express = require("express");
 const app = express();
 const cors = require("cors");
 require("dotenv").config({ path: "./config.env" });
-const port = process.env.PORT || 5001;
+const port = process.env.PORT || 5002;
 
 var whitelist = ['http://localhost:3000'];
 var corsOptions = {
@@ -35,16 +35,14 @@ app.use(
 );
 
 
-//DB stuff
-app.use(require("./routes/record"));
+
 //get driver connection
 const dbo = require("./db/conn");
 
-//letterbox interaction
-// app.use(require("./routes/letterbox"));
 //MAL interaction
 app.use(require("./routes/MAL"));
 app.use(require("./routes/MALv2"));
+app.use(require("./routes/suggested_list"));
 
 
 app.use(function (err, req, res, next) {

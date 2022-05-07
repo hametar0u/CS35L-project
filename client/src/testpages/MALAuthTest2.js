@@ -22,6 +22,8 @@ const MALAuthTest2 = (props) => {
   const [user, setUser] = useState();
   const [count, setCount] = useState();
   const [error, setError] = useState();
+  const [userId, setId] = useState();
+  const [Access_code, setAccess] = useState();
 
   useEffect(() => {
     setChallenge(userData.code_challenge);
@@ -33,16 +35,20 @@ const MALAuthTest2 = (props) => {
       code: props.code,
       code_challenge: challenge,
     };
+    console.log(obj);
     await axios
       .post("/auth/v2/login", obj, {
         withCredentials: true,
       })
       .then((response) => {
         console.log(response.data);
+        setId(response.data.id);
+        //setAccess(response.access_code);
         if (response.data.url) {
           window.location.assign(response.data.url);
         } else {
           setUser(response.data);
+          console.log(user);
         }
       })
       .catch((err) => {
@@ -95,6 +101,47 @@ const MALAuthTest2 = (props) => {
       });
   };
 
+  const generateAnimeList = async () => {
+    //First needs to grab Access_code and username
+    const obj = {
+      id: userId,
+    };
+    console.log(userId);
+    await axios
+      .get("/listings/info", obj, {
+        withCredentials: true,
+      })
+      .then((response) => {
+        console.log(response.data[0]);
+        console.log(response.data[0].access_token);
+        console.log(response.data[0].info.name);
+        setAccess(response.data[0].access_token);
+        setName(response.data[0].info.name);
+        //console.log(Access_code);
+        //console.log(name);
+      })
+      .catch((err) => {
+        console.log(err);
+        setError(err.response);
+      });
+      const params = {
+        access_code: Access_code,
+        user: name,
+      };
+      //console.log(params);
+    //Generate data into MongoDb in anime Lists
+    await axios 
+      .post("/listings/add", params, {
+        withCredentials: true,
+      })
+      .then((response) => {
+        console.log("Successfully generated List");
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
   return (
     <>
       {user && <p>welcome {user.name}</p>}
@@ -104,6 +151,7 @@ const MALAuthTest2 = (props) => {
       <button onClick={checkSession}>check whats in session</button>
       <button onClick={getPageViews}>check times visited</button>
       <button onClick={resetSession}>reset</button>
+      <button onClick={generateAnimeList}>Generate Anime List</button>
       <Link to="/session">go to another page</Link>
     </>
   );
