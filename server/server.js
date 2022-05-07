@@ -45,6 +45,7 @@ const dbo = require("./db/conn");
 //MAL interaction
 app.use(require("./routes/MAL"));
 app.use(require("./routes/MALv2"));
+app.use(require("./routes/UserTest"));
 
 
 app.use(function (err, req, res, next) {
