@@ -55,17 +55,18 @@ const UserTestTest = (props) => {
       setError(err.response);
     });
   };
+  
 
   const addToList = async () => {
-    console.log("i got to post")
+    console.log("i got to patch")
   
   const config = {
     withCredentials: true
   };
-  const params = {
-    id: 28977
-  };
-  await axios.post(`/addToList/28977`, params, config)
+//   const params = {
+//     id: 28977
+//   };
+  await axios.get(`/addToList/28977`, config)
   .then(response => {
     console.log(response.data);
   })

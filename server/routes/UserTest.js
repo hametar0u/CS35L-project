@@ -64,14 +64,47 @@ UserTest.route("/deleteFromList/:id").delete(async (req, res) => {
   });
 
 
-  UserTest.route("/addToList/:id").post(async (req, res, next) => {
-    console.log("i got to post");
+//   UserTest.route("/addToList/:id").patch(async (req, res, next) => {
+//     console.log("i got to patch");
+//     console.log(req.session);
+
+//     if(!req.session.tokens) res.send("no tokens");
+//     else {
+//       const access_token = req.session.tokens.access_token;
+//       const url = `https://api.myanimelist.net/v2/anime/${req.body.id}/my_list_status`;
+//       const config = {
+//           headers: {
+//             Authorization: "Bearer " + access_token,
+//           },
+          
+//       };
+    
+//       await axios
+//         .patch(url, config)
+//         .then((response) => {
+//           console.log(response.data);
+//           res.status(200).send(response.data);
+//         })
+//         .catch((err) => {
+//           //TODO: if access token expired, redirect to /auth/refresh-token
+//           console.log(err.response);
+//           if (err.response.status === 401) {
+//               res.redirect(307, "/auth/v2"); //TODO: TEMPORARY
+//           }
+//           next(err);
+//         });
+//     }
+  
+//   });
+
+UserTest.route("/addToList/:id").get(async (req, res, next) => {
+    console.log("i got to patch");
     console.log(req.session);
 
     if(!req.session.tokens) res.send("no tokens");
     else {
       const access_token = req.session.tokens.access_token;
-      const url = `https://api.myanimelist.net/v2/anime/${req.body.id}/my_list_status`;
+      const url = `https://api.myanimelist.net/v2/anime/21/my_list_status`;
       const config = {
           headers: {
             Authorization: "Bearer " + access_token,
@@ -80,7 +113,7 @@ UserTest.route("/deleteFromList/:id").delete(async (req, res) => {
       };
     
       await axios
-        .post(url, config)
+        .get(url, config)
         .then((response) => {
           console.log(response.data);
           res.status(200).send(response.data);
@@ -96,6 +129,5 @@ UserTest.route("/deleteFromList/:id").delete(async (req, res) => {
     }
   
   });
-
 
 module.exports = UserTest;
