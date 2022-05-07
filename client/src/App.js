@@ -6,6 +6,7 @@ import RecordList from "./components/recordList";
 import MALAuthTest from "./testpages/MALAuthTest";
 import MALAuthTest2 from "./testpages/MALAuthTest2";
 import HomePage from "./pages/HomePage";
+import LandingPage from "./pages/LandingPage";
 import UserTestTest from "./testpages/UserTestTest";
 import axios from "axios";
 axios.defaults.baseURL = 'http://localhost:5001';
@@ -52,13 +53,13 @@ const App = () => {
   return (
     <UserContext.Provider value={value}>
       <Routes>
-        <Route exact path="/" element={<RecordList />} />
+        <Route exact path="/" element={<LandingPage code={query.get("code")}/>} />
         {/* <Route path="/auth" element={<MALAuthTest2 code={query.get("code")}/>} /> */}
         <Route path="/session" element={<MALAuthTest code={query.get("code")}/>} />
         <Route path="/auth" element={<MALAuthTest2 code={query.get("code")}/>} />
-        <Route path="/home" element={<HomePage />} />
+        <Route path="/home" element={< HomePage/>} />
         <Route path="/usertest" element={<UserTestTest />} />
-        <Route path="*" element={<HomePage />} />
+        <Route path="*" element={<LandingPage code={query.get("code")}/>} />
       </Routes>
     </UserContext.Provider>
   );
