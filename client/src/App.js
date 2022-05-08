@@ -35,20 +35,30 @@ const App = () => {
 
   const value = { userData, setUserData };
 
-  const getCodeVerifier = async() => {
+  const getCodeVerifier = async () => {
     const response = await axios.get("/auth/v2/get-code-verifier");
     const json = await response.data;
     setUserData({
       ...userData,
       code_challenge: json.code_challenge
     });
-  }
+  };
+
+  const getLoginStatus = async () => {
+    const response = await axios.get("/auth/v2/get-login-status", {
+      withCredentials: true,
+    });
+    const json = await response.data;
+    setUserData({
+      ...userData,
+      login_status: json
+    });
+  };
 
   useEffect(() => {
     getCodeVerifier();
+    getLoginStatus();
   });
-
-  // const value = {code_challenge: code_challenge};
 
   return (
     <UserContext.Provider value={value}>

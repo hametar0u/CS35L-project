@@ -14,6 +14,16 @@ MAL.route("/sessioncount").get((req, res) => {
   }
 });
 
+MAL.route("/auth/v2/get-login-status").get((req, res) => {
+  try {
+    const access_token = req.session.tokens.access_token;
+    res.send("true");
+  }
+  catch {
+    res.send("false")
+  }
+});
+
 MAL.route("/auth/v2/get-code-verifier").get((req, res) => {
   res.send({
     //TODO: temporary solution
