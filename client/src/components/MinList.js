@@ -1,25 +1,21 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
-import "../css/MaxList.css";
+import "../css/MinList.css";
 
-
-const deleteButton = () => {
-    console.log("delete");
+const doEdit = () => {
+    console.log("edit list");
 };
 
-const AnimeCard = (props) => {
+const MinAnimeCard = (props) => {
     return(
-        <div class="maxContainer">
-            <button class="deleteButton" onClick={deleteButton}>x</button>
-            <div>{props.title}</div>
+        <div>
             <div><img src={props.image}/></div>
-            <div>{props.id}</div>
         </div>
     );
 };
 
-const Animes = () => {
+const MinList = () => {
     let animeArray = [
         {
             "title" : "5-toubun no Hanayome",
@@ -64,10 +60,18 @@ const Animes = () => {
     ];
 
     return (
-        <div class="maxGridContainer">
-            {animeArray.map((anime, i) => {
-            return <AnimeCard title={anime.title} image={anime.image} id={anime.id} />;
-            })}
+        <div class="container">
+            List 1
+            <div class="gridContainer">
+            {/* {animeArray.map((anime, i) => {
+            return <MinAnimeCard image={anime.image}/>;
+            })} */}
+            <MinAnimeCard image={animeArray[0].image}/>
+            <MinAnimeCard image={animeArray[1].image}/>
+            <MinAnimeCard image={animeArray[2].image}/>
+            <MinAnimeCard image={animeArray[3].image}/>
+            </div>
+            <button class="editButton" onClick={doEdit}>edit</button>
         </div>
         
     );
@@ -75,4 +79,4 @@ const Animes = () => {
 
 
 
-export default Animes;
+export default MinList;

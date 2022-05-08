@@ -2,8 +2,8 @@ import { useContext, useState, useEffect } from "react";
 import { UserContext } from "../App";
 import axios from 'axios';
 import LoginButton from "../components/LoginButton";
-
-
+import logo from "../components/logo.svg";
+import "../css/LandingPage.css";
 
 
 
@@ -47,10 +47,24 @@ const LandingPage = (props) => {
     
 
   return(
-    <div>
-      <LoginButton handleClick={handleClick}/>
-      landing page
-    </div>
+    <div class="row AUContainer">
+      <div class="column">
+        <img src={logo}/>
+      </div>
+      <div class="column">
+        <div className="bg-bermuda">
+        Welcome to Our Anime List!
+        </div>
+        <div className="text-bermuda">
+        OAL is a community platform based on My Anime List. Our application allows you to interact with your friends on My Anime List by creating collaborative anime lists, comparing your similarity, and more. 
+        </div>
+        <div class="h2">
+        We hope you enjoy our app :3
+        </div>
+        <LoginButton handleClick={handleClick}/>
+      </div>
+      </div>
+     
   );
 }
 

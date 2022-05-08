@@ -11,7 +11,7 @@ UserTest.route("/usertest").get(async (req, res) => {
   const access_token = req.session.tokens.access_token;
     const url = "https://api.myanimelist.net/v2/users/@me/animelist";
     const config = {
-      headers: {
+       headers: {
         Authorization: "Bearer " + access_token,
       },
     };

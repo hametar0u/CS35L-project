@@ -1,5 +1,7 @@
 import { createContext, useState, useEffect } from "react";
 import { Route, Routes, useLocation } from "react-router-dom";
+import './App.css';
+
 
 //import pages
 import RecordList from "./components/recordList";
