@@ -45,8 +45,8 @@ userRoute.route("/listings/add").post(async (req, res) => {
     
     // console.log(req.query.user);
     // console.log(req.query.access_code);
-    const url = `https://api.myanimelist.net/v2/users/${req.body.user}/animelist?fields=title&limit=100`
-    const prev = ""
+    let url = `https://api.myanimelist.net/v2/users/${req.body.user}/animelist?fields=title&limit=100`
+    let prev = ""
     const dbConnect = dbo.getDb();
     params = {
         headers: {
@@ -54,7 +54,6 @@ userRoute.route("/listings/add").post(async (req, res) => {
         },
     };
     let i = 0;
-    let j = 100;
     anime = {
         title: []
     }
@@ -65,15 +64,16 @@ do {
         .then((response) => {
             //console.log("===");
             //console.log(response.data.data[0].node.title);
-            for(let k = 0; k < j; k++) {
-                anime.title[i] = response.data.data[i].node.title;
+            var count = Object.keys(response.data.data).length;
+            console.log(count);
+            for(let k = 0; k < count; k++) {
+                anime.title[i] = response.data.data[k].node.title;
                 i++;
             }
-            j+= 100;
-            //console.log("===");
-            //console.log(response.data.paging);
-            console.log("===");
-            console.log(response.data.paging.next);
+            // console.log("===");
+            // console.log(response.data.paging);
+            // console.log("===");
+            // console.log(response.data.paging.next);
             if(response.data.paging.next) {
                 url = response.data.paging.next;
             }
