@@ -4,7 +4,7 @@ import App from "./App";
 import { BrowserRouter } from "react-router-dom";
 
 import axios from 'axios';
-axios.defaults.baseURL = 'http://localhost:5002'; //TODO: change to production link but might have to deal with SSL crap
+axios.defaults.baseURL = 'http://localhost:5001'; //TODO: change to production link but might have to deal with SSL crap
 
 const root = ReactDOM.createRoot(
   document.getElementById('root')
