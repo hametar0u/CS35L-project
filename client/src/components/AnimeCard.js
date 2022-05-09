@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
-import "../css/MaxList.css";
+import "../styles/globals.css";
 
 
 const deleteButton = () => {
@@ -10,11 +10,13 @@ const deleteButton = () => {
 
 const AnimeCard = (props) => {
     return(
-        <div class="maxContainer">
-            <button class="deleteButton" onClick={deleteButton}>x</button>
+        <div className="bg-lightgrey p-5">
+            <div className="flex flex-row-reverse">
+                <button className="bg-red rounded-full justify-center w-8" onClick={deleteButton}>x</button>
+            </div>
             <div>{props.title}</div>
             <div><img src={props.image}/></div>
-            <div>{props.id}</div>
+            <div>ID: {props.id}</div>
         </div>
     );
 };
@@ -64,7 +66,7 @@ const Animes = () => {
     ];
 
     return (
-        <div class="maxGridContainer">
+        <div className="grid grid-cols-4 gap-10">
             {animeArray.map((anime, i) => {
             return <AnimeCard title={anime.title} image={anime.image} id={anime.id} />;
             })}

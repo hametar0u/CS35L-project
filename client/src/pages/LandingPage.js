@@ -47,20 +47,20 @@ const LandingPage = (props) => {
     
 
   return(
-    <div className="flex justify-left sm:justify-center w-full pt-10 pb-10">        
+    <div className="flex justify-left sm:justify-center w-full pt-40 pb-10">        
         <div className="flex flex-col gap-12 sm:gap-16 w-3/4 max-w-5xl">
        <div className="flex flex-row gap-x-10">
       <div className="w-full">
         <img src={logo}/>
       </div>
-      <div>
-        <div className="">
+      <div className="flex flex-col gap-10">
+        <div className="font-serif text-xl text-blue">
         Welcome to Our Anime List!
         </div>
         <div className="">
         OAL is a community platform based on My Anime List. Our application allows you to interact with your friends on My Anime List by creating collaborative anime lists, comparing your similarity, and more. 
         </div>
-        <div class="">
+        <div class="text-blue">
         We hope you enjoy our app :3
         </div>
         <LoginButton handleClick={handleClick}/>

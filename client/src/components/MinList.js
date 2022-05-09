@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
-import "../css/MinList.css";
 
 const doEdit = () => {
     console.log("edit list");
@@ -60,19 +59,21 @@ const MinList = () => {
     ];
 
     return (
-        <div class="container">
-            List 1
-            <div class="gridContainer">
-            {/* {animeArray.map((anime, i) => {
-            return <MinAnimeCard image={anime.image}/>;
-            })} */}
-            <MinAnimeCard image={animeArray[0].image}/>
-            <MinAnimeCard image={animeArray[1].image}/>
-            <MinAnimeCard image={animeArray[2].image}/>
-            <MinAnimeCard image={animeArray[3].image}/>
+        <div className="bg-lightgrey p-5 flex flex-col gap-10 w-1/2">
+             List 1
+            <div className="flex gap-5">
+            <div className="grid grid-cols-2 gap-0">
+                <MinAnimeCard image={animeArray[0].image}/>
+                <MinAnimeCard image={animeArray[1].image}/>
+                <MinAnimeCard image={animeArray[2].image}/>
+                <MinAnimeCard image={animeArray[3].image}/>
             </div>
-            <button class="editButton" onClick={doEdit}>edit</button>
         </div>
+            <button className="bg-blue w-20 rounded-full" onClick={doEdit}>edit</button>
+
+        </div>
+        
+        
         
     );
 }

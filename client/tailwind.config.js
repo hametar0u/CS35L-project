@@ -5,6 +5,14 @@ module.exports = {
     // "./src/hooks/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
+    fontFamily: {
+      sans: ['Lato', 'sans'],
+      serif: ['Inter', 'serif'],
+    },
+    h1: {
+      size: "40px",
+      weight: "30pt",
+    },
     colors: {
       transparent: 'transparent',
       current: 'currentColor',
@@ -16,6 +24,13 @@ module.exports = {
       'silver': '#ecebff',
       'bubble-gum': '#ff77e9',
       'bermuda': '#78dcca',
+      'mint': '#BCD8C1',
+      'blue': '#4a8fe7',
+      'red': "#FF8181",
+      'lightgrey': "#E5E5E5",
+      'dark': "#3A3335",
+      'grey': "#C4C4C4",
+
     },
     extend: {},
   },
