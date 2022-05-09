@@ -105,6 +105,8 @@ const MALAuthTest2 = (props) => {
     //First needs to grab Access_code and username
     const obj = {
       id: userId,
+      access_code: "nothing",
+      user: "nothing",
     };
     console.log(userId);
     await axios
@@ -115,23 +117,22 @@ const MALAuthTest2 = (props) => {
         console.log(response.data[0]);
         console.log(response.data[0].access_token);
         console.log(response.data[0].info.name);
-        setAccess(response.data[0].access_token);
-        setName(response.data[0].info.name);
-        //console.log(Access_code);
-        //console.log(name);
+        // setAccess(response.data[0].access_token);
+        // setName(response.data[0].info.name);
+
+        obj.access_code = response.data[0].access_token;
+        obj.user = response.data[0].info.name;
+    
       })
       .catch((err) => {
         console.log(err);
         setError(err.response);
       });
-      const params = {
-        access_code: Access_code,
-        user: name,
-      };
+      console.log(obj);
       //console.log(params);
     //Generate data into MongoDb in anime Lists
     await axios 
-      .post("/listings/add", params, {
+      .post("/listings/add", obj, {
         withCredentials: true,
       })
       .then((response) => {

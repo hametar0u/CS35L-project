@@ -168,4 +168,5 @@ MAL.get("/end", (req, res, next) => {
   }); //DESTROYS SESSION
 });
 
+
 module.exports = MAL;

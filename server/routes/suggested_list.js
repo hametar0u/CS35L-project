@@ -6,6 +6,7 @@ const userRoute = express.Router();
 
 const dbo = require("../db/conn");
 const { ConnectionPoolClearnedEvent } = require("mongodb");
+const { response } = require("express");
 
 userRoute.route("/listings").get(async (req, res) => {
     const dbConnect = dbo.getDb();
@@ -40,37 +41,43 @@ userRoute.route("/listings/suggested").post(async ( req, res) => {
 })
 
 userRoute.route("/listings/add").post(async (req, res) => {
-    console.log(req.query);
     console.log(req.body);
-    console.log(req.params);
     
-    console.log(req.query.user);
-    console.log(req.query.access_code);
-    const url = `https://api.myanimelist.net/v2/users/${req.query.user}/animelist?fields=title`
+    // console.log(req.query.user);
+    // console.log(req.query.access_code);
+    const url = `https://api.myanimelist.net/v2/users/${req.body.user}/animelist?fields=title&limit=100`
     const dbConnect = dbo.getDb();
     params = {
         headers: {
-            Authorization: "Bearer " + req.query.access_code,
+            Authorization: "Bearer " + req.body.access_code,
         },
     };
+    let i = 0;
+    let j = 100;
+    anime = {}
 
+do {
     await axios
         .get(url, params)
         .then((response) => {
-            //console.log(response);
-            anime = {
-                data: response.data, 
+            console.log(response);
+            for(let k = 0; k < j; k++) {
+                anime.title[i] = response.data[i].node.title;
+                i++;
             }
-            dbConnect
-                .collection("anime_list")
-                .findOneAndUpdate({user: "Mary"},
-                                   {$set: {suggestedanime: anime.data}}, 
-                                   {upsert: true});
-                res.send("It worked");
+            j+= 100;
         })
         .catch((error) => {
             console.log(error);
         });
+    url = response.data.page.next;
+} while (!response.data.page.previous);
+        dbConnect
+                .collection("anime_list")
+                .findOneAndUpdate({user: req.body.user},
+                                   {$set: {suggestedanime: anime.data}}, 
+                                   {upsert: true});
+                res.send("It worked");
         
 });
 
