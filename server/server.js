@@ -35,17 +35,15 @@ app.use(
 );
 
 
-//DB stuff
-app.use(require("./routes/record"));
+
 //get driver connection
 const dbo = require("./db/conn");
 
-//letterbox interaction
-// app.use(require("./routes/letterbox"));
 //MAL interaction
 app.use(require("./routes/MAL"));
-app.use(require("./routes/MALv2"));
 app.use(require("./routes/UserTest"));
+app.use(require("./routes/MALV2"));
+app.use(require("./routes/suggested_list"));
 
 
 app.use(function (err, req, res, next) {
