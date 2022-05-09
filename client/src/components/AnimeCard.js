@@ -10,7 +10,7 @@ const deleteButton = () => {
 
 const AnimeCard = (props) => {
     return(
-        <div className="bg-lightgrey p-5">
+        <div className="bg-lightgrey p-5 rounded-lg">
             <div className="flex flex-row-reverse">
                 <button className="bg-red rounded-full justify-center w-8" onClick={deleteButton}>x</button>
             </div>

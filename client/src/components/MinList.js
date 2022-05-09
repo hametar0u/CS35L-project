@@ -4,6 +4,7 @@ import axios from "axios";
 
 const doEdit = () => {
     console.log("edit list");
+    window.location.href = "http://localhost:3000/list";
 };
 
 const MinAnimeCard = (props) => {
@@ -59,7 +60,7 @@ const MinList = () => {
     ];
 
     return (
-        <div className="bg-lightgrey p-5 flex flex-col gap-10 w-1/2">
+        <div className="bg-lightgrey p-5 flex flex-col gap-10 w-1/2 rounded-lg" onClick={doEdit}>
              List 1
             <div className="flex gap-5">
             <div className="grid grid-cols-2 gap-0">
