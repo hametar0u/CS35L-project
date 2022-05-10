@@ -101,6 +101,24 @@ const MALAuthTest2 = (props) => {
       });
   };
 
+  const colabList = async () => {
+    const obj = {
+      id: userId,
+
+    }
+    await axios
+    .get("/listings/colab", {
+      withCredentials: true,
+    })
+    .then((response) => {
+      console.log(response.data);
+    })
+    .catch((err) => {
+      console.log(err);
+      setError(err.response);
+    })
+  }
+
   const generateAnimeList = async () => {
     //First needs to grab Access_code and username
     const obj = {
@@ -142,17 +160,25 @@ const MALAuthTest2 = (props) => {
         console.log(error);
       });
   };
+  function handleKeyPress(e) {
+    if (e.key === 'Enter') {
+        colabList; 
+    }
+}
 
   return (
     <>
       {user && <p>welcome {user.name}</p>}
       <p>{count}</p>
       <input ref={input} />
-      <button onClick={handleClick}>click for vBucks</button>
-      <button onClick={checkSession}>check whats in session</button>
-      <button onClick={getPageViews}>check times visited</button>
-      <button onClick={resetSession}>reset</button>
-      <button onClick={generateAnimeList}>Generate Anime List</button>
+      <button className="bg-bermuda rounded-full m-2 p-2" onClick={handleClick}>click for vBucks</button>
+      <button className="bg-bermuda rounded-full m-2 p-2" onClick={checkSession}>check whats in session</button>
+      <button className="bg-bermuda rounded-full m-2 p-2" onClick={getPageViews}>check times visited</button>
+      <button className="bg-bermuda rounded-full m-2 p-2" onClick={resetSession}>reset</button>
+      <button className="bg-bermuda rounded-full m-2 p-2" onClick={generateAnimeList}>Generate Anime List</button>
+      <button className="bg-bermuda rounded-full m-2 p-2" onClick={colabList}>Colab Together!!</button>
+      <input className="bg-bermuda rounded-full m-2 p-2" placeholder="Enter Post Title" onKeyUp={handleKeyPress.bind(this)}/>
+      
       <Link to="/session">go to another page</Link>
       <Link to="/usertest">go to user test</Link>
     </>

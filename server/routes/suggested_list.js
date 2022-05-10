@@ -36,8 +36,9 @@ userRoute.route("/listings/info").get(async (req, res) => {
     });
 });
 
-userRoute.route("/listings/suggested").post(async ( req, res) => {
-    const url = ``
+userRoute.route("/listings/colab").post(async ( req, res) => {
+    const dbConnect = dbo.getDb();
+
 })
 
 userRoute.route("/listings/add").post(async (req, res) => {
