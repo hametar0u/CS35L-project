@@ -14,8 +14,8 @@ const AnimeCard = (props) => {
             <div className="flex flex-row-reverse">
                 <button className="bg-red rounded-full justify-center w-8" onClick={deleteButton}>x</button>
             </div>
-            <div>{props.title}</div>
-            <div><img src={props.image}/></div>
+            <div className="">{props.title}</div>
+            <div className=""><img src={props.image}/></div>
             <div>ID: {props.id}</div>
         </div>
     );

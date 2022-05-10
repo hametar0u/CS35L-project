@@ -9,7 +9,7 @@ import MinList from "../components/MinList";
 const ListPage = () => {
   return(
     <div>
-      <Link to="/home">Back</Link>
+      <Link className="bg-blue rounded-full m-2 p-2 text-white" to="/home">Back</Link>
       <div className="flex justify-left sm:justify-center w-full pt-40 pb-10">        
           <div className="flex flex-col gap-12 sm:gap-16 w-3/4 max-w-5xl">
           <div>
