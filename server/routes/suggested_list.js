@@ -41,6 +41,81 @@ userRoute.route("/listings/colab").post(async ( req, res) => {
 
 })
 
+userRoute.route("/listings/anime").post(async (req, res) => {
+    const dbConnect = dbo.getDb();
+    //console.log(req.body);
+    let str = ""
+    let malId = 0
+    if(req.body.anime == "") {
+        res.send("Invalid");
+    }
+    else {
+        let word = req.body.anime;
+        for(let i = 0; i < word.length; i ++) {
+            if(word[i] == " "){
+                str += "-";
+            } else {
+                str += word[i];
+            }
+        }
+        let url = `https://api.jikan.moe/v4/anime?q=${str}`
+        await axios
+            .get(url)
+            .then((response) => {
+                malId = response.data.data[0].mal_id
+            })
+            .catch((err) => {
+                console.log(err);
+            })
+        let obj = {
+            anime: req.body.anime,
+            malId: malId
+        }
+        if(dbConnect.collection("UserList").find({id: req.body.user},{ colablist: {$exists: false}}) == {})
+        {
+            let colablist = [];
+            colablist[0] = obj;
+            dbConnect.collection("UserList").findOneAndUpdate({id: req.body.user},
+                {$set: {colablist: colablist}}, 
+                {upsert: true});
+        } else {
+            dbConnect
+            .collection("UserList")
+            .find({id: req.body.user})
+            .toArray(function (err, result) {
+                if (err) {
+                    
+                } else {
+                    let response = result[0].colablist;
+                    //console.log(response[0]);
+                    var count = Object.keys(response).length;
+                    //console.log(count);
+                    for(let i = 0; i < count; i++) {
+                        console.log(response[0]);
+                        console.log(obj);
+                        if(response[i] == obj) {
+                            res.send("This object already exists");
+                        }
+                    }
+                    // response[count] = obj;
+                    // dbConnect.collection("UserList").findOneAndUpdate({user: req.body.user},
+                    //     {$set: {colablist: response}}, 
+                    //     {upsert: true});
+
+
+                }
+            });
+        }
+        // dbConnect
+        //     .collection("UserList")
+        //     .findOneAndUpdate({id: req.body.user},
+        //         {$set: {colablist: colablist}}, 
+        //         {upsert: true});
+
+        res.send("Accessed anime route");
+    }
+})
+
 userRoute.route("/listings/add").post(async (req, res) => {
     console.log(req.body);
     

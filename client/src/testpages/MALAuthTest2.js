@@ -2,6 +2,7 @@ import { useState, useRef, useContext, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { UserContext } from "../App";
 import axios from "axios";
+import debounce from 'lodash.debounce';
 
 // GENERATING CODE VERIFIER
 const dec2hex = (dec) => {
@@ -24,6 +25,8 @@ const MALAuthTest2 = (props) => {
   const [error, setError] = useState();
   const [userId, setId] = useState();
   const [Access_code, setAccess] = useState();
+  const [anime, setAnime] = useState(null);
+  const [ready, setReady] = useState(false);
 
   useEffect(() => {
     setChallenge(userData.code_challenge);
@@ -101,7 +104,30 @@ const MALAuthTest2 = (props) => {
       });
   };
 
+  const addAnime = async () => {
+    console.log(anime);
+    setReady(false);
+    const obj = {
+      anime: anime,
+      user: userId
+    }
+    await axios
+    .post("/listings/anime", obj, {
+      withCredentials: true
+    })
+    .then((response) => {
+      console.log(response.data);
+    })
+    .catch((err) => {
+      console.log(err);
+      setError(err.response);
+    })
+  }
+
   const colabList = async () => {
+
+    console.log(anime);
+    
     const obj = {
       id: userId,
 
@@ -117,6 +143,7 @@ const MALAuthTest2 = (props) => {
       console.log(err);
       setError(err.response);
     })
+    setReady(false);
   }
 
   const generateAnimeList = async () => {
@@ -160,12 +187,11 @@ const MALAuthTest2 = (props) => {
         console.log(error);
       });
   };
-  function handleKeyPress(e) {
-    if (e.key === 'Enter') {
-        colabList; 
-    }
-}
 
+  function getData(val) {
+    setAnime(val.target.value);
+    setReady(false);
+  }
   return (
     <>
       {user && <p>welcome {user.name}</p>}
@@ -177,7 +203,15 @@ const MALAuthTest2 = (props) => {
       <button className="bg-bermuda rounded-full m-2 p-2" onClick={resetSession}>reset</button>
       <button className="bg-bermuda rounded-full m-2 p-2" onClick={generateAnimeList}>Generate Anime List</button>
       <button className="bg-bermuda rounded-full m-2 p-2" onClick={colabList}>Colab Together!!</button>
-      <input className="bg-bermuda rounded-full m-2 p-2" placeholder="Enter Post Title" onKeyUp={handleKeyPress.bind(this)}/>
+      <div className="bg-bermuda rounded-full m-2 p-2">
+        {
+        ready?
+          addAnime()
+          : null
+        }
+        <input type="text" placeholder="Enter Anime Title" onChange={getData}></input>
+      <button onClick={() => setReady(true)}>Set Ready</button></div>
+      {/* <input className="bg-bermuda rounded-full m-2 p-2" placeholder="Enter Post Title" onKeyUp={handleKeyPress.bind(this)}/> */}
       
       <Link to="/session">go to another page</Link>
       <Link to="/usertest">go to user test</Link>
