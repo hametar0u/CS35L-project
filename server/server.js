@@ -34,13 +34,10 @@ app.use(
   })
 );
 
-
-
 //get driver connection
 const dbo = require("./db/conn");
 
 //MAL interaction
-app.use(require("./routes/MAL"));
 app.use(require("./routes/UserTest"));
 app.use(require("./routes/MALV2"));
 app.use(require("./routes/suggested_list"));
@@ -48,7 +45,7 @@ app.use(require("./routes/suggested_list"));
 
 app.use(function (err, req, res, next) {
   console.error(err.stack);
-  res.status(432).send('this shit again!!');
+  res.status(432).send('this again!!');
   next(err);
 });
 

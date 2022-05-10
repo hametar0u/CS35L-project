@@ -5,9 +5,16 @@ import { Route, Routes, useLocation } from "react-router-dom";
 import RecordList from "./components/recordList";
 import MALAuthTest from "./testpages/MALAuthTest";
 import MALAuthTest2 from "./testpages/MALAuthTest2";
-import HomePage from "./pages/HomePage";
-import LandingPage from "./pages/LandingPage";
 import UserTestTest from "./testpages/UserTestTest";
+
+import LandingPage from "./pages/LandingPage";
+import HomePage from "./pages/HomePage";
+import ListPage from "./pages/ListPage";
+import About from "./pages/About";
+import CompareUser from "./pages/CompareUser";
+import Contact from "./pages/Contact";
+import FindUser from "./pages/FindUser";
+
 import axios from "axios";
 axios.defaults.baseURL = 'http://localhost:5001';
 
@@ -64,12 +71,19 @@ const App = () => {
     <UserContext.Provider value={value}>
       <Routes>
         <Route exact path="/" element={<LandingPage code={query.get("code")}/>} />
-        {/* <Route path="/auth" element={<MALAuthTest2 code={query.get("code")}/>} /> */}
+        <Route path="/home" element={< HomePage />} />
+        <Route path="/list" element={<ListPage />} />
+        <Route path="/compare-user" element={<CompareUser />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/contact" element={<Contact />} />
+        <Route path="/find-user" element={<FindUser />} />
+        <Route path="*" element={<LandingPage />} />
+
+
+        {/* Test Routes */}
         <Route path="/session" element={<MALAuthTest code={query.get("code")}/>} />
         <Route path="/auth" element={<MALAuthTest2 code={query.get("code")}/>} />
-        <Route path="/home" element={< HomePage/>} />
         <Route path="/usertest" element={<UserTestTest />} />
-        <Route path="*" element={<LandingPage code={query.get("code")}/>} />
       </Routes>
     </UserContext.Provider>
   );

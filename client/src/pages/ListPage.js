@@ -6,18 +6,15 @@ import Animes from "../components/AnimeCard";
 import LoginButton from "../components/LoginButton";
 import MinList from "../components/MinList";
 
-const HomePage = () => {
+const ListPage = () => {
   return(
     <div>
-      <Link to="/compare-user">Compare User</Link>
-      <Link to="/find-user">Find User</Link>
-      <Link to="/about">About</Link>
-      <Link to="/contact">Contact</Link>
+      <Link to="/home">Back</Link>
       <div className="flex justify-left sm:justify-center w-full pt-40 pb-10">        
           <div className="flex flex-col gap-12 sm:gap-16 w-3/4 max-w-5xl">
           <div>
-            min
-            <MinList/>
+            max
+            <Animes/>
           </div>
           </div>
       </div>
@@ -26,4 +23,4 @@ const HomePage = () => {
   );
 }
 
-export default HomePage;
+export default ListPage;
