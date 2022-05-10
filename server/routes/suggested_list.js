@@ -57,23 +57,29 @@ userRoute.route("/listings/add").post(async (req, res) => {
     anime = {
         title: []
     }
+    node = {
+        image: "",
+        name: "",
+        id: "",
+    }
 
 do {
     await axios
         .get(url, params)
         .then((response) => {
-            //console.log("===");
-            //console.log(response.data.data[0].node.title);
+            console.log(response.data.data[0].node);
             var count = Object.keys(response.data.data).length;
             console.log(count);
             for(let k = 0; k < count; k++) {
-                anime.title[i] = response.data.data[k].node.title;
+                node.image = response.data.data[k].node.main_picture.medium;
+                node.name = response.data.data[k].node.title;
+                node.id = response.data.data[k].node.id;
+                anime.title[i] = node;
+                //anime.title[i] = response.data.data[k].node.title;
+                //anime.title[i].image = response.data.data[k].node.main_picture.medium;
                 i++;
             }
-            // console.log("===");
-            // console.log(response.data.paging);
-            // console.log("===");
-            // console.log(response.data.paging.next);
+
             if(response.data.paging.next) {
                 url = response.data.paging.next;
             }
@@ -89,7 +95,7 @@ do {
         dbConnect
                 .collection("anime_list")
                 .findOneAndUpdate({user: req.body.user},
-                                   {$set: {suggestedanime: anime.title}}, 
+                                   {$set: {anime: anime}}, 
                                    {upsert: true});
                 res.send("It worked");
         
