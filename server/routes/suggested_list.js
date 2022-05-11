@@ -7,6 +7,7 @@ const userRoute = express.Router();
 const dbo = require("../db/conn");
 const { ConnectionPoolClearnedEvent } = require("mongodb");
 const { response } = require("express");
+const { exit } = require("process");
 
 userRoute.route("/listings").get(async (req, res) => {
     const dbConnect = dbo.getDb();
@@ -40,7 +41,75 @@ userRoute.route("/listings/colab").post(async ( req, res) => {
 
 })
 
-userRoute.route("/listings/anime").post(async (req, res) => {
+userRoute.route("/listings/animeDelete").post(async (req, res) => {
+    const dbConnect = dbo.getDb();
+    let userlist = {}
+        let url2 = `http://localhost:5001/listings`
+        await axios
+            .get(url2)
+            .then((response) => {
+                userlist = response.data;
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    var count = Object.keys(userlist).length;
+    let currentuser = {};
+    for(let i = 0; i < count; i++ ) 
+    {
+        if(userlist[i].id == req.body.user)
+        {
+            currentuser = userlist[i];
+        }
+    }
+
+    if(currentuser == {})
+    {
+        res.send("User Doesn't exist");
+        return;
+    }
+    else if (!currentuser.colablist)
+    {
+        res.send("User doesn't have a colablist yet");
+        return;
+    }
+    var count2 = Object.keys(currentuser.colablist).length;
+    let exist = false;
+    newcolablist = [];
+    j= 0;
+    for(let i = 0; i < count2; i++ )
+    {
+        if(currentuser.colablist[i].anime == req.body.anime)
+        {
+            console.log("exists");
+            exist = true;
+        }
+        else 
+        {
+            newcolablist[j]= currentuser.colablist[i];
+            j++;
+        }
+
+    }
+    if(exist == false)
+    {
+        res.send("This anime doesn't exist, failed to delete");
+    }
+    else 
+    {
+        dbConnect
+            .collection("UserList")
+            .findOneAndUpdate({id: req.body.user},
+                {$set: {colablist: newcolablist}});
+        res.send("Successfully deleted anime");
+    }
+
+
+
+
+})
+
+userRoute.route("/listings/animeAdd").post(async (req, res) => {
     const dbConnect = dbo.getDb();
     let str = ""
     let malId = 0
@@ -95,6 +164,17 @@ userRoute.route("/listings/anime").post(async (req, res) => {
         if (currentuser == {}) {
             res.send("This user doesn't exist in the db");
         }
+        if (!currentuser.colablist) {
+            let newcolablist = [];
+            newcolablist[0] = obj;
+            dbConnect
+                .collection("UserList")
+                .findOneAndUpdate({id: req.body.user},
+                    {$set: {colablist: newcolablist}});
+            res.send("Successfully created a colab list for user");
+            return;
+        }
+        
         let exist = false;
         var count2 = Object.keys(currentuser.colablist).length;
         for(let i = 0; i < count2; i++ ) 
@@ -122,7 +202,7 @@ userRoute.route("/listings/anime").post(async (req, res) => {
     }
 })
 
-userRoute.route("/listings/add").post(async (req, res) => {
+userRoute.route("/listings/allanimes").post(async (req, res) => {
     console.log(req.body);
     
     // console.log(req.query.user);

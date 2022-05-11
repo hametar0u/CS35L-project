@@ -27,6 +27,7 @@ const MALAuthTest2 = (props) => {
   const [Access_code, setAccess] = useState();
   const [anime, setAnime] = useState(null);
   const [ready, setReady] = useState(false);
+  const [delanime, setDelAnime] = useState(null);
 
   useEffect(() => {
     setChallenge(userData.code_challenge);
@@ -114,7 +115,27 @@ const MALAuthTest2 = (props) => {
       user: userId
     }
     await axios
-    .post("/listings/anime", obj, {
+    .post("/listings/animeAdd", obj, {
+      withCredentials: true
+    })
+    .then((response) => {
+      console.log(response.data);
+    })
+    .catch((err) => {
+      console.log(err);
+      setError(err.response);
+    })
+  }
+
+  const delAnime = async () => {
+    console.log("Clicked");
+    console.log(delanime);
+    const obj = {
+      anime: delanime,
+      user: userId
+    }
+    await axios
+    .post("/listings/animeDelete", obj, {
       withCredentials: true
     })
     .then((response) => {
@@ -179,7 +200,7 @@ const MALAuthTest2 = (props) => {
       //console.log(params);
     //Generate data into MongoDb in anime Lists
     await axios 
-      .post("/listings/add", obj, {
+      .post("/listings/allanimes", obj, {
         withCredentials: true,
       })
       .then((response) => {
@@ -192,6 +213,9 @@ const MALAuthTest2 = (props) => {
 
   function getData(val) {
     setAnime(val.target.value);
+  }
+  function getData2(val) {
+    setDelAnime(val.target.value);
   }
   return (
     <>
@@ -206,8 +230,10 @@ const MALAuthTest2 = (props) => {
       <button className="bg-bermuda rounded-full m-2 p-2" onClick={colabList}>Colab Together!!</button>
       <div className="bg-bermuda rounded-full m-2 p-2">
         <input type="text" placeholder="Enter Anime Title" onChange={getData}></input>
-      <button onClick={addAnime}>Set Ready</button></div>
-      
+      <button onClick={addAnime}>Add Anime</button></div>
+      <div className="bg-bermuda rounded-full m-2 p-2">
+        <input type="text" placeholder="Enter Anime Title" onChange={getData2}></input>
+      <button onClick={delAnime}>Delete Anime</button></div>
       <Link to="/session">go to another page</Link>
       <Link to="/usertest">go to user test</Link>
     </>
