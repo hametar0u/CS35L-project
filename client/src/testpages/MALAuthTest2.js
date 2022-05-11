@@ -105,6 +105,8 @@ const MALAuthTest2 = (props) => {
   };
 
   const addAnime = async () => {
+    
+    console.log("Clicked");
     console.log(anime);
     setReady(false);
     const obj = {
@@ -190,7 +192,6 @@ const MALAuthTest2 = (props) => {
 
   function getData(val) {
     setAnime(val.target.value);
-    setReady(false);
   }
   return (
     <>
@@ -204,14 +205,8 @@ const MALAuthTest2 = (props) => {
       <button className="bg-bermuda rounded-full m-2 p-2" onClick={generateAnimeList}>Generate Anime List</button>
       <button className="bg-bermuda rounded-full m-2 p-2" onClick={colabList}>Colab Together!!</button>
       <div className="bg-bermuda rounded-full m-2 p-2">
-        {
-        ready?
-          addAnime()
-          : null
-        }
         <input type="text" placeholder="Enter Anime Title" onChange={getData}></input>
-      <button onClick={() => setReady(true)}>Set Ready</button></div>
-      {/* <input className="bg-bermuda rounded-full m-2 p-2" placeholder="Enter Post Title" onKeyUp={handleKeyPress.bind(this)}/> */}
+      <button onClick={addAnime}>Set Ready</button></div>
       
       <Link to="/session">go to another page</Link>
       <Link to="/usertest">go to user test</Link>
