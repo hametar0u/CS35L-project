@@ -15,7 +15,6 @@ userRoute.route("/listings").get(async (req, res) => {
         .collection("UserList")
         .find({})
         .toArray(function (err, result) {
-            console.log(result);
             if (err) {
                 res.status(400).send("Error fetching Users!");
             } else {
@@ -43,7 +42,6 @@ userRoute.route("/listings/colab").post(async ( req, res) => {
 
 userRoute.route("/listings/anime").post(async (req, res) => {
     const dbConnect = dbo.getDb();
-    //console.log(req.body);
     let str = ""
     let malId = 0
     if(req.body.anime == "") {
@@ -66,53 +64,61 @@ userRoute.route("/listings/anime").post(async (req, res) => {
             })
             .catch((err) => {
                 console.log(err);
-            })
+            });
         let obj = {
             anime: req.body.anime,
             malId: malId
         }
-        if(dbConnect.collection("UserList").find({id: req.body.user},{ colablist: {$exists: false}}) == {})
-        {
-            let colablist = [];
-            colablist[0] = obj;
-            dbConnect.collection("UserList").findOneAndUpdate({id: req.body.user},
-                {$set: {colablist: colablist}}, 
-                {upsert: true});
-        } else {
-            dbConnect
-            .collection("UserList")
-            .find({id: req.body.user})
-            .toArray(function (err, result) {
-                if (err) {
-                    
-                } else {
-                    let response = result[0].colablist;
-                    //console.log(response[0]);
-                    var count = Object.keys(response).length;
-                    //console.log(count);
-                    for(let i = 0; i < count; i++) {
-                        console.log(response[0]);
-                        console.log(obj);
-                        if(response[i] == obj) {
-                            res.send("This object already exists");
-                        }
-                    }
-                    // response[count] = obj;
-                    // dbConnect.collection("UserList").findOneAndUpdate({user: req.body.user},
-                    //     {$set: {colablist: response}}, 
-                    //     {upsert: true});
-
-
-                }
+        //console.log(obj);
+        //End of jikan moe info
+        let userlist = {}
+        let url2 = `http://localhost:5001/listings`
+        await axios
+            .get(url2)
+            .then((response) => {
+                userlist = response.data;
+            })
+            .catch((err) => {
+                console.log(err);
             });
+        var count = Object.keys(userlist).length;
+        console.log(count);
+        
+        let currentuser = {}
+        for(let i = 0; i < count; i++ )
+        {
+            if(userlist[i].id == req.body.user) 
+            {
+                currentuser = userlist[i];
+            }
         }
-        // dbConnect
-        //     .collection("UserList")
-        //     .findOneAndUpdate({id: req.body.user},
-        //         {$set: {colablist: colablist}}, 
-        //         {upsert: true});
+        if (currentuser == {}) {
+            res.send("This user doesn't exist in the db");
+        }
+        let exist = false;
+        var count2 = Object.keys(currentuser.colablist).length;
+        for(let i = 0; i < count2; i++ ) 
+        {
+            if(currentuser.colablist[i].malId == obj.malId) 
+            {
+                exist = true;
+            }
+        }
+        if (exist == true) 
+        {
+            res.send("This anime already exists in the db");
+        }
+        else {
 
-        res.send("Accessed anime route");
+        currentuser.colablist[count2] = obj;
+
+        dbConnect
+            .collection("UserList")
+            .findOneAndUpdate({id: req.body.user},
+                {$set: {colablist: currentuser.colablist}}, 
+                {upsert: true});
+        res.send("Successfully inserted anime");
+        }
     }
 })
 
