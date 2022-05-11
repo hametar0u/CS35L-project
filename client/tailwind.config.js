@@ -30,6 +30,8 @@ module.exports = {
       'lightgrey': "#E5E5E5",
       'dark': "#3A3335",
       'grey': "#C4C4C4",
+      'purple': "#E5CBFF",
+      'light-purple': "#F6F0FF",
 
     },
     extend: {

@@ -3,7 +3,6 @@ import { UserContext } from "../App";
 import { Link } from "react-router-dom";
 import axios from 'axios';
 import Animes from "../components/AnimeCard";
-import LoginButton from "../components/LoginButton";
 import MinList from "../components/MinList";
 
 const ListPage = () => {

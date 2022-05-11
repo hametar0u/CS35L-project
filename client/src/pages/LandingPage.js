@@ -1,9 +1,11 @@
 import { useContext, useState, useEffect } from "react";
 import { UserContext } from "../App";
 import axios from 'axios';
-import LoginButton from "../components/LoginButton";
+import SmallButton from "../components/SmallButton.js";
 import logo from "../components/logo.svg";
 import "../styles/globals.css";
+
+import BigButton from "../components/BigButton.js";
 
 
 
@@ -63,7 +65,8 @@ const LandingPage = (props) => {
         <div class="text-blue">
         We hope you enjoy our app :3
         </div>
-        <LoginButton handleClick={handleClick}/>
+        <SmallButton handleClick={handleClick} name={"Login"}/>
+        <BigButton handleClick={handleClick} name={"SHARED LIST"}/>
       </div>
       </div>
        </div>

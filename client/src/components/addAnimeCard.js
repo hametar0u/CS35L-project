@@ -8,11 +8,11 @@ const deleteButton = () => {
     console.log("delete");
 };
 
-const AnimeCard = (props) => {
+const AddAnimeCard = (props) => {
     return(
         <div className="bg-lightgrey p-5 rounded-lg">
             <div className="flex flex-row-reverse">
-                <button className="bg-red rounded-full justify-center w-8 text-white" onClick={deleteButton}>x</button>
+                <button className="bg-mint rounded-full justify-center w-8 text-white" onClick={deleteButton}>+</button>
             </div>
             <div className="">{props.title}</div>
             <div className=""><img src={props.image}/></div>
@@ -21,7 +21,7 @@ const AnimeCard = (props) => {
     );
 };
 
-const Animes = () => {
+const addAnimes = () => {
     let animeArray = [
         {
             "title" : "5-toubun no Hanayome",
@@ -68,7 +68,7 @@ const Animes = () => {
     return (
         <div className="grid grid-cols-4 gap-10">
             {animeArray.map((anime, i) => {
-            return <AnimeCard title={anime.title} image={anime.image} id={anime.id} />;
+            return <AddAnimeCard title={anime.title} image={anime.image} id={anime.id} />;
             })}
         </div>
         
@@ -77,4 +77,4 @@ const Animes = () => {
 
 
 
-export default Animes;
+export default addAnimes;
