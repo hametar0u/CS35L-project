@@ -28,6 +28,7 @@ const MALAuthTest2 = (props) => {
   const [anime, setAnime] = useState(null);
   const [ready, setReady] = useState(false);
   const [delanime, setDelAnime] = useState(null);
+  const [adduser, setAddUser] = useState(null);
 
   useEffect(() => {
     setChallenge(userData.code_challenge);
@@ -169,6 +170,24 @@ const MALAuthTest2 = (props) => {
     setReady(false);
   }
 
+  const UserColab = async () => {
+    const obj = {
+      user: user,
+      colabuser: adduser,
+    }
+    await axios
+    .post("/listings/addUser", obj, {
+      withCredentials: true,
+    })
+    .then((response) => {
+      console.log(response.data);
+    })
+    .catch((err) => {
+      console.log(err);
+      setError(err.response);
+    })
+  }
+
   const generateAnimeList = async () => {
     //First needs to grab Access_code and username
     const obj = {
@@ -217,6 +236,9 @@ const MALAuthTest2 = (props) => {
   function getData2(val) {
     setDelAnime(val.target.value);
   }
+  function getData3(val) {
+    setAddUser(val.target.value);
+  }
   return (
     <>
       {user && <p>welcome {user.name}</p>}
@@ -234,6 +256,9 @@ const MALAuthTest2 = (props) => {
       <div className="bg-bermuda rounded-full m-2 p-2">
         <input type="text" placeholder="Enter Anime Title" onChange={getData2}></input>
       <button onClick={delAnime}>Delete Anime</button></div>
+      <div className="bg-bermuda rounded-full m-2 p-2">
+        <input type="text" placeholder="Enter Username to Colab with" onChange={getData3}></input>
+      <button onClick={UserColab}>Add User</button></div>
       <Link to="/session">go to another page</Link>
       <Link to="/usertest">go to user test</Link>
     </>

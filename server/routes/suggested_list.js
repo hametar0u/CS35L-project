@@ -41,6 +41,89 @@ userRoute.route("/listings/colab").post(async ( req, res) => {
 
 })
 
+userRoute.route("/listings/addUser").post(async (req, res) => {
+    const dbConnect = dbo.getDb();
+    if(req.body.user.name == req.body.colabuser)
+    {
+        res.send("You can't add urself");
+        return;
+    }
+    let userlist = {}
+    let url2 = `http://localhost:5001/listings`
+    await axios
+        .get(url2)
+        .then((response) => {
+            userlist = response.data;
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+    var count = Object.keys(userlist).length;
+    console.log(count);
+    
+    let currentuser = {};
+    let exist2 = false;
+    newuserid = 0;
+    for(let i = 0; i < count; i++ )
+    {
+        console.log(userlist[i].info.name);
+        console.log(req.body.user);
+        if(userlist[i].info.name == req.body.user.name) 
+        {
+            currentuser = userlist[i];
+        }
+        if(userlist[i].info.name == req.body.colabuser)
+        {
+            exist2 = true;
+            newuserid = userlist[i].id;
+        }
+    }
+    console.log(currentuser);
+    console.log(exist2);
+    if (currentuser == {} || exist2 == false) {
+        res.send("This user doesn't exist in the db");
+        return;
+    }
+    console.log(currentuser);
+    let obj = {
+        user: req.body.colabuser,
+        id: newuserid
+    }
+    if(!currentuser.usercolablist) 
+    {
+        let newusercolablist = [];
+        newusercolablist[0] = obj;
+        
+        dbConnect
+            .collection("UserList")
+            .findOneAndUpdate({id: currentuser.id},
+                {$set: {usercolablist: newusercolablist}});
+        res.send("Created a user colab list");
+        return;
+    }
+    let exist = false;
+    var count = Object.keys(currentuser.usercolablist).length;
+    for(let i = 0; i < count; i++) {
+        if(currentuser.usercolablist[i].user == req.body.colabuser)
+        {
+            exist = true;
+        }
+    }
+    if (exist == true) {
+        res.send("User is already colabed");
+        return;
+    }
+    else
+    {
+        currentuser.usercolablist[count] = obj;
+        dbConnect
+            .collection("UserList")
+            .findOneAndUpdate({id: currentuser.id},
+                {$set: {usercolablist: currentuser.usercolablist}});
+        res.send("Successfully added user to Colab List");
+    }
+})
+
 userRoute.route("/listings/animeDelete").post(async (req, res) => {
     const dbConnect = dbo.getDb();
     let userlist = {}
