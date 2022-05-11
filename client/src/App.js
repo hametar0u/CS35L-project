@@ -11,7 +11,7 @@ import LandingPage from "./pages/LandingPage";
 import HomePage from "./pages/HomePage";
 import ListPage from "./pages/ListPage";
 import About from "./pages/About";
-import CompareUser from "./pages/CompareUser";
+import CompareUser from "./pages/Friends";
 import Contact from "./pages/Contact";
 import FindUser from "./pages/FindUser";
 
@@ -73,7 +73,7 @@ const App = () => {
         <Route exact path="/" element={<LandingPage code={query.get("code")}/>} />
         <Route path="/home" element={< HomePage />} />
         <Route path="/list" element={<ListPage />} />
-        <Route path="/compare-user" element={<CompareUser />} />
+        <Route path="/friends" element={<CompareUser />} />
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/find-user" element={<FindUser />} />

@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 
-const doEdit = () => {
-    console.log("edit list");
-    window.location.href = "http://localhost:3000/list";
-};
+
+
 
 const MinAnimeCard = (props) => {
     return(
@@ -58,6 +56,13 @@ const MinList = () => {
             "id" : 39783,
         },
     ];
+
+    const navigate = useNavigate();
+    const doEdit = () => {
+        console.log("edit list");
+        navigate("/list")
+    
+    };
 
     return (
         <div className="bg-lightgrey p-5 flex flex-col gap-10 w-1/2 rounded-lg" onClick={doEdit}>

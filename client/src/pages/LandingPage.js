@@ -1,5 +1,6 @@
 import { useContext, useState, useEffect } from "react";
 import { UserContext } from "../App";
+import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 import SmallButton from "../components/SmallButton.js";
 import logo from "../components/logo.svg";
@@ -46,6 +47,11 @@ const LandingPage = (props) => {
             setError(err.response);
           });
       };
+
+  const navigate = useNavigate(); 
+  const GoToHomePage = () => {
+    navigate("/home");
+  };
     
 
   return(
@@ -66,7 +72,7 @@ const LandingPage = (props) => {
         We hope you enjoy our app :3
         </div>
         <SmallButton handleClick={handleClick} name={"Login"}/>
-        <BigButton handleClick={handleClick} name={"SHARED LIST"}/>
+        <BigButton handleClick={GoToHomePage} name={"SHARED LIST"}/>
       </div>
       </div>
        </div>
