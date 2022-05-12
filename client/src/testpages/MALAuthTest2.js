@@ -110,7 +110,7 @@ const MALAuthTest2 = (props) => {
     
     console.log("Clicked");
     console.log(anime);
-    setReady(false);
+    console.log(userId);
     const obj = {
       anime: anime,
       user: userId

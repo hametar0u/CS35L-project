@@ -272,7 +272,12 @@ userRoute.route("/listings/animeAdd").post(async (req, res) => {
         res.send("Invalid");
         return;
     }
-    
+    else if( req.body.user == undefined)
+    {
+        res.send("You are not logged in, unable to obtain user info");
+        return;
+    }
+    else {
         let word = req.body.anime;
         for(let i = 0; i < word.length; i ++) {
             if(word[i] == " "){
@@ -318,6 +323,7 @@ userRoute.route("/listings/animeAdd").post(async (req, res) => {
                 currentuser = userlist[i];
             }
         }
+        console.log(currentuser);
         if (currentuser == {}) {
             res.send("This user doesn't exist in the db");
             return;
@@ -354,7 +360,7 @@ userRoute.route("/listings/animeAdd").post(async (req, res) => {
             anime: {$ne: obj}},
                 {$push: {anime: obj}});
         res.send("Successfully added anime to shared list");
-
+    }
 })
 
 userRoute.route("/listings/allanimes").post(async (req, res) => {
