@@ -5,7 +5,7 @@ const querystring = require("querystring");
 const userRoute = express.Router();
 
 const dbo = require("../db/conn");
-const { ConnectionPoolClearnedEvent } = require("mongodb");
+const { ConnectionPoolClearnedEvent, ObjectId } = require("mongodb");
 const { response } = require("express");
 const { exit } = require("process");
 
@@ -24,12 +24,29 @@ userRoute.route("/listings").get(async (req, res) => {
         });
 });
 
+userRoute.route("/listings/sharedList").get(async ( req, res) => {
+    const dbConnect = dbo.getDb();
+
+    dbConnect
+        .collection("shared_lists")
+        .find({})
+        .toArray(function (err, result) {
+            if (err) {
+                res.status(400).send("Error fetching shared_lists!");
+            } else {
+                console.log(result);
+                res.json(result);
+            }
+        });
+});
+
 userRoute.route("/listings/jikanInfo").post(async (req, res) => {
     let str = ""
     let filter = {};
     console.log(req.body);
     if(req.body.anime == "") {
         res.send("It is empty");
+        return;
     }
     else {
         let word = req.body.anime;
@@ -52,19 +69,17 @@ userRoute.route("/listings/jikanInfo").post(async (req, res) => {
                 console.log(err);
             });
         var count = Object.keys(filter).length;
-        let jikanlist = 
-        {
-            
-        }
+        let jikanlist = []
     for(let i = 0; i < count; i++) 
     {
-        jikanlist[i] = filter[i].title;
+        let jikanfilter = 
+        {
+        title: filter[i].title,
+        malId: filter[i].mal_id
+        }
+        jikanlist[i] = jikanfilter
     }
-    let jikanfilter = 
-    {
-        titles: jikanlist
-    }
-    res.send(jikanfilter);
+    res.send(jikanlist);
 
 
 });
@@ -80,11 +95,6 @@ userRoute.route("/listings/info").get(async (req, res) => {
             res.send(result);
     });
 });
-
-userRoute.route("/listings/colab").post(async ( req, res) => {
-    const dbConnect = dbo.getDb();
-
-})
 
 userRoute.route("/listings/addUser").post(async (req, res) => {
     const dbConnect = dbo.getDb();
@@ -199,39 +209,53 @@ userRoute.route("/listings/animeDelete").post(async (req, res) => {
         res.send("User Doesn't exist");
         return;
     }
-    else if (!currentuser.colablist)
+    else if (!currentuser.sharedlist_id)
     {
         res.send("User doesn't have a colablist yet");
         return;
     }
-    var count2 = Object.keys(currentuser.colablist).length;
+    let shared = {}
+    await axios 
+    .get("http://localhost:5001/listings/sharedList")
+    .then((response) => {
+        shared = response.data;
+    })
+    .catch((err) => {
+        console.log(err);
+    });
+    var count1 = Object.keys(shared).length;
+    let users_shared_list = {};
+    for(let i = 0; i < count1; i++)
+    {
+        if(shared[i]._id == currentuser.sharedlist_id) {
+            users_shared_list = shared[i];
+        }
+    }
+    var count2 = Object.keys(users_shared_list.anime).length;
     let exist = false;
-    newcolablist = [];
-    j= 0;
+    let index = 0;
     for(let i = 0; i < count2; i++ )
     {
-        if(currentuser.colablist[i].anime == req.body.anime)
+        if(users_shared_list.anime[i].anime == req.body.anime)
         {
             console.log("exists");
             exist = true;
-        }
-        else 
-        {
-            newcolablist[j]= currentuser.colablist[i];
-            j++;
+            index = i;
+            break;
         }
 
     }
     if(exist == false)
     {
         res.send("This anime doesn't exist, failed to delete");
+        return;
     }
     else 
     {
         dbConnect
-            .collection("UserList")
-            .findOneAndUpdate({id: req.body.user},
-                {$set: {colablist: newcolablist}});
+            .collection("shared_lists")
+            .updateOne({_id: ObjectId(currentuser.sharedlist_id)},
+                {$pull: {anime: {anime: req.body.anime}}});
         res.send("Successfully deleted anime");
     }
 
@@ -246,8 +270,9 @@ userRoute.route("/listings/animeAdd").post(async (req, res) => {
     let malId = 0
     if(req.body.anime == "") {
         res.send("Invalid");
+        return;
     }
-    else {
+    
         let word = req.body.anime;
         for(let i = 0; i < word.length; i ++) {
             if(word[i] == " "){
@@ -269,8 +294,9 @@ userRoute.route("/listings/animeAdd").post(async (req, res) => {
             anime: req.body.anime,
             malId: malId
         }
-        //console.log(obj);
         //End of jikan moe info
+
+
         let userlist = {}
         let url2 = `http://localhost:5001/listings`
         await axios
@@ -294,43 +320,40 @@ userRoute.route("/listings/animeAdd").post(async (req, res) => {
         }
         if (currentuser == {}) {
             res.send("This user doesn't exist in the db");
+            return;
         }
-        if (!currentuser.colablist) {
-            let newcolablist = [];
-            newcolablist[0] = obj;
+        if (!currentuser.sharedlist_id) {
+            let u = []
+            u[0] = currentuser.info.name;
+            let newsharedlist = [];
+            newsharedlist[0] = obj;
+            let data = {
+                users: u,
+                anime: newsharedlist
+            }
+            var groupid = 0;
             dbConnect
+                .collection("shared_lists")
+                .insertOne(data, function(err) {
+                    if (err) {
+                        return;
+                    }
+                    else {
+                        dbConnect
                 .collection("UserList")
                 .findOneAndUpdate({id: req.body.user},
-                    {$set: {colablist: newcolablist}});
+                    {$set: {sharedlist_id: data._id}});
+                    }
+                });
             res.send("Successfully created a colab list for user");
             return;
         }
-        
-        let exist = false;
-        var count2 = Object.keys(currentuser.colablist).length;
-        for(let i = 0; i < count2; i++ ) 
-        {
-            if(currentuser.colablist[i].malId == obj.malId) 
-            {
-                exist = true;
-            }
-        }
-        if (exist == true) 
-        {
-            res.send("This anime already exists in the db");
-        }
-        else {
-
-        currentuser.colablist[count2] = obj;
-
         dbConnect
-            .collection("UserList")
-            .findOneAndUpdate({id: req.body.user},
-                {$set: {colablist: currentuser.colablist}}, 
-                {upsert: true});
-        res.send("Successfully inserted anime");
-        }
-    }
+            .collection("shared_lists")
+            .updateOne({_id: ObjectId(currentuser.sharedlist_id)},
+                {$push: {anime: obj}});
+        res.send("Successfully added anime to shared list");
+
 })
 
 userRoute.route("/listings/allanimes").post(async (req, res) => {
