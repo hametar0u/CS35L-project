@@ -24,6 +24,51 @@ userRoute.route("/listings").get(async (req, res) => {
         });
 });
 
+userRoute.route("/listings/jikanInfo").post(async (req, res) => {
+    let str = ""
+    let filter = {};
+    console.log(req.body);
+    if(req.body.anime == "") {
+        res.send("It is empty");
+    }
+    else {
+        let word = req.body.anime;
+        for(let i = 0; i < word.length; i ++) {
+            if(word[i] == " "){
+                str += "-";
+            } else {
+                str += word[i];
+            }
+        }
+    }
+    
+    let url = `https://api.jikan.moe/v4/anime?q=${str}&limit=5`
+        await axios
+            .get(url)
+            .then((response) => {
+                filter = response.data.data;
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+        var count = Object.keys(filter).length;
+        let jikanlist = 
+        {
+            
+        }
+    for(let i = 0; i < count; i++) 
+    {
+        jikanlist[i] = filter[i].title;
+    }
+    let jikanfilter = 
+    {
+        titles: jikanlist
+    }
+    res.send(jikanfilter);
+
+
+});
+
 userRoute.route("/listings/info").get(async (req, res) => {
     const dbConnect = dbo.getDb();
     console.log(req.query);
@@ -66,8 +111,6 @@ userRoute.route("/listings/addUser").post(async (req, res) => {
     newuserid = 0;
     for(let i = 0; i < count; i++ )
     {
-        console.log(userlist[i].info.name);
-        console.log(req.body.user);
         if(userlist[i].info.name == req.body.user.name) 
         {
             currentuser = userlist[i];
@@ -84,6 +127,11 @@ userRoute.route("/listings/addUser").post(async (req, res) => {
         res.send("This user doesn't exist in the db");
         return;
     }
+
+
+
+
+
     console.log(currentuser);
     let obj = {
         user: req.body.colabuser,

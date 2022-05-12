@@ -229,7 +229,6 @@ const MALAuthTest2 = (props) => {
         console.log(error);
       });
   };
-
   function getData(val) {
     setAnime(val.target.value);
   }
@@ -238,6 +237,22 @@ const MALAuthTest2 = (props) => {
   }
   function getData3(val) {
     setAddUser(val.target.value);
+  }
+  async function jikanFilter(val) {
+    const obj = {
+      anime: val.target.value
+    }
+    await axios
+      .post("/listings/jikanInfo", obj, {
+        withCredentials: true
+      })
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+
   }
   return (
     <>
@@ -259,6 +274,8 @@ const MALAuthTest2 = (props) => {
       <div className="bg-bermuda rounded-full m-2 p-2">
         <input type="text" placeholder="Enter Username to Colab with" onChange={getData3}></input>
       <button onClick={UserColab}>Add User</button></div>
+      <div className="bg-bermuda rounded-full m-2 p-2">
+        <input type="text" placeholder="Jikan Filter" onChange={jikanFilter}></input></div>
       <Link to="/session">go to another page</Link>
       <Link to="/usertest">go to user test</Link>
     </>
