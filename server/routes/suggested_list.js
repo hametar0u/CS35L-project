@@ -350,7 +350,8 @@ userRoute.route("/listings/animeAdd").post(async (req, res) => {
         }
         dbConnect
             .collection("shared_lists")
-            .updateOne({_id: ObjectId(currentuser.sharedlist_id)},
+            .updateOne({_id: ObjectId(currentuser.sharedlist_id),
+            anime: {$ne: obj}},
                 {$push: {anime: obj}});
         res.send("Successfully added anime to shared list");
 
