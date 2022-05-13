@@ -1,5 +1,6 @@
 import { createContext, useState, useEffect } from "react";
-import { Route, Routes, useLocation } from "react-router-dom";
+import { Route, Routes, useLocation, Navigate } from "react-router-dom";
+import useAuth from "./hooks/AuthContext";
 
 //import pages
 import RecordList from "./components/recordList";
@@ -67,11 +68,26 @@ const App = () => {
     getLoginStatus();
   });
 
+  function RequireAuth({ children }) {
+    const { authed } = useAuth();
+    const location = useLocation();
+  
+    return authed === true ? (
+      children
+    ) : (
+      <Navigate to="/" replace state={{ path: location.pathname }} />
+    );
+  }
+
   return (
     <UserContext.Provider value={value}>
       <Routes>
         <Route exact path="/" element={<LandingPage code={query.get("code")}/>} />
-        <Route path="/home" element={< HomePage />} />
+        <Route path="/home" element={
+          <RequireAuth>
+            <HomePage />
+          </RequireAuth>
+        } />
         <Route path="/list" element={<ListPage />} />
         <Route path="/friends" element={<CompareUser />} />
         <Route path="/about" element={<About />} />

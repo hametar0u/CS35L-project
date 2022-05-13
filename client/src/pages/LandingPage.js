@@ -2,6 +2,8 @@ import { useContext, useState, useEffect } from "react";
 import { UserContext } from "../App";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import useAuth from "../hooks/AuthContext";
+
 import SmallButton from "../components/SmallButton.js";
 import logo from "../components/logo.svg";
 import "../styles/globals.css";
@@ -10,6 +12,7 @@ import BigButton from "../components/BigButton.js";
 
 const LandingPage = (props) => {
   const navigate = useNavigate();
+  const { login } = useAuth();
   const { userData, setUserData } = useContext(UserContext);
   const [challenge, setChallenge] = useState();
   const [data, setData] = useState();
@@ -36,6 +39,7 @@ const LandingPage = (props) => {
         if (response.data.url) {
           window.location.assign(response.data.url);
         } else {
+          login();
           setUser(response.data); //idk if we still need this
           navigate("/home");
         }
