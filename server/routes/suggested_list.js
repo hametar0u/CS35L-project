@@ -98,88 +98,218 @@ userRoute.route("/listings/info").get(async (req, res) => {
 
 userRoute.route("/listings/addUser").post(async (req, res) => {
     const dbConnect = dbo.getDb();
+    //Check if user is adding themselves
     if(req.body.user.name == req.body.colabuser)
     {
         res.send("You can't add urself");
         return;
     }
-    let userlist = {}
-    let url2 = `http://localhost:5001/listings`
+    //Grab user info from User database
+    let current_user = {}
+    let url = `http://localhost:5001/listings/retreiveUserById`
     await axios
-        .get(url2)
+        .get(url, {
+            params: {
+                id: req.body.user.id
+            },
+        })
         .then((response) => {
-            userlist = response.data;
+            current_user = response.data;
         })
         .catch((err) => {
             console.log(err);
         });
-    var count = Object.keys(userlist).length;
-    console.log(count);
+        console.log(current_user);
+    //Grab the appended user's info
+    let append_user = {}
+    url = `http://localhost:5001/listings/retrieveUserByName`
+    await axios
+        .get(url, {
+            params: {
+                name: req.body.colabuser
+            }
+        })
+        .then((response) => {
+            append_user = response.data;
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+        console.log(append_user);
+
+
+    //Check if user doesn't have a shared list
+    if(!current_user.sharedlist_id)
+    {
+        //Check if other user has a shared list
+        if(append_user.sharedlist_id)
+        {
+            dbConnect
+                .collection("UserList")
+                .findOneAndUpdate({id: current_user.id},
+                {$set: {sharedlist_id: ObjectId(append_user.sharedlist_id)}});
+            res.send("Successfully added user to colab list");
+            return;
+        }
+        else 
+        {
+            let users = [current_user.info.name, append_user.info.name];
+            let anime = []
+            data = {
+                users: users,
+                anime: anime
+            }
+            dbConnect
+                .collection("shared_lists")
+                .insertOne(data, function(err) {
+                    if(err) {
+                        console.log(err);
+                    } else {
+                        dbConnect
+                            .collection("UserList")
+                            .findOneAndUpdate({id: current_user.id},
+                                {$set: {sharedlist_id: data._id}});
+                        dbConnect
+                            .collection("UserList")
+                            .findOneAndUpdate({id: append_user.id},
+                                {$set: {sharedlist_id: data._id}});
+                    }
+                });
+            res.send("Successfully created colab list for both users");
+            return;
+        }
+    }
+    else if(!append_user.sharedlist_id)
+    {
+        dbConnect
+            .collection("UserList")
+            .findOneAndUpdate({id: append_user.id},
+                {$set: {sharedlist_id: ObjectId(current_user.sharedlist_id)}});
+        res.send("Successfully added user to colab list");
+        return;
+    }
+    else {
+        dbConnect
+            .collection("UserList")
+            .findOneAndUpdate({id: current_user.id},
+                {$set: {sharedlist_id: ObjectId(append_user.sharedlist_id)}});
+        res.send("Successfully added you to their colab list");
+        return;
+    }
+
+    // await axios
+    //     .get(url2)
+    //     .then((response) => {
+    //         userlist = response.data;
+    //     })
+    //     .catch((err) => {
+    //         console.log(err);
+    //     });
+    // var count = Object.keys(userlist).length;
+    // console.log(count);
     
-    let currentuser = {};
-    let exist2 = false;
-    newuserid = 0;
-    for(let i = 0; i < count; i++ )
-    {
-        if(userlist[i].info.name == req.body.user.name) 
-        {
-            currentuser = userlist[i];
-        }
-        if(userlist[i].info.name == req.body.colabuser)
-        {
-            exist2 = true;
-            newuserid = userlist[i].id;
-        }
-    }
-    console.log(currentuser);
-    console.log(exist2);
-    if (currentuser == {} || exist2 == false) {
-        res.send("This user doesn't exist in the db");
-        return;
-    }
+    // let currentuser = {};
+    // let exist2 = false;
+    // newuserid = 0;
+    // for(let i = 0; i < count; i++ )
+    // {
+    //     if(userlist[i].info.name == req.body.user.name) 
+    //     {
+    //         currentuser = userlist[i];
+    //     }
+    //     if(userlist[i].info.name == req.body.colabuser)
+    //     {
+    //         exist2 = true;
+    //         newuserid = userlist[i].id;
+    //     }
+    // }
+    // console.log(currentuser);
+    // console.log(exist2);
+    // if (currentuser == {} || exist2 == false) {
+    //     res.send("This user doesn't exist in the db");
+    //     return;
+    // }
 
 
 
 
 
-    console.log(currentuser);
-    let obj = {
-        user: req.body.colabuser,
-        id: newuserid
-    }
-    if(!currentuser.usercolablist) 
-    {
-        let newusercolablist = [];
-        newusercolablist[0] = obj;
+    // console.log(currentuser);
+    // let obj = {
+    //     user: req.body.colabuser,
+    //     id: newuserid
+    // }
+    // if(!currentuser.usercolablist) 
+    // {
+    //     let newusercolablist = [];
+    //     newusercolablist[0] = obj;
         
+    //     dbConnect
+    //         .collection("UserList")
+    //         .findOneAndUpdate({id: currentuser.id},
+    //             {$set: {usercolablist: newusercolablist}});
+    //     res.send("Created a user colab list");
+    //     return;
+    // }
+    // let exist = false;
+    // var count = Object.keys(currentuser.usercolablist).length;
+    // for(let i = 0; i < count; i++) {
+    //     if(currentuser.usercolablist[i].user == req.body.colabuser)
+    //     {
+    //         exist = true;
+    //     }
+    // }
+    // if (exist == true) {
+    //     res.send("User is already colabed");
+    //     return;
+    // }
+    // else
+    // {
+    //     currentuser.usercolablist[count] = obj;
+    //     dbConnect
+    //         .collection("UserList")
+    //         .findOneAndUpdate({id: currentuser.id},
+    //             {$set: {usercolablist: currentuser.usercolablist}});
+    //     res.send("Successfully added user to Colab List");
+    // }
+})
+
+userRoute.route("/listings/retreiveUserById").get(async (req, res) => {
+    const dbConnect = dbo.getDb();
+    dbConnect
+        .collection("UserList")
+        .find({id: parseInt(req.query.id)})
+        .toArray( function (err, response) {
+            if(err)
+            {
+                console.log(err);
+            }
+            else
+            {
+                res.send(response[0]);
+                return;
+            }
+            
+        });  
+})
+
+userRoute.route("/listings/retrieveUserByName").get(async (req, res) => {
+    const dbConnect = dbo.getDb();
+    console.log(req.query.name);
         dbConnect
-            .collection("UserList")
-            .findOneAndUpdate({id: currentuser.id},
-                {$set: {usercolablist: newusercolablist}});
-        res.send("Created a user colab list");
-        return;
-    }
-    let exist = false;
-    var count = Object.keys(currentuser.usercolablist).length;
-    for(let i = 0; i < count; i++) {
-        if(currentuser.usercolablist[i].user == req.body.colabuser)
-        {
-            exist = true;
-        }
-    }
-    if (exist == true) {
-        res.send("User is already colabed");
-        return;
-    }
-    else
-    {
-        currentuser.usercolablist[count] = obj;
-        dbConnect
-            .collection("UserList")
-            .findOneAndUpdate({id: currentuser.id},
-                {$set: {usercolablist: currentuser.usercolablist}});
-        res.send("Successfully added user to Colab List");
-    }
+        .collection("UserList")
+        .find({'info.name': req.query.name})
+        .toArray( function (err, response) {
+            if(err)
+            {
+                console.log(err);
+            }
+            else
+            {
+                res.send(response[0]);
+            }
+            
+        });
 })
 
 userRoute.route("/listings/animeDelete").post(async (req, res) => {

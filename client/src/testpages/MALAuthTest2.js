@@ -273,7 +273,7 @@ const MALAuthTest2 = (props) => {
       <button onClick={delAnime}>Delete Anime</button></div>
       <div className="bg-bermuda rounded-full m-2 p-2">
         <input type="text" placeholder="Enter Username to Colab with" onChange={getData3}></input>
-      <button onClick={UserColab}>Add User</button></div>
+      <button onClick={UserColab}>Join User's Colab List</button></div>
       <div className="bg-bermuda rounded-full m-2 p-2">
         <input type="text" placeholder="Jikan Filter" onChange={jikanFilter}></input></div>
       <Link to="/session">go to another page</Link>
