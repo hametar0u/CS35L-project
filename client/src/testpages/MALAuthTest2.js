@@ -112,11 +112,11 @@ const MALAuthTest2 = (props) => {
     console.log(anime);
     console.log(userId);
     const obj = {
-      anime: anime,
-      user: userId
+      malId: anime,
+      user: userId,
     }
     await axios
-    .post("/listings/animeAdd", obj, {
+    .post("/listings/animeAddByMalID", obj, {
       withCredentials: true
     })
     .then((response) => {
