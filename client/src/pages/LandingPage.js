@@ -2,6 +2,7 @@ import { useContext, useState, useEffect } from "react";
 import { UserContext } from "../App";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+
 import SmallButton from "../components/SmallButton.js";
 import logo from "../components/logo.svg";
 import "../styles/globals.css";
@@ -36,6 +37,7 @@ const LandingPage = (props) => {
         if (response.data.url) {
           window.location.assign(response.data.url);
         } else {
+          props.handleLogin();
           setUser(response.data); //idk if we still need this
           navigate("/home");
         }

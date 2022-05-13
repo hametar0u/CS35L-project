@@ -238,11 +238,16 @@ const MALAuthTest2 = (props) => {
   function getData3(val) {
     setAddUser(val.target.value);
   }
+
+  let filterTimeout;
   async function jikanFilter(val) {
+    clearTimeout(filterTimeout);
+
     const obj = {
       anime: val.target.value
     }
-    await axios
+    filterTimeout = setTimeout(() => {
+      axios
       .post("/listings/jikanInfo", obj, {
         withCredentials: true
       })
@@ -252,6 +257,8 @@ const MALAuthTest2 = (props) => {
       .catch((err) => {
         console.log(err);
       });
+    }, 500);
+    
 
   }
   return (
