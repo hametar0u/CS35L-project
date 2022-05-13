@@ -1,9 +1,7 @@
 import { createContext, useState, useEffect } from "react";
 import { Route, Routes, useLocation, Navigate } from "react-router-dom";
-import useAuth from "./hooks/AuthContext";
 
 //import pages
-import RecordList from "./components/recordList";
 import MALAuthTest from "./testpages/MALAuthTest";
 import MALAuthTest2 from "./testpages/MALAuthTest2";
 import UserTestTest from "./testpages/UserTestTest";
@@ -33,6 +31,14 @@ export const UserContext = createContext({
   setUserData: () => {}
 });
 
+const ProtectedRoute = ({ user, children }) => {
+  if (user === false) {
+    return <Navigate to="/" replace />;
+  }
+
+  return children;
+};
+
 const App = () => {
   const query = useQuery();
 
@@ -52,48 +58,46 @@ const App = () => {
     });
   };
 
-  const getLoginStatus = async () => {
-    const response = await axios.get("/auth/v2/get-login-status", {
-      withCredentials: true,
-    });
-    const json = await response.data;
-    setUserData({
-      ...userData,
-      login_status: json
-    });
-  };
 
   useEffect(() => {
     getCodeVerifier();
-    getLoginStatus();
   });
 
-  function RequireAuth({ children }) {
-    const { authed } = useAuth();
-    const location = useLocation();
-  
-    return authed === true ? (
-      children
-    ) : (
-      <Navigate to="/" replace state={{ path: location.pathname }} />
-    );
+  const [authed, setAuthed] = useState(false);
+  const login = () => {
+    setAuthed(true);
+  }
+  const logout = () => {
+    setAuthed(false);
   }
 
   return (
     <UserContext.Provider value={value}>
       <Routes>
-        <Route exact path="/" element={<LandingPage code={query.get("code")}/>} />
+        <Route exact path="/" element={<LandingPage code={query.get("code")} handleLogin={login}/>} />
         <Route path="/home" element={
-          <RequireAuth>
+          <ProtectedRoute user={authed}>
             <HomePage />
-          </RequireAuth>
+          </ProtectedRoute>
         } />
-        <Route path="/list" element={<ListPage />} />
-        <Route path="/friends" element={<CompareUser />} />
+        <Route path="/list" element={
+          <ProtectedRoute user={authed}>
+            <ListPage />
+          </ProtectedRoute>
+        } />
+        <Route path="/friends" element={
+          <ProtectedRoute user={authed}>
+            <CompareUser />
+          </ProtectedRoute>
+        } />
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
-        <Route path="/find-user" element={<FindUser />} />
-        <Route path="*" element={<LandingPage />} />
+        <Route path="/find-user" element={
+          <ProtectedRoute user={authed}>
+            <FindUser />
+          </ProtectedRoute>
+        } />
+        <Route path="*" element={<p>404: page doesn't exist!</p>} />
 
 
         {/* Test Routes */}
