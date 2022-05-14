@@ -242,7 +242,8 @@ const MALAuthTest2 = (props) => {
     const obj = {
       anime: val.target.value
     }
-    await axios
+    setTimeout(() => {
+      axios
       .post("/listings/jikanInfo", obj, {
         withCredentials: true
       })
@@ -252,8 +253,18 @@ const MALAuthTest2 = (props) => {
       .catch((err) => {
         console.log(err);
       });
+    }, 500);
 
   }
+
+  const GetUserIdFromSession = async () => {
+    await axios.get("/get-userid-from-session", {
+      withCredentials: true
+    })
+    .then(response => console.log(response))
+    .catch(err => console.log(err));
+  };
+
   return (
     <>
       {user && <p>welcome {user.name}</p>}
@@ -265,6 +276,7 @@ const MALAuthTest2 = (props) => {
       <button className="bg-bermuda rounded-full m-2 p-2" onClick={resetSession}>reset</button>
       <button className="bg-bermuda rounded-full m-2 p-2" onClick={generateAnimeList}>Generate Anime List</button>
       <button className="bg-bermuda rounded-full m-2 p-2" onClick={colabList}>Colab Together!!</button>
+      <button className="bg-bermuda rounded-full m-2 p-2" onClick={GetUserIdFromSession}>get user id from session</button>
       <div className="bg-bermuda rounded-full m-2 p-2">
         <input type="text" placeholder="Enter Anime Title" onChange={getData}></input>
       <button onClick={addAnime}>Add Anime</button></div>

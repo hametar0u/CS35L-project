@@ -59,6 +59,7 @@ MAL.route("/auth/v2/login").post(async (req, res, next) => {
       .get(url, config)
       .then((response) => {
         //console.log(response.data);
+        req.session.userprofile = response.data;
         res.status(200).send(response.data);
         const dbConnect = dbo.getDb();
 

@@ -394,4 +394,21 @@ do {
         
 });
 
+/* !!!!!!!EXAMPLE ROUTE YUGIOH CLOWN BOI WHAT AM I EVEN SAYING !!!!!!*/
+userRoute.route("/get-userid-from-session").get((req, res) => { 
+    try {
+        //note: you have to be logged in for this to work; so either you guarantee guarantee these things are only accessed when user is logged in, or wrap this is a try-catch like I did in this exmaple.
+        const userid = req.session.userprofile.id; //user id stored here
+        const access_token = req.session.tokens.access_token; //access token stored here
+        res.status(200).send({
+            "user_id": userid,
+            "access_token": access_token
+        });
+    }
+    catch {
+        res.status(500).send("sum ting wong probably ur not logged in")
+    }
+
+});
+
 module.exports = userRoute;
