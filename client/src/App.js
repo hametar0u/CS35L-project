@@ -5,6 +5,7 @@ import { Route, Routes, useLocation, Navigate } from "react-router-dom";
 import MALAuthTest from "./testpages/MALAuthTest";
 import MALAuthTest2 from "./testpages/MALAuthTest2";
 import UserTestTest from "./testpages/UserTestTest";
+import SearchBarProto from "./testpages/SearchBarTest";
 
 import LandingPage from "./pages/LandingPage";
 import HomePage from "./pages/HomePage";
@@ -107,6 +108,7 @@ const App = () => {
         <Route path="/session" element={<MALAuthTest code={query.get("code")}/>} />
         <Route path="/auth" element={<MALAuthTest2 code={query.get("code")}/>} />
         <Route path="/usertest" element={<UserTestTest />} />
+        <Route path="/search" element={<SearchBarProto />} />
       </Routes>
     </UserContext.Provider>
   );

@@ -30,7 +30,6 @@ const MALAuthTest2 = (props) => {
   const [delanime, setDelAnime] = useState(null);
   const [adduser, setAddUser] = useState(null);
   const [searchResults, setSearchResults] = useState([]);
-  const [searchInput, setSearchInput] = useState();
 
   useEffect(() => {
     setChallenge(userData.code_challenge);
