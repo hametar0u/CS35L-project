@@ -394,6 +394,88 @@ userRoute.route("/listings/animeDelete").post(async (req, res) => {
 
 })
 
+userRoute.route("/listings/animeAddByMalID").post(async (req, res) => {
+    const dbConnect = dbo.getDb();
+    //Access user's list
+        let userlist = {}
+        let url2 = `http://localhost:5001/listings`
+        await axios
+            .get(url2)
+            .then((response) => {
+                userlist = response.data;
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+        //Check if user exists in db
+        var count = Object.keys(userlist).length;
+        console.log(count);
+        
+        let currentuser = {}
+        for(let i = 0; i < count; i++ )
+        {
+            if(userlist[i].id == req.body.user) 
+            {
+                currentuser = userlist[i];
+            }
+        }
+        if (currentuser == {}) {
+            res.send("This user doesn't exist in the db");
+            return;
+        }
+        //Get information about the anime
+    let url = `https://api.myanimelist.net/v2/anime/${req.body.malId}?fields=id,title`
+    let params = {
+        headers: {
+            Authorization: "Bearer " + currentuser.access_token,
+        },
+    };
+    let obj = {}
+    await axios
+        .get(url, params)
+        .then((response) => {
+            obj = response.data;
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+        console.log(obj);
+        //Check if current user has a sharedlist
+        if (!currentuser.sharedlist_id) {
+            let u = []
+            u[0] = currentuser.info.name;
+            let newsharedlist = [];
+            newsharedlist[0] = obj;
+            let data = {
+                users: u,
+                anime: newsharedlist
+            }
+            var groupid = 0;
+            dbConnect
+                .collection("shared_lists")
+                .insertOne(data, function(err) {
+                    if (err) {
+                        return;
+                    }
+                    else {
+                        dbConnect
+                .collection("UserList")
+                .findOneAndUpdate({id: req.body.user},
+                    {$set: {sharedlist_id: data._id}});
+                    }
+                });
+            res.send("Successfully created a colab list for user");
+            return;
+        }
+        dbConnect
+            .collection("shared_lists")
+            .updateOne({_id: ObjectId(currentuser.sharedlist_id),
+            anime: {$ne: obj}},
+                {$push: {anime: obj}});
+        res.send("Successfully added anime to shared list");
+})
+
+
 userRoute.route("/listings/animeAdd").post(async (req, res) => {
     const dbConnect = dbo.getDb();
     let str = ""

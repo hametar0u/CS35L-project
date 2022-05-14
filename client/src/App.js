@@ -13,6 +13,7 @@ import About from "./pages/About";
 import CompareUser from "./pages/Friends";
 import Contact from "./pages/Contact";
 import FindUser from "./pages/FindUser";
+import Nav from "./components/Nav";
 
 import axios from "axios";
 axios.defaults.baseURL = 'http://localhost:5001';
@@ -73,6 +74,8 @@ const App = () => {
 
   return (
     <UserContext.Provider value={value}>
+      <Nav />
+
       <Routes>
         <Route exact path="/" element={<LandingPage code={query.get("code")} handleLogin={login}/>} />
         <Route path="/home" element={
