@@ -110,13 +110,13 @@ const MALAuthTest2 = (props) => {
     
     console.log("Clicked");
     console.log(anime);
-    setReady(false);
+    console.log(userId);
     const obj = {
-      anime: anime,
-      user: userId
+      malId: anime,
+      user: userId,
     }
     await axios
-    .post("/listings/animeAdd", obj, {
+    .post("/listings/animeAddByMalID", obj, {
       withCredentials: true
     })
     .then((response) => {
@@ -238,11 +238,15 @@ const MALAuthTest2 = (props) => {
   function getData3(val) {
     setAddUser(val.target.value);
   }
+
+  let filterTimeout;
   async function jikanFilter(val) {
+    clearTimeout(filterTimeout);
+
     const obj = {
       anime: val.target.value
     }
-    setTimeout(() => {
+    filterTimeout = setTimeout(() => {
       axios
       .post("/listings/jikanInfo", obj, {
         withCredentials: true
@@ -254,6 +258,7 @@ const MALAuthTest2 = (props) => {
         console.log(err);
       });
     }, 500);
+    
 
   }
 
@@ -285,7 +290,7 @@ const MALAuthTest2 = (props) => {
       <button onClick={delAnime}>Delete Anime</button></div>
       <div className="bg-bermuda rounded-full m-2 p-2">
         <input type="text" placeholder="Enter Username to Colab with" onChange={getData3}></input>
-      <button onClick={UserColab}>Add User</button></div>
+      <button onClick={UserColab}>Join User's Colab List</button></div>
       <div className="bg-bermuda rounded-full m-2 p-2">
         <input type="text" placeholder="Jikan Filter" onChange={jikanFilter}></input></div>
       <Link to="/session">go to another page</Link>
