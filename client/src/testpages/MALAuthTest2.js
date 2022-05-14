@@ -29,6 +29,8 @@ const MALAuthTest2 = (props) => {
   const [ready, setReady] = useState(false);
   const [delanime, setDelAnime] = useState(null);
   const [adduser, setAddUser] = useState(null);
+  const [searchResults, setSearchResults] = useState([]);
+  const [searchInput, setSearchInput] = useState();
 
   useEffect(() => {
     setChallenge(userData.code_challenge);
@@ -240,6 +242,11 @@ const MALAuthTest2 = (props) => {
   }
 
   const jikanFilter = async (val) => {
+    if (!val) {
+      setSearchResults([]);
+      return;
+    }
+
     const obj = {
       anime: val
     };
@@ -250,6 +257,7 @@ const MALAuthTest2 = (props) => {
       })
       .then((response) => {
         console.log(response);
+        setSearchResults(response.data);
       })
       .catch((err) => {
         console.log(err);
@@ -295,7 +303,12 @@ const MALAuthTest2 = (props) => {
         <input type="text" placeholder="Enter Username to Colab with" onChange={getData3}></input>
       <button onClick={UserColab}>Join User's Colab List</button></div>
       <div className="bg-bermuda rounded-full m-2 p-2">
-        <input type="text" placeholder="Jikan Filter" onChange={handleChange}></input></div>
+        <input type="text" placeholder="Jikan Filter" onChange={handleChange} ref={anime}></input></div>
+      <div>
+        {searchResults && searchResults.map((result, i) => {
+          return <div>{result.title}</div>;
+        })}
+      </div>
       <Link to="/session">go to another page</Link>
       <Link to="/usertest">go to user test</Link>
     </>
