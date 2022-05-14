@@ -71,7 +71,7 @@ const LandingPage = (props) => {
             </div>
             <div class="text-blue">We hope you enjoy our app :3</div>
             <SmallButton handleClick={handleClick} name={"Login"} />
-            <BigButton handleClick={GoToHomePage} name={"SHARED LIST"} />
+            {/* <BigButton handleClick={GoToHomePage} name={"SHARED LIST"} /> */}
           </div>
         </div>
       </div>
