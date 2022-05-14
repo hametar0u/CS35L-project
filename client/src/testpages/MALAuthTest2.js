@@ -1,8 +1,8 @@
-import { useState, useRef, useContext, useEffect } from "react";
+import { useState, useRef, useContext, useEffect, useCallback } from "react";
 import { Link } from "react-router-dom";
 import { UserContext } from "../App";
 import axios from "axios";
-import debounce from 'lodash.debounce';
+import { useThrottle } from "../hooks/useThrottle";
 
 // GENERATING CODE VERIFIER
 const dec2hex = (dec) => {
@@ -239,15 +239,12 @@ const MALAuthTest2 = (props) => {
     setAddUser(val.target.value);
   }
 
-  let filterTimeout;
-  async function jikanFilter(val) {
-    clearTimeout(filterTimeout);
-
+  const jikanFilter = async (val) => {
     const obj = {
-      anime: val.target.value
-    }
-    filterTimeout = setTimeout(() => {
-      axios
+      anime: val
+    };
+
+    await axios
       .post("/listings/jikanInfo", obj, {
         withCredentials: true
       })
@@ -257,10 +254,16 @@ const MALAuthTest2 = (props) => {
       .catch((err) => {
         console.log(err);
       });
-    }, 500);
-    
+  };
 
+  const throttledFn = useThrottle(jikanFilter);
+  const memoizedThrottle = useCallback(throttledFn, [throttledFn]);
+
+  const handleChange = (e) => {
+    const { value: newVal } = e.target;
+    memoizedThrottle(newVal);
   }
+ 
 
   const GetUserIdFromSession = async () => {
     await axios.get("/get-userid-from-session", {
@@ -292,7 +295,7 @@ const MALAuthTest2 = (props) => {
         <input type="text" placeholder="Enter Username to Colab with" onChange={getData3}></input>
       <button onClick={UserColab}>Join User's Colab List</button></div>
       <div className="bg-bermuda rounded-full m-2 p-2">
-        <input type="text" placeholder="Jikan Filter" onChange={jikanFilter}></input></div>
+        <input type="text" placeholder="Jikan Filter" onChange={handleChange}></input></div>
       <Link to="/session">go to another page</Link>
       <Link to="/usertest">go to user test</Link>
     </>
