@@ -8,7 +8,7 @@ const SmallButton = (props) => {
   
   return (
     <div>
-      <button className="bg-purple rounded-full hover:shadow-md w-1/4" onClick={props.handleClick}>{props.name}</button>
+      <button className="bg-purple rounded-full hover:shadow-md w-min pl-5 pr-5" onClick={props.handleClick}>{props.name}</button>
     </div>
   )
   
