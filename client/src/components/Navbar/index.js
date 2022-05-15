@@ -7,7 +7,7 @@ import {
   NavBtn, //may not be needed
   NavBtnLink, // may not be needed
 } from './NavbarElements';
-import logo from '../logo.svg';
+import logo from '../s.svg';
 
 const Navbar = () => {
   return (

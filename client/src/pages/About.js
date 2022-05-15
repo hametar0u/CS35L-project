@@ -3,6 +3,10 @@ import Navbar from "../components/Navbar/index";
 import SmallButton from "../components/SmallButton";
 import Profile from "../components/Profile";
 
+const handleClick = () => {
+  window.location.href = "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+}
+
 const About = () => {
   return (
     <div>
@@ -19,7 +23,7 @@ const About = () => {
             please add some text here
             </div>
             <div className="pb-10">
-              <SmallButton name="Contact Us"/>
+              <SmallButton name="Contact Us" handleClick={handleClick}/>
             </div>
             <div className="font-serif text-xl text-blue">Our Team</div>
             <div className="">
