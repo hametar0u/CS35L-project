@@ -74,7 +74,6 @@ const App = () => {
 
   return (
     <UserContext.Provider value={value}>
-      <Nav />
 
       <Routes>
         <Route exact path="/" element={<LandingPage code={query.get("code")} handleLogin={login}/>} />

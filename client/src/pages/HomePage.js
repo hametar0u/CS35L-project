@@ -8,6 +8,7 @@ import MinList from "../components/MinList";
 import Navbar from "../components/Navbar/index";
 import NewList from "../components/NewList";
 import Modal from "../components/Modal";
+import Nav from "../components/Nav";
 
 const HomePage = () => {
 
@@ -20,7 +21,7 @@ const HomePage = () => {
   if(open) {
     return(
       <div>
-              <Navbar />
+              <Nav />
               <div className="p-10">
               <div className="flex justify-left sm:justify-center w-full pt-10 pb-10">        
                   <div className="flex flex-col gap-12 sm:gap-16 w-3/4 max-w-5xl">
@@ -40,7 +41,7 @@ const HomePage = () => {
   else {
     return(
       <div>
-              <Navbar />
+              <Nav />
               <div className="p-10">
               <div className="flex justify-left sm:justify-center w-full pt-10 pb-10">        
                   <div className="flex flex-col gap-12 sm:gap-16 w-3/4 max-w-5xl">

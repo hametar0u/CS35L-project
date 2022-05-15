@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
-import Navbar from "../components/Navbar/index";
 import SmallButton from "../components/SmallButton";
 import Profile from "../components/Profile";
+import Nav from "../components/Nav";
 
 const handleClick = () => {
   window.location.href = "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
@@ -10,7 +10,7 @@ const handleClick = () => {
 const About = () => {
   return (
     <div>
-      <Navbar />
+      <Nav/>
         <div className="p-10">
         
           {/* <Link className="bg-blue rounded-full m-2 p-2 text-white" to="/home">Back</Link> */}
