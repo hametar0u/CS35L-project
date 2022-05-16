@@ -1,14 +1,62 @@
-import { useContext } from "react";
-import { UserContext } from "../App";
-import { Link } from "react-router-dom";
+import { useState } from "react";
 import axios from 'axios';
 import Animes from "../components/AnimeCard";
-import MinList from "../components/MinList";
-import Navbar from "../components/Navbar";
 import Nav from "../components/Nav";
 import SearchBarProto from "../components/SearchBarTest";
 
 const ListPage = () => {
+  const [error, setError] = useState();
+
+  const addAnime = async (id) => {
+    const obj = {
+      malId: id,
+    };
+
+    await axios
+    .post("/listings/animeAddByMalID", obj, {
+      withCredentials: true
+    })
+    .then((response) => {
+      console.log(response.data);
+    })
+    .catch((err) => {
+      console.log(err);
+      setError(err.response);
+    });
+
+    const config = {
+      withCredentials: true
+    };
+    const params = {
+      malId: id
+    };
+    await axios.post(`/addToList/${id}`, params, config)
+    .then(response => {
+      console.log(response.data);
+    })
+    .catch(err => {
+      console.log(err);
+      setError(err.response);
+    });
+
+    // axios.all([
+    //   axios.post(`/my-url`, {
+    //     myVar: 'myValue'
+    //   }), 
+    //   axios.post(`/my-url2`, {
+    //     myVar: 'myValue'
+    //   })
+    // ])
+    // .then(axios.spread((data1, data2) => {
+    //   // output of req.
+    //   console.log('data1', data1, 'data2', data2)
+    // }));
+  }
+
+
+
+
+
   return(
     <div>
       <Nav/>
@@ -19,7 +67,7 @@ const ListPage = () => {
               List 1
           </div>
           <div className="absolute pt-10 w-full">
-            <SearchBarProto/>
+            <SearchBarProto addAnime={addAnime}/>
           </div>
           <div>
             <Animes/>

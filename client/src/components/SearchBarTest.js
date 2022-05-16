@@ -3,7 +3,7 @@ import axios from "axios";
 import { useThrottle } from "../hooks/useThrottle";
 import { useDebounce } from "../hooks/useDebounce";
 
-const SearchBarProto = () => {
+const SearchBarProto = (props) => {
   const [searchResults, setSearchResults] = useState([]);
 
   const jikanFilter = async (val) => {
@@ -39,9 +39,6 @@ const SearchBarProto = () => {
     newVal.length > 3 ? memoizedDebounce(newVal) : memoizedThrottle(newVal);
   };
 
-  const addAnime = (malId) => {
-    console.log(`add anime with id ${malId}`);
-  }
 
   return (
     <>
@@ -54,7 +51,7 @@ const SearchBarProto = () => {
               <div className="pt-5 pb-5">
                   <div className="pl-5" key={result.malId}>
                   <div className="flex flex-row gap-2">
-                    <button className="bg-light-purple w-5 h-5 items-center align-center rounded-full text-xs" onClick={() => addAnime(result.malId)}>+</button>
+                    <button className="bg-light-purple w-5 h-5 items-center align-center rounded-full text-xs" onClick={() => props.addAnime(result.malId)}>+</button>
                     <p className="">{result.title}</p>
                   </div>
                 </div>

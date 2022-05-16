@@ -70,7 +70,7 @@ const UserTestTest = (props) => {
       withCredentials: true
     };
     const params = {
-      id: input.current.value
+      malId: input.current.value
     };
     await axios.post(`/addToList/${input.current.value}`, params, config)
     .then(response => {
