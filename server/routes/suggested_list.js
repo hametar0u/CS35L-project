@@ -98,107 +98,113 @@ userRoute.route("/listings/info").get(async (req, res) => {
 });
 
 userRoute.route("/listings/addUser").post(async (req, res) => {
-    const dbConnect = dbo.getDb();
-    //Check if user is adding themselves
-    if(req.body.user.name == req.body.colabuser)
-    {
-        res.send("You can't add urself");
-        return;
-    }
-    //Grab user info from User database
-    let current_user = {}
-    let url = `http://localhost:5001/listings/retreiveUserById`
-    await axios
-        .get(url, {
-            params: {
-                id: req.body.user.id
-            },
-        })
-        .then((response) => {
-            current_user = response.data;
-        })
-        .catch((err) => {
-            console.log(err);
-        });
-        console.log(current_user);
-    //Grab the appended user's info
-    let append_user = {}
-    url = `http://localhost:5001/listings/retrieveUserByName`
-    await axios
-        .get(url, {
-            params: {
-                name: req.body.colabuser
+    try {
+        const dbConnect = dbo.getDb();
+        const userid = req.session.userprofile.id; //user id stored here
+        //Grab user info from User database
+        let current_user = {}
+        let url = `http://localhost:5001/listings/retreiveUserById`
+        await axios
+            .get(url, {
+                params: {
+                    id: userid
+                },
+            })
+            .then((response) => {
+                current_user = response.data;
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+            console.log(current_user);
+             //Check if user is adding themselves
+        if(current_user.info.name == req.body.colabuser)
+        {
+            res.send("You can't add urself");
+            return;
+        }
+        //Grab the appended user's info
+        let append_user = {}
+        url = `http://localhost:5001/listings/retrieveUserByName`
+        await axios
+            .get(url, {
+                params: {
+                    name: req.body.colabuser
+                }
+            })
+            .then((response) => {
+                append_user = response.data;
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+            console.log(append_user);
+
+
+        //Check if user doesn't have a shared list
+        if(!current_user.sharedlist_id)
+        {
+            //Check if other user has a shared list
+            if(append_user.sharedlist_id)
+            {
+                dbConnect
+                    .collection("UserList")
+                    .findOneAndUpdate({id: current_user.id},
+                    {$set: {sharedlist_id: ObjectId(append_user.sharedlist_id)}});
+                res.send("Successfully added user to colab list");
+                return;
             }
-        })
-        .then((response) => {
-            append_user = response.data;
-        })
-        .catch((err) => {
-            console.log(err);
-        });
-        console.log(append_user);
-
-
-    //Check if user doesn't have a shared list
-    if(!current_user.sharedlist_id)
-    {
-        //Check if other user has a shared list
-        if(append_user.sharedlist_id)
+            else 
+            {
+                let users = [current_user.info.name, append_user.info.name];
+                let anime = []
+                data = {
+                    users: users,
+                    anime: anime
+                }
+                dbConnect
+                    .collection("shared_lists")
+                    .insertOne(data, function(err) {
+                        if(err) {
+                            console.log(err);
+                        } else {
+                            dbConnect
+                                .collection("UserList")
+                                .findOneAndUpdate({id: current_user.id},
+                                    {$set: {sharedlist_id: data._id}});
+                            dbConnect
+                                .collection("UserList")
+                                .findOneAndUpdate({id: append_user.id},
+                                    {$set: {sharedlist_id: data._id}});
+                        }
+                    });
+                res.send("Successfully created colab list for both users");
+                return;
+            }
+        }
+        else if(!append_user.sharedlist_id)
         {
             dbConnect
                 .collection("UserList")
-                .findOneAndUpdate({id: current_user.id},
-                {$set: {sharedlist_id: ObjectId(append_user.sharedlist_id)}});
+                .findOneAndUpdate({id: append_user.id},
+                    {$set: {sharedlist_id: ObjectId(current_user.sharedlist_id)}});
             res.send("Successfully added user to colab list");
             return;
         }
-        else 
-        {
-            let users = [current_user.info.name, append_user.info.name];
-            let anime = []
-            data = {
-                users: users,
-                anime: anime
-            }
+        else {
+            // dbConnect
+            //     .collection("shared_lists")
+            //     .deleteOne({_id: Object(current_user.sharedlist_id)});
             dbConnect
-                .collection("shared_lists")
-                .insertOne(data, function(err) {
-                    if(err) {
-                        console.log(err);
-                    } else {
-                        dbConnect
-                            .collection("UserList")
-                            .findOneAndUpdate({id: current_user.id},
-                                {$set: {sharedlist_id: data._id}});
-                        dbConnect
-                            .collection("UserList")
-                            .findOneAndUpdate({id: append_user.id},
-                                {$set: {sharedlist_id: data._id}});
-                    }
-                });
-            res.send("Successfully created colab list for both users");
+                .collection("UserList")
+                .findOneAndUpdate({id: current_user.id},
+                    {$set: {sharedlist_id: ObjectId(append_user.sharedlist_id)}});
+            res.send("Successfully added you to their colab list");
             return;
         }
     }
-    else if(!append_user.sharedlist_id)
-    {
-        dbConnect
-            .collection("UserList")
-            .findOneAndUpdate({id: append_user.id},
-                {$set: {sharedlist_id: ObjectId(current_user.sharedlist_id)}});
-        res.send("Successfully added user to colab list");
-        return;
-    }
-    else {
-        // dbConnect
-        //     .collection("shared_lists")
-        //     .deleteOne({_id: Object(current_user.sharedlist_id)});
-        dbConnect
-            .collection("UserList")
-            .findOneAndUpdate({id: current_user.id},
-                {$set: {sharedlist_id: ObjectId(append_user.sharedlist_id)}});
-        res.send("Successfully added you to their colab list");
-        return;
+    catch {
+        res.status(500).send("You are not logged in");
     }
 })
 
@@ -241,8 +247,10 @@ userRoute.route("/listings/retrieveUserByName").get(async (req, res) => {
 })
 
 userRoute.route("/listings/animeDelete").post(async (req, res) => {
-    const dbConnect = dbo.getDb();
-    let userlist = {}
+    try {
+        const userid = req.session.userprofile.id; //user id stored here
+        const dbConnect = dbo.getDb();
+        let userlist = {}
         let url2 = `http://localhost:5001/listings`
         await axios
             .get(url2)
@@ -252,74 +260,74 @@ userRoute.route("/listings/animeDelete").post(async (req, res) => {
             .catch((err) => {
                 console.log(err);
             });
-    var count = Object.keys(userlist).length;
-    let currentuser = {};
-    for(let i = 0; i < count; i++ ) 
-    {
-        if(userlist[i].id == req.body.user)
+        var count = Object.keys(userlist).length;
+        let currentuser = {};
+        for(let i = 0; i < count; i++ ) 
         {
-            currentuser = userlist[i];
+            if(userlist[i].id == userid)
+            {
+                currentuser = userlist[i];
+            }
         }
-    }
 
-    if(currentuser == {})
-    {
-        res.send("User Doesn't exist");
-        return;
-    }
-    else if (!currentuser.sharedlist_id)
-    {
-        res.send("User doesn't have a colablist yet");
-        return;
-    }
-    let shared = {}
-    await axios 
-    .get("http://localhost:5001/listings/sharedList")
-    .then((response) => {
-        shared = response.data;
-    })
-    .catch((err) => {
-        console.log(err);
-    });
-    var count1 = Object.keys(shared).length;
-    let users_shared_list = {};
-    for(let i = 0; i < count1; i++)
-    {
-        if(shared[i]._id == currentuser.sharedlist_id) {
-            users_shared_list = shared[i];
-        }
-    }
-    var count2 = Object.keys(users_shared_list.anime).length;
-    let exist = false;
-    let index = 0;
-    for(let i = 0; i < count2; i++ )
-    {
-        if(users_shared_list.anime[i].anime == req.body.anime)
+        if(currentuser == {})
         {
-            console.log("exists");
-            exist = true;
-            index = i;
-            break;
+            res.send("User Doesn't exist");
+            return;
         }
+        else if (!currentuser.sharedlist_id)
+        {
+            res.send("User doesn't have a colablist yet");
+            return;
+        }
+        let shared = {}
+        await axios 
+        .get("http://localhost:5001/listings/sharedList")
+        .then((response) => {
+            shared = response.data;
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+        var count1 = Object.keys(shared).length;
+        let users_shared_list = {};
+        for(let i = 0; i < count1; i++)
+        {
+            if(shared[i]._id == currentuser.sharedlist_id) {
+                users_shared_list = shared[i];
+            }
+        }
+        var count2 = Object.keys(users_shared_list.anime).length;
+        let exist = false;
+        let index = 0;
+        for(let i = 0; i < count2; i++ )
+        {
+            if(users_shared_list.anime[i].id == req.body.malId)
+            {
+                console.log("exists");
+                exist = true;
+                index = i;
+                break;
+            }
 
+        }
+        if(exist == false)
+        {
+            res.send("This anime doesn't exist, failed to delete");
+            return;
+        }
+        else 
+        {
+            dbConnect
+                .collection("shared_lists")
+                .updateOne({_id: ObjectId(currentuser.sharedlist_id)},
+                    {$pull: {anime: {id: parseInt(req.body.malId)}}});
+            res.send("Successfully deleted anime");
+        }
+        }
+    catch {
+        res.status(500).send("You are not logged in");
     }
-    if(exist == false)
-    {
-        res.send("This anime doesn't exist, failed to delete");
-        return;
-    }
-    else 
-    {
-        dbConnect
-            .collection("shared_lists")
-            .updateOne({_id: ObjectId(currentuser.sharedlist_id)},
-                {$pull: {anime: {anime: req.body.anime}}});
-        res.send("Successfully deleted anime");
-    }
-
-
-
-
 })
 
 userRoute.route("/listings/animeAddByMalID").post(async (req, res) => {
