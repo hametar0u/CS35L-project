@@ -186,6 +186,33 @@ const MALAuthTest2 = (props) => {
     })
   }
 
+
+  const listOfAnimesFromMAL = async () => {
+    let obj = {}
+    await axios 
+      .post("/listings/allanimes", obj, {
+        withCredentials: true,
+      })
+      .then((response) => {
+        console.log(response.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+  const listOfAnimesFromMongo = async () => {
+    let obj = {}
+    await axios 
+      .post("/listings/allanimesSharedList", obj, {
+        withCredentials: true,
+      })
+      .then((response) => {
+        console.log(response.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
   const generateAnimeList = async () => {
     //First needs to grab Access_code and username
     const obj = {
@@ -286,7 +313,8 @@ const MALAuthTest2 = (props) => {
       <button className="bg-bermuda rounded-full m-2 p-2" onClick={checkSession}>check whats in session</button>
       <button className="bg-bermuda rounded-full m-2 p-2" onClick={getPageViews}>check times visited</button>
       <button className="bg-bermuda rounded-full m-2 p-2" onClick={resetSession}>reset</button>
-      <button className="bg-bermuda rounded-full m-2 p-2" onClick={generateAnimeList}>Generate Anime List</button>
+      <button className="bg-bermuda rounded-full m-2 p-2" onClick={listOfAnimesFromMAL}>Generate Anime List from MAL</button>
+      <button className="bg-bermuda rounded-full m-2 p-2" onClick={listOfAnimesFromMongo}>Generate Anime List from MongoDb</button>
       <button className="bg-bermuda rounded-full m-2 p-2" onClick={colabList}>Colab Together!!</button>
       <button className="bg-bermuda rounded-full m-2 p-2" onClick={GetUserIdFromSession}>get user id from session</button>
       <div className="bg-bermuda rounded-full m-2 p-2">
