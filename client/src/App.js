@@ -44,25 +44,11 @@ const App = () => {
   const query = useQuery();
 
   const [userData, setUserData] = useState({
-    code_challenge: "",
+    code_challenge: "bo0UcvCfQD9npT8Sg55wUFEBEZYoTYSqGYXsUzTo8XfpsStmKP96PeH4SlQ2GIrA5Qdz_2cwKxbNxRpLr6EVuyYmI5S_qvX1yMPEbRkYtgFg8HCwYO9ykLLT09GU1D20",
     user: null,
   });
 
   const value = { userData, setUserData };
-
-  const getCodeVerifier = async () => {
-    const response = await axios.get("/auth/v2/get-code-verifier");
-    const json = await response.data;
-    setUserData({
-      ...userData,
-      code_challenge: json.code_challenge
-    });
-  };
-
-
-  useEffect(() => {
-    getCodeVerifier();
-  });
 
   const [authed, setAuthed] = useState(false);
   const login = () => {
