@@ -59,12 +59,14 @@ const ListPage = () => {
 
   return(
     <div>
-      <Nav/>
-      {/* <Link className="bg-blue rounded-full m-2 p-2 text-white" to="/home">Back</Link> */}
-      <div className="flex justify-left sm:justify-center w-full pt-10 pb-10">        
-        <div className="relative flex flex-col gap-12 sm:gap-16 w-3/4 max-w-5xl">
-          <div className="font-serif text-xl text-blue pb-5">
-              List 1
+    <Nav/>
+      <div className="p-10">
+      
+        {/* <Link className="bg-blue rounded-full m-2 p-2 text-white" to="/home">Back</Link> */}
+          <div className="flex justify-left sm:justify-center w-full pt-10 pb-10">   
+          <div className="relative flex flex-col gap-2 sm:gap-5 w-3/4 max-w-5xl">
+          <div className="font-serif text-xl text-blue pb-15">
+              Shared List
           </div>
           <div className="absolute pt-10 w-full">
             <SearchBarProto addAnime={addAnime}/>
@@ -75,7 +77,7 @@ const ListPage = () => {
         </div>
       </div>
     </div>
-    
+  </div>
   );
 }
 

@@ -132,8 +132,7 @@ const MALAuthTest2 = (props) => {
     console.log("Clicked");
     console.log(delanime);
     const obj = {
-      anime: delanime,
-      user: userId
+      malId: delanime,
     }
     await axios
     .post("/listings/animeDelete", obj, {
@@ -172,7 +171,6 @@ const MALAuthTest2 = (props) => {
 
   const UserColab = async () => {
     const obj = {
-      user: user,
       colabuser: adduser,
     }
     await axios

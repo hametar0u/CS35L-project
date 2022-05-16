@@ -2,6 +2,9 @@ import { Link } from "react-router-dom";
 import SmallButton from "../components/SmallButton";
 import Profile from "../components/Profile";
 import Nav from "../components/Nav";
+import paul1 from "../pauls/paul1.png";
+import paul2 from "../pauls/paul2.png";
+import paul3 from "../pauls/paul3.jpg";
 
 const handleClick = () => {
   window.location.href = "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
@@ -20,7 +23,9 @@ const About = () => {
               About Us
             </div>
             <div className="">
-            please add some text here
+              We are a passionate group of developers hoping to connect the Anime community which has remained isolated and forgotten since long before time. 
+              We are under the tutelage of the Great Paul Eggert. He is the Master of Time aka the Time Ward.
+              We aim to unite the individuals who watch Naruto at 4AM on the daily. We know that Anime has the power to transport and transcend. We preach the truth. Join us today and contact us now. 
             </div>
             <div className="pb-10">
               <SmallButton name="Contact Us" handleClick={handleClick}/>
@@ -28,9 +33,9 @@ const About = () => {
             <div className="font-serif text-xl text-blue">Our Team</div>
             <div className="">
               <div className="flex flex-row items-center">
-              <Profile name="Jeffrey Kwan" image={"https://samueli.ucla.edu/wp-content/uploads/samueli/Paul_Eggert.jpg"}/>
-              <Profile name="Margaret Capetz" image={"https://samueli.ucla.edu/wp-content/uploads/samueli/Paul_Eggert.jpg"}/>
-              <Profile name="Chancellor Richey" image={"https://samueli.ucla.edu/wp-content/uploads/samueli/Paul_Eggert.jpg"}/>
+              <Profile name="Jeffrey Kwan" image={paul1}/>
+              <Profile name="Margaret Capetz" image={paul2}/>
+              <Profile name="Chancellor Richey" image={paul3}/>
               </div>
             </div>
             

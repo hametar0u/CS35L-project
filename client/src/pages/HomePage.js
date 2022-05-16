@@ -22,13 +22,12 @@ const HomePage = () => {
     return(
       <div>
               <Nav />
-              <div className="p-10">
               <div className="flex justify-left sm:justify-center w-full pt-10 pb-10">        
-                  <div className="flex flex-col gap-12 sm:gap-16 w-3/4 max-w-5xl">
+                  <div className="flex flex-col w-3/4 max-w-5xl">
                   <div className="font-serif text-xl text-blue">
                     Our Anime List Home
                   </div>
-                  <div className="flex flex-row gap-10">
+                  <div className="flex flex-row gap-5">
                     <MinList/>
                     <NewList onClick={doClick}/>
                   </div>
@@ -38,7 +37,6 @@ const HomePage = () => {
                 <Modal onClick={doClick}/>
               </div>
             </div>
-      </div>
     );
   }
   else {
