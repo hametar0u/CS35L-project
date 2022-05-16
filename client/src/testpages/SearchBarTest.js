@@ -1,6 +1,7 @@
 import { useState, useCallback } from "react";
 import axios from "axios";
 import { useThrottle } from "../hooks/useThrottle";
+import { useDebounce } from "../hooks/useDebounce";
 
 const SearchBarProto = () => {
   const [searchResults, setSearchResults] = useState([]);
@@ -30,10 +31,12 @@ const SearchBarProto = () => {
 
   const throttledFn = useThrottle(jikanFilter);
   const memoizedThrottle = useCallback(throttledFn, [throttledFn]);
+  const debouncedFn = useDebounce(jikanFilter);
+  const memoizedDebounce = useCallback(debouncedFn, [debouncedFn]);
 
   const handleChange = (e) => {
     const { value: newVal } = e.target;
-    memoizedThrottle(newVal);
+    newVal.length > 3 ? memoizedDebounce(newVal) : memoizedThrottle(newVal);
   };
 
   const addAnime = (malId) => {
