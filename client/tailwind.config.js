@@ -32,6 +32,7 @@ module.exports = {
       'grey': "#C4C4C4",
       'purple': "#E5CBFF",
       'light-purple': "#F6F0FF",
+      'light-blue': "#CDDFF5",
 
     },
     extend: {
@@ -44,6 +45,7 @@ module.exports = {
         "33": "132px",
         "50": "200px",
         "51": "204px",
+        "60": "240px",
         "99": "396px",
         "105": "420px",
         "108": "432px",

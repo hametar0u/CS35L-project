@@ -10,13 +10,14 @@ const deleteButton = () => {
 
 const AnimeCard = (props) => {
     return(
-        <div className="bg-lightgrey p-5 rounded-lg">
+        <div className="bg-lightgrey p-5 rounded-lg flex flex-col gap-2">
             <div className="flex flex-row-reverse">
-                <button className="bg-red rounded-full justify-center w-8 text-white" onClick={deleteButton}>x</button>
+                <button className="bg-red items-center rounded-full justify-center w-5 h-5 text-xs text-white" onClick={deleteButton}>x</button>
             </div>
+            <div className=""><img src={props.image} className="object-contain h-60"/></div>
             <div className="">{props.title}</div>
-            <div className=""><img src={props.image}/></div>
-            <div>ID: {props.id}</div>
+
+            {/* <div>ID: {props.id}</div> */}
         </div>
     );
 };

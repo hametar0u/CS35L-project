@@ -5,7 +5,7 @@ import { Route, Routes, useLocation, Navigate } from "react-router-dom";
 import MALAuthTest from "./testpages/MALAuthTest";
 import MALAuthTest2 from "./testpages/MALAuthTest2";
 import UserTestTest from "./testpages/UserTestTest";
-import SearchBarProto from "./testpages/SearchBarTest";
+import SearchBarProto from "./components/SearchBarTest";
 
 import LandingPage from "./pages/LandingPage";
 import HomePage from "./pages/HomePage";

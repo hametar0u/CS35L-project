@@ -45,18 +45,27 @@ const SearchBarProto = () => {
 
   return (
     <>
-    <div className="bg-bermuda rounded-full m-2 p-2">
-        <input type="text" placeholder="Jikan Filter" onChange={handleChange}></input></div>
-      <div>
-        {searchResults && searchResults.map((result, i) => {
-          return (
-            <div key={result.malId}>
-              <p>{result.title}</p>
-              <button onClick={() => addAnime(result.malId)}>add</button>
-            </div>
-          );
-        })}
-      </div>
+    <div className="bg-light-blue rounded-lg">
+      <div className="rounded-full m-2 p-2">
+          <input className="rounded-lg pl-2 pr-2 w-1/3" type="text" placeholder="Search Anime" onChange={handleChange}></input></div>
+        <div>
+          {searchResults && searchResults.map((result, i) => {
+            return (
+              <div className="pt-5 pb-5">
+                  <div className="pl-5" key={result.malId}>
+                  <div className="flex flex-row gap-2">
+                    <button className="bg-light-purple w-5 h-5 items-center align-center rounded-full text-xs" onClick={() => addAnime(result.malId)}>+</button>
+                    <p className="">{result.title}</p>
+                  </div>
+                </div>
+              </div>
+              
+            );
+          })}
+        </div>
+      
+    </div>
+    
     </>
   );
 

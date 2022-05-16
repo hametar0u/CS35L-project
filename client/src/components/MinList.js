@@ -60,7 +60,7 @@ const MinList = () => {
     const navigate = useNavigate();
     const doEdit = () => {
         console.log("edit list");
-        navigate("/list")
+        navigate("/list");
     
     };
 

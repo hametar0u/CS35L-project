@@ -23,7 +23,7 @@ const Modal = (props) => {
 
     return (
         <div className="bg-white shadow-xl p-5 flex flex-col gap-10 rounded-lg align-middle">
-            <button className="bg-red w-4 h-4 align-center text-xs rounded-full text-white" onClick={props.onClick}>x</button>
+            <button className="bg-red w-5 h-5 align-center items-center text-xs rounded-full text-white" onClick={props.onClick}>x</button>
              <div className="flex flex-col gap-5 align-middle items-left">
                 <div className="text-blue font-bold">
                     Want unlimited lists?
