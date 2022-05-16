@@ -9,6 +9,7 @@ const { ConnectionPoolClearnedEvent, ObjectId } = require("mongodb");
 const { response } = require("express");
 const { exit } = require("process");
 
+
 userRoute.route("/listings").get(async (req, res) => {
     const dbConnect = dbo.getDb();
 
@@ -189,6 +190,9 @@ userRoute.route("/listings/addUser").post(async (req, res) => {
         return;
     }
     else {
+        // dbConnect
+        //     .collection("shared_lists")
+        //     .deleteOne({_id: Object(current_user.sharedlist_id)});
         dbConnect
             .collection("UserList")
             .findOneAndUpdate({id: current_user.id},
@@ -196,82 +200,6 @@ userRoute.route("/listings/addUser").post(async (req, res) => {
         res.send("Successfully added you to their colab list");
         return;
     }
-
-    // await axios
-    //     .get(url2)
-    //     .then((response) => {
-    //         userlist = response.data;
-    //     })
-    //     .catch((err) => {
-    //         console.log(err);
-    //     });
-    // var count = Object.keys(userlist).length;
-    // console.log(count);
-    
-    // let currentuser = {};
-    // let exist2 = false;
-    // newuserid = 0;
-    // for(let i = 0; i < count; i++ )
-    // {
-    //     if(userlist[i].info.name == req.body.user.name) 
-    //     {
-    //         currentuser = userlist[i];
-    //     }
-    //     if(userlist[i].info.name == req.body.colabuser)
-    //     {
-    //         exist2 = true;
-    //         newuserid = userlist[i].id;
-    //     }
-    // }
-    // console.log(currentuser);
-    // console.log(exist2);
-    // if (currentuser == {} || exist2 == false) {
-    //     res.send("This user doesn't exist in the db");
-    //     return;
-    // }
-
-
-
-
-
-    // console.log(currentuser);
-    // let obj = {
-    //     user: req.body.colabuser,
-    //     id: newuserid
-    // }
-    // if(!currentuser.usercolablist) 
-    // {
-    //     let newusercolablist = [];
-    //     newusercolablist[0] = obj;
-        
-    //     dbConnect
-    //         .collection("UserList")
-    //         .findOneAndUpdate({id: currentuser.id},
-    //             {$set: {usercolablist: newusercolablist}});
-    //     res.send("Created a user colab list");
-    //     return;
-    // }
-    // let exist = false;
-    // var count = Object.keys(currentuser.usercolablist).length;
-    // for(let i = 0; i < count; i++) {
-    //     if(currentuser.usercolablist[i].user == req.body.colabuser)
-    //     {
-    //         exist = true;
-    //     }
-    // }
-    // if (exist == true) {
-    //     res.send("User is already colabed");
-    //     return;
-    // }
-    // else
-    // {
-    //     currentuser.usercolablist[count] = obj;
-    //     dbConnect
-    //         .collection("UserList")
-    //         .findOneAndUpdate({id: currentuser.id},
-    //             {$set: {usercolablist: currentuser.usercolablist}});
-    //     res.send("Successfully added user to Colab List");
-    // }
 })
 
 userRoute.route("/listings/retreiveUserById").get(async (req, res) => {

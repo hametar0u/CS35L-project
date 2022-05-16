@@ -7,7 +7,7 @@ const BigButton = (props) => {
   
   return (
     <div>
-      <button className="bg-mint w-64 font-extrabold text-white h-12 rounded-xl text-lg" onClick={props.handleClick}>{props.name}</button>
+      <button className="bg-mint hover:bg-purple hover:shadow-md w-64 font-extrabold text-white h-12 rounded-xl text-lg" onClick={props.handleClick}>{props.name}</button>
     </div>
   )
   

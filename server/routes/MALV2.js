@@ -19,23 +19,6 @@ MAL.route("/sessioncount").get((req, res) => {
   }
 });
 
-MAL.route("/auth/v2/get-login-status").get((req, res) => {
-  try {
-    const access_token = req.session.tokens.access_token;
-    res.send("true");
-  }
-  catch {
-    res.send("false")
-  }
-});
-
-MAL.route("/auth/v2/get-code-verifier").get((req, res) => {
-  res.send({
-    //TODO: temporary solution
-    code_challenge:
-      "bo0UcvCfQD9npT8Sg55wUFEBEZYoTYSqGYXsUzTo8XfpsStmKP96PeH4SlQ2GIrA5Qdz_2cwKxbNxRpLr6EVuyYmI5S_qvX1yMPEbRkYtgFg8HCwYO9ykLLT09GU1D20",
-  });
-});
 MAL.route("/auth/v2/login").post(async (req, res, next) => {
   //console.log(req.body.name);
   req.session.name = req.body.name;

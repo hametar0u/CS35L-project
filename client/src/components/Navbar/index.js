@@ -7,7 +7,7 @@ import {
   NavBtn, //may not be needed
   NavBtnLink, // may not be needed
 } from './NavbarElements';
-import logo from '../logo.svg';
+import logo from '../s.svg';
 
 const Navbar = () => {
   return (
@@ -25,9 +25,9 @@ const Navbar = () => {
           <div className="flex flex-row items-right justify-right">
             {/* <Bars className="flex flex-row items-right justify-right"/> */}
             <NavMenu>
-              <NavLink to='/home/' activeStyle>
+              {/* <NavLink to='/home/' activeStyle>
                 Home
-              </NavLink>
+              </NavLink> */}
               <NavLink to='/about' activeStyle>
                 About
               </NavLink>
