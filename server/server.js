@@ -45,7 +45,7 @@ app.use(require("./routes/DBRoutes"));
 
 app.use(function (err, req, res, next) {
   console.error(err.stack);
-  res.status(432).send('this again!!');
+  res.status(432).send('paul eggie is watching you!!');
   next(err);
 });
 

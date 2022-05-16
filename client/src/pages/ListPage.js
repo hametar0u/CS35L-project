@@ -8,50 +8,48 @@ const ListPage = () => {
   const [error, setError] = useState();
 
   const addAnime = async (id) => {
-    const obj = {
-      malId: id,
-    };
-
-    await axios
-    .post("/listings/animeAddByMalID", obj, {
-      withCredentials: true
-    })
-    .then((response) => {
-      console.log(response.data);
-    })
-    .catch((err) => {
-      console.log(err);
-      setError(err.response);
-    });
-
     const config = {
       withCredentials: true
     };
     const params = {
       malId: id
     };
-    await axios.post(`/addToList/${id}`, params, config)
-    .then(response => {
-      console.log(response.data);
-    })
+
+    axios.all([
+      axios.post("/listings/animeAddByMalID", params, config), 
+      axios.post(`/addToList/${id}`, params, config)
+    ])
+    .then(axios.spread((data1, data2) => {
+      // output of req.
+      console.log('data1', data1, 'data2', data2)
+    }))
     .catch(err => {
       console.log(err);
       setError(err.response);
     });
+  };
 
-    // axios.all([
-    //   axios.post(`/my-url`, {
-    //     myVar: 'myValue'
-    //   }), 
-    //   axios.post(`/my-url2`, {
-    //     myVar: 'myValue'
-    //   })
-    // ])
-    // .then(axios.spread((data1, data2) => {
-    //   // output of req.
-    //   console.log('data1', data1, 'data2', data2)
-    // }));
-  }
+  const delAnime = async (id) => {
+    const config = {
+      withCredentials: true
+    };
+    const params = {
+      malId: id
+    };
+
+    axios.all([
+      axios.post("/listings/animeDelete", params, config), 
+      axios.post(`/deleteFromList/${id}`, params, config)
+    ])
+    .then(axios.spread((data1, data2) => {
+      // output of req.
+      console.log('data1', data1, 'data2', data2)
+    }))
+    .catch(err => {
+      console.log(err);
+      setError(err.response);
+    });
+  };
 
 
 
@@ -72,7 +70,7 @@ const ListPage = () => {
             <SearchBarProto addAnime={addAnime}/>
           </div>
           <div>
-            <Animes/>
+            <Animes  delAnime={delAnime}/>
           </div>
         </div>
       </div>

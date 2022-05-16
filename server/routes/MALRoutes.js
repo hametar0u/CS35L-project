@@ -33,12 +33,12 @@ UserTest.route("/usertest").get(async (req, res) => {
 
 });
 
-UserTest.route("/deleteFromList/:id").delete(async (req, res) => {
+UserTest.route("/deleteFromList/:id").post(async (req, res, next) => {
     console.log("i got to del");
     console.log(req.session);
   
     const access_token = req.session.tokens.access_token;
-    const url = `https://api.myanimelist.net/v2/anime/${req.body.id}/my_list_status`;
+    const url = `https://api.myanimelist.net/v2/anime/${req.body.malId}/my_list_status`;
     const config = {
         headers: {
           Authorization: "Bearer " + access_token,
