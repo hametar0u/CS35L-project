@@ -104,7 +104,7 @@ UserTest.route("/addToList/:id").post(async (req, res, next) => {
     if(!req.session.tokens) res.send("no tokens");
     else {
       const access_token = req.session.tokens.access_token;
-      const url = `https://api.myanimelist.net/v2/anime/${req.body.id}/my_list_status`;
+      const url = `https://api.myanimelist.net/v2/anime/${req.body.malId}/my_list_status`;
       const config = {
           headers: {
             Authorization: "Bearer " + access_token,

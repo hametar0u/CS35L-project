@@ -38,9 +38,9 @@ app.use(
 const dbo = require("./db/conn");
 
 //MAL interaction
-app.use(require("./routes/UserTest"));
-app.use(require("./routes/MALV2"));
-app.use(require("./routes/suggested_list"));
+app.use(require("./routes/MALRoutes"));
+app.use(require("./routes/MALAuth"));
+app.use(require("./routes/DBRoutes"));
 
 
 app.use(function (err, req, res, next) {
