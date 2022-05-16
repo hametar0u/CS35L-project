@@ -26,6 +26,7 @@ const MALAuthTest2 = (props) => {
   const [userId, setId] = useState();
   const [Access_code, setAccess] = useState();
   const [anime, setAnime] = useState(null);
+  const [addanime, setAddAnime] = useState(null);
   const [ready, setReady] = useState(false);
   const [delanime, setDelAnime] = useState(null);
   const [adduser, setAddUser] = useState(null);
@@ -110,11 +111,9 @@ const MALAuthTest2 = (props) => {
   const addAnime = async () => {
     
     console.log("Clicked");
-    console.log(anime);
-    console.log(userId);
+    console.log(addanime);
     const obj = {
-      malId: anime,
-      user: userId,
+      malId: addanime,
     }
     await axios
     .post("/listings/animeAddByMalID", obj, {
@@ -231,7 +230,7 @@ const MALAuthTest2 = (props) => {
       });
   };
   function getData(val) {
-    setAnime(val.target.value);
+    setAddAnime(val.target.value);
   }
   function getData2(val) {
     setDelAnime(val.target.value);
