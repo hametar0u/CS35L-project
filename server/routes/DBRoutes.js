@@ -25,7 +25,7 @@ userRoute.route("/listings").get(async (req, res) => {
         });
 });
 
-userRoute.route("/listings/sharedList").get(async ( req, res) => {
+userRoute.route("/listings/sharedList").get(async (req, res) => {
     const dbConnect = dbo.getDb();
 
     dbConnect
@@ -520,64 +520,154 @@ userRoute.route("/listings/animeAdd").post(async (req, res) => {
 })
 
 userRoute.route("/listings/allanimes").post(async (req, res) => {
-    console.log(req.body);
-    
-    // console.log(req.query.user);
-    // console.log(req.query.access_code);
-    let url = `https://api.myanimelist.net/v2/users/${req.body.user}/animelist?fields=title&limit=100`
-    let prev = ""
-    const dbConnect = dbo.getDb();
-    params = {
-        headers: {
-            Authorization: "Bearer " + req.body.access_code,
-        },
-    };
-    let i = 0;
-    anime = {
-        title: []
-    }
-    node = {
-        image: "",
-        name: "",
-        id: "",
-    }
+    try {
+        const userid = req.session.userprofile.id; //user id stored here
+        const access_token = req.session.tokens.access_token; //access token stored here
+        let userlist = {}
+        let url2 = `http://localhost:5001/listings`
+        await axios
+            .get(url2)
+            .then((response) => {
+                userlist = response.data;
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+        var count = Object.keys(userlist).length;
+        let currentuser = {};
+        for(let i = 0; i < count; i++ ) 
+        {
+            if(userlist[i].id == userid)
+            {
+                currentuser = userlist[i];
+            }
+        }
 
-do {
-    await axios
-        .get(url, params)
-        .then((response) => {
-            console.log(response.data.data[0].node);
-            var count = Object.keys(response.data.data).length;
-            console.log(count);
-            for(let k = 0; k < count; k++) {
-                node.image = response.data.data[k].node.main_picture.medium;
-                node.name = response.data.data[k].node.title;
-                node.id = response.data.data[k].node.id;
-                anime.title[i] = node;
-                //anime.title[i] = response.data.data[k].node.title;
-                //anime.title[i].image = response.data.data[k].node.main_picture.medium;
-                i++;
-            }
+        if(currentuser == {})
+        {
+            res.send("User Doesn't exist");
+            return;
+        }
+        let url = `https://api.myanimelist.net/v2/users/${currentuser.info.name}/animelist?fields=title&limit=100`
+        let prev = ""
+        const dbConnect = dbo.getDb();
+        params = {
+            headers: {
+                Authorization: "Bearer " + access_token,
+            },
+        };
+        let i = 0;
+        anime = {
+            title: []
+        }
 
-            if(response.data.paging.next) {
-                url = response.data.paging.next;
-            }
-            else {
-                prev = response.data.paging.prev;
-            }
-            console.log(url);
-        })
-        .catch((error) => {
-            console.log(error);
-        });
-} while (prev == "");
-        dbConnect
-                .collection("anime_list")
-                .findOneAndUpdate({user: req.body.user},
-                                   {$set: {anime: anime}}, 
-                                   {upsert: true});
-                res.send("It worked");
+    do {
+        await axios
+            .get(url, params)
+            .then((response) => {
+                console.log(response.data.data[0].node);
+                var count = Object.keys(response.data.data).length;
+                console.log(count);
+                for(let k = 0; k < count; k++) {
+                    let node = {
+                        image: response.data.data[k].node.main_picture.medium,
+                        name: response.data.data[k].node.title,
+                        id: response.data.data[k].node.id,
+                    }
+                    anime.title[i] = node;
+                    //anime.title[i] = response.data.data[k].node.title;
+                    //anime.title[i].image = response.data.data[k].node.main_picture.medium;
+                    i++;
+                }
+
+                if(response.data.paging.next) {
+                    url = response.data.paging.next;
+                }
+                else {
+                    prev = response.data.paging.prev;
+                }
+                console.log(url);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    } while (prev == "");
+            // dbConnect
+            //         .collection("anime_list")
+            //         .findOneAndUpdate({user: currentuser.info.name},
+            //                         {$set: {anime: anime}}, 
+            //                         {upsert: true});
+                    res.send(anime);
+    }
+    catch {
+        res.status(500).send("You are not logged in");
+    }
         
+});
+
+userRoute.route("/listings/allanimesSharedList").post(async (req, res) => {
+    try {
+        const userid = req.session.userprofile.id; //user id stored here
+        const access_token = req.session.tokens.access_token; //access token stored here
+        let userlist = {}
+        let url2 = `http://localhost:5001/listings`
+        await axios
+            .get(url2)
+            .then((response) => {
+                userlist = response.data;
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+        var count = Object.keys(userlist).length;
+        let currentuser = {};
+        for(let i = 0; i < count; i++ ) 
+        {
+            if(userlist[i].id == userid)
+            {
+                currentuser = userlist[i];
+            }
+        }
+
+        if(currentuser == {})
+        {
+            res.send("User Doesn't exist");
+            return;
+        }
+        let shared = {}
+        await axios
+            .get("http://localhost:5001/listings/sharedList")
+            .then((response) => {
+                shared = response.data;
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+            var count1 = Object.keys(shared).length;
+            let users_shared_list = {};
+            let exist = false;
+            for(let i = 0; i < count1; i++)
+            {
+                console.log(shared[i]._id);
+                console.log(currentuser.sharedlist_id);
+                if(shared[i]._id == currentuser.sharedlist_id) {
+                    exist = true;
+                    users_shared_list = shared[i];
+                }
+            }
+            if(exist == false)
+            {
+                res.send("This anime doesn't exist, failed to delete");
+                return;
+            }
+            else 
+            {
+                res.send(users_shared_list.anime);
+            }
+    } 
+    catch {
+        res.status(500).send("You are not logged in");
+    }
 });
 
 /* !!!!!!!EXAMPLE ROUTE YUGIOH CLOWN BOI WHAT AM I EVEN SAYING !!!!!!*/
