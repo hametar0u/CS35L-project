@@ -65,17 +65,17 @@ const MinList = () => {
     };
 
     return (
-        <div className="bg-lightgrey p-5 flex flex-col gap-10 w-1/2 rounded-lg" onClick={doEdit}>
+        <div className="bg-lightgrey p-5 flex flex-col gap-5 w-1/2 rounded-lg" onClick={doEdit}>
              List 1
+             <button className="bg-blue w-20 rounded-full text-white" onClick={doEdit}>edit</button>
             <div className="flex gap-5">
             <div className="grid grid-cols-2 gap-0">
-                <MinAnimeCard image={animeArray[0].image}/>
-                <MinAnimeCard image={animeArray[1].image}/>
-                <MinAnimeCard image={animeArray[2].image}/>
-                <MinAnimeCard image={animeArray[3].image}/>
+                <MinAnimeCard className="object-contain h-50" image={animeArray[0].image}/>
+                <MinAnimeCard className="object-contain h-105" image={animeArray[1].image}/>
+                <MinAnimeCard className="object-contain h-105" image={animeArray[2].image}/>
+                <MinAnimeCard className="object-contain h-105" image={animeArray[3].image}/>
             </div>
         </div>
-            <button className="bg-blue w-20 rounded-full" onClick={doEdit}>edit</button>
 
         </div>
         

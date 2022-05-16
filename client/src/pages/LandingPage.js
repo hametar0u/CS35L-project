@@ -55,12 +55,13 @@ const LandingPage = (props) => {
   return (
     <div className="flex justify-left sm:justify-center w-full pt-40 pb-10">
       <div className="flex flex-col gap-12 sm:gap-16 w-3/4 max-w-5xl">
+
         <div className="flex flex-row gap-x-10">
           <div className="w-full">
             <img src={logo} />
           </div>
           <div className="flex flex-col gap-10">
-            <div className="font-serif text-xl text-blue">
+            <div className="font-serif text-4xl text-blue">
               Welcome to Our Anime List!
             </div>
             <div className="">
@@ -69,8 +70,8 @@ const LandingPage = (props) => {
               List by creating collaborative anime lists, comparing your
               similarity, and more.
             </div>
-            <div class="text-blue">We hope you enjoy our app :3</div>
-            <SmallButton handleClick={handleClick} name={"Login"} />
+            <div class="text-blue italic">We hope you enjoy our app :3</div>
+            <SmallButton className="" handleClick={handleClick} name={"Login"} />
             {/* <BigButton handleClick={GoToHomePage} name={"SHARED LIST"} /> */}
           </div>
         </div>
