@@ -560,11 +560,6 @@ userRoute.route("/listings/allanimes").post(async (req, res) => {
         anime = {
             title: []
         }
-        node = {
-            image: "",
-            name: "",
-            id: "",
-        }
 
     do {
         await axios
@@ -574,9 +569,11 @@ userRoute.route("/listings/allanimes").post(async (req, res) => {
                 var count = Object.keys(response.data.data).length;
                 console.log(count);
                 for(let k = 0; k < count; k++) {
-                    node.image = response.data.data[k].node.main_picture.medium;
-                    node.name = response.data.data[k].node.title;
-                    node.id = response.data.data[k].node.id;
+                    let node = {
+                        image: response.data.data[k].node.main_picture.medium,
+                        name: response.data.data[k].node.title,
+                        id: response.data.data[k].node.id,
+                    }
                     anime.title[i] = node;
                     //anime.title[i] = response.data.data[k].node.title;
                     //anime.title[i].image = response.data.data[k].node.main_picture.medium;
