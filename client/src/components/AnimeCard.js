@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import "../styles/globals.css";
+import { PassThrough } from "stream";
 
 
 
@@ -63,10 +64,11 @@ const Animes = (props) => {
         },
     ];
 
+
     return (
         <div className="grid grid-cols-4 gap-10">
-            {animeArray.map((anime, i) => {
-            return <AnimeCard title={anime.title} image={anime.image} id={anime.id}  delAnime={props.delAnime}/>;
+            {props.animeList.map((anime, i) => {
+                return <AnimeCard title={anime.title} image={anime.main_picture.medium} id={anime.id}  delAnime={props.delAnime} key={anime.id}/>;
             })}
         </div>
         

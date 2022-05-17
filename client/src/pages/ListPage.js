@@ -32,7 +32,13 @@ const ListPage = () => {
     .then(axios.spread((MALdata, DBdata) => {
       MALdata = MALdata.data;
       DBdata = DBdata.data;
-      // console.log('MALdata', MALdata, 'DBdata', DBdata);
+      DBdata = DBdata.filter(element => { //remove empty object
+        if (Object.keys(element).length !== 0) {
+          return true;
+        }
+        return false;
+      });
+      console.log('MALdata', MALdata, 'DBdata', DBdata);
       let animeToDelete = getDifference(MALdata, DBdata);
       console.log("animeToDelete: ", animeToDelete);
       let animeToAdd = getDifference(DBdata, MALdata);
