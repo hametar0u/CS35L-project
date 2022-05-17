@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect} from "react";
 import axios from 'axios';
 import Animes from "../components/AnimeCard";
 import Nav from "../components/Nav";
@@ -13,6 +13,7 @@ const getDifference = (array1, array2) => {
   });
 }
 
+//main component
 const ListPage = () => {
   const [error, setError] = useState();
   const [animeList, setAnimeList] = useState([]);
@@ -44,8 +45,12 @@ const ListPage = () => {
       let animeToAdd = getDifference(DBdata, MALdata);
       console.log("animeToAdd: ", animeToAdd);
       
-      animeToDelete.forEach(anime => delAnime(anime.id));
-      animeToAdd.forEach(anime => addAnime(anime.id));
+      if (animeToDelete.length !== 0) {
+        animeToDelete.forEach(anime => delAnime(anime.id));
+      }
+      if(animeToAdd.length !== 0) {
+        animeToAdd.forEach(anime => addAnime(anime.id));
+      }
 
       setAnimeList(DBdata);
     }))
@@ -67,6 +72,7 @@ const ListPage = () => {
     .then(axios.spread((data1, data2) => {
       // output of req.
       console.log('data1', data1, 'data2', data2)
+      getAnime();
     }))
     .catch(err => {
       console.log(err);
@@ -86,6 +92,7 @@ const ListPage = () => {
     .then(axios.spread((data1, data2) => {
       // output of req.
       console.log('data1', data1, 'data2', data2)
+      getAnime();
     }))
     .catch(err => {
       console.log(err);

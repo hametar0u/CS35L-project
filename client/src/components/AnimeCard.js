@@ -21,50 +21,6 @@ const AnimeCard = (props) => {
 };
 
 const Animes = (props) => {
-    let animeArray = [
-        {
-            "title" : "5-toubun no Hanayome",
-            "image" : "https://api-cdn.myanimelist.net/images/anime/1819/97947.jpg",
-            "id" : 38101,
-        },
-        {
-            "title" : "5-toubun no Hanayome ∬",
-            "image" : "https://api-cdn.myanimelist.net/images/anime/1775/109514.jpg",
-            "id" : 39783,
-        },
-        {
-            "title" : "91 Days",
-            "image" : "https://api-cdn.myanimelist.net/images/anime/13/80515.jpg",
-            "id" : 32998,
-        },
-        {
-            "title" : "5-toubun no Hanayome",
-            "image" : "https://api-cdn.myanimelist.net/images/anime/1819/97947.jpg",
-            "id" : 38101,
-        },
-        {
-            "title" : "5-toubun no Hanayome ∬",
-            "image" : "https://api-cdn.myanimelist.net/images/anime/1775/109514.jpg",
-            "id" : 39783,
-        },
-        {
-            "title" : "91 Days",
-            "image" : "https://api-cdn.myanimelist.net/images/anime/13/80515.jpg",
-            "id" : 32998,
-        },
-        {
-            "title" : "5-toubun no Hanayome",
-            "image" : "https://api-cdn.myanimelist.net/images/anime/1819/97947.jpg",
-            "id" : 38101,
-        },
-        {
-            "title" : "5-toubun no Hanayome ∬",
-            "image" : "https://api-cdn.myanimelist.net/images/anime/1775/109514.jpg",
-            "id" : 39783,
-        },
-    ];
-
-
     return (
         <div className="grid grid-cols-4 gap-10">
             {props.animeList.map((anime, i) => {
