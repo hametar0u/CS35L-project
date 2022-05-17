@@ -189,6 +189,7 @@ const MALAuthTest2 = (props) => {
 
   const listOfAnimesFromMAL = async () => {
     let obj = {}
+    console.log("MAL list");
     await axios 
       .post("/listings/allanimes", obj, {
         withCredentials: true,
@@ -202,6 +203,7 @@ const MALAuthTest2 = (props) => {
   }
   const listOfAnimesFromMongo = async () => {
     let obj = {}
+    console.log("DB list");
     await axios 
       .post("/listings/allanimesSharedList", obj, {
         withCredentials: true,

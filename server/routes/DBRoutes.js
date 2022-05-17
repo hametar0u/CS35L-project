@@ -570,9 +570,9 @@ userRoute.route("/listings/allanimes").post(async (req, res) => {
                 console.log(count);
                 for(let k = 0; k < count; k++) {
                     let node = {
-                        image: response.data.data[k].node.main_picture.medium,
-                        name: response.data.data[k].node.title,
                         id: response.data.data[k].node.id,
+                        title: response.data.data[k].node.title,
+                        main_picture: response.data.data[k].node.main_picture,
                     }
                     anime.title[i] = node;
                     //anime.title[i] = response.data.data[k].node.title;
@@ -597,7 +597,7 @@ userRoute.route("/listings/allanimes").post(async (req, res) => {
             //         .findOneAndUpdate({user: currentuser.info.name},
             //                         {$set: {anime: anime}}, 
             //                         {upsert: true});
-                    res.send(anime);
+                    res.send(anime.title);
     }
     catch {
         res.status(500).send("You are not logged in");

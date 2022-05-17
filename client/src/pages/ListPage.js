@@ -1,16 +1,55 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axios from 'axios';
 import Animes from "../components/AnimeCard";
 import Nav from "../components/Nav";
 import SearchBarProto from "../components/SearchBarTest";
 
+//helper func
+const getDifference = (array1, array2) => {
+  return array1.filter(object1 => {
+    return !array2.some(object2 => {
+      return object1.id === object2.id;
+    });
+  });
+}
+
 const ListPage = () => {
   const [error, setError] = useState();
+  const [animeList, setAnimeList] = useState([]);
+  const config = {
+    withCredentials: true
+  };
+
+  useEffect(() => {
+    getAnime();
+  }, []);
+
+  const getAnime = async () => {
+    axios.all([
+      axios.post("/listings/allanimes", {}, config), //MAL
+      axios.post(`/listings/allanimesSharedList`, {}, config) //DB
+    ])
+    .then(axios.spread((MALdata, DBdata) => {
+      MALdata = MALdata.data;
+      DBdata = DBdata.data;
+      // console.log('MALdata', MALdata, 'DBdata', DBdata);
+      let animeToDelete = getDifference(MALdata, DBdata);
+      console.log("animeToDelete: ", animeToDelete);
+      let animeToAdd = getDifference(DBdata, MALdata);
+      console.log("animeToAdd: ", animeToAdd);
+      
+      animeToDelete.forEach(anime => delAnime(anime.id));
+      animeToAdd.forEach(anime => addAnime(anime.id));
+
+      setAnimeList(DBdata);
+    }))
+    .catch(err => {
+      console.log(err);
+      setError(err.response);
+    });
+  }
 
   const addAnime = async (id) => {
-    const config = {
-      withCredentials: true
-    };
     const params = {
       malId: id
     };
@@ -30,9 +69,6 @@ const ListPage = () => {
   };
 
   const delAnime = async (id) => {
-    const config = {
-      withCredentials: true
-    };
     const params = {
       malId: id
     };
@@ -70,7 +106,7 @@ const ListPage = () => {
             <SearchBarProto addAnime={addAnime}/>
           </div>
           <div>
-            <Animes  delAnime={delAnime}/>
+            <Animes animeList={animeList} delAnime={delAnime}/>
           </div>
         </div>
       </div>
