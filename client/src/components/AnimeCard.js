@@ -3,11 +3,13 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import "../styles/globals.css";
 import { PassThrough } from "stream";
+import { ZoomInWrapper, CardWrapper } from "../testpages/MotionTest";
 
 
 
 const AnimeCard = (props) => {
     return(
+        <CardWrapper>
         <div className="bg-lightgrey p-5 rounded-lg flex flex-col gap-2">
             <div className="flex flex-row-reverse">
                 <button className="bg-red items-center rounded-full justify-center w-5 h-5 text-xs text-white" onClick={() => props.delAnime(props.id)}>x</button>
@@ -17,6 +19,7 @@ const AnimeCard = (props) => {
 
             {/* <div>ID: {props.id}</div> */}
         </div>
+        </CardWrapper>
     );
 };
 

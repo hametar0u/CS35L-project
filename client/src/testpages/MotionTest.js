@@ -124,6 +124,21 @@ export const ZoomInWrapper = ({children}) => {
     initial="initial"
     variants={zoompageVariants}
     transition={pageTransitions}
+    className="w-full"
+    >
+      {children}
+    </motion.div>  
+  );
+}
+
+export const CardWrapper = ({children}) => {
+  return ( 
+    <motion.div 
+    exit="out" 
+    animate="in"
+    initial="initial"
+    variants={zoompageVariants}
+    transition={pageTransitions}
     >
       {children}
     </motion.div>  

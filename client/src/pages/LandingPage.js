@@ -9,6 +9,7 @@ import "../styles/globals.css";
 
 import BigButton from "../components/BigButton.js";
 
+
 const LandingPage = (props) => {
   const navigate = useNavigate();
   const { userData, setUserData } = useContext(UserContext);
@@ -55,7 +56,6 @@ const LandingPage = (props) => {
   return (
     <div className="flex justify-left sm:justify-center w-full pt-40 pb-10">
       <div className="flex flex-col gap-12 sm:gap-16 w-3/4 max-w-5xl">
-
         <div className="flex flex-row gap-x-10">
           <div className="w-full">
             <img src={logo} />

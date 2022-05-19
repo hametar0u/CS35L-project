@@ -117,7 +117,7 @@ const ListPage = () => {
           <div className="font-serif text-xl text-blue pb-15">
               Shared List
           </div>
-          <div className="absolute pt-10 w-full">
+          <div className="absolute pt-10 w-full z-40">
             <SearchBarProto addAnime={addAnime}/>
           </div>
           <div>
