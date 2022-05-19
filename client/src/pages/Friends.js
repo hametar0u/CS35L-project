@@ -6,6 +6,7 @@ import Navbar from "../components/Navbar/index";
 import Nav from "../components/Nav";
 import SearchBarProto from "../components/SearchBarTest";
 <<<<<<< HEAD
+<<<<<<< HEAD
 import paul1 from "../pauls/paul1.png";
 import MiniButton from "../components/MiniButton";
 
@@ -14,6 +15,9 @@ import { Circle } from 'rc-progress';
 import { SlidingWrapper } from "../components/MotionComponents";
 =======
 >>>>>>> da45d36 (started styling friends components)
+=======
+import paul1 from "../pauls/paul1.png";
+>>>>>>> ffeb2f9 (alignment of components)
 
 const CompareUser = () => {
   const [similarity, setSimilarity] = useState();//temp
@@ -113,10 +117,14 @@ useEffect(() => {
         <div className="flex flex-col gap-2 sm:gap-5 w-3/4 max-w-5xl">
           <div className="flex justify-between gap-x-40">
 <<<<<<< HEAD
+<<<<<<< HEAD
             <div className="flex flex-col gap-5 w-full">
 =======
             <div>
 >>>>>>> da45d36 (started styling friends components)
+=======
+            <div className="flex flex-col gap-5">
+>>>>>>> ffeb2f9 (alignment of components)
                 <div className="font-serif text-xl text-blue">
                   Compare with friends
                 </div>
@@ -181,19 +189,31 @@ useEffect(() => {
                 <div className="text-blue mb-40">
                   Search for a friend below. 
                 </div>
-                <div className="absolute pt-20 w-1/3">
+                <div className="absolute pt-40 w-max">
                     <SearchBarProto name="Friends"/>
                 </div>
                 <div className="font-serif text-xl text-blue">
                   Your Recommended Friend
                 </div>
                 <div className="bg-lightgrey w-max h-40 rounded-lg">
-
+                    <div className="flex flex-row gap-5">
+                      <Profile name="Jeffrey Kwan" image={paul1}/>
+                    <div className="flex flex-col gap-5 p-5">
+                      <div className="font-bold">
+                        70% Similarity
+                      </div>
+                        <div>Reach out to your new friend on <a href="https://myanimelist.net/" className="text-blue hover:text-grey"> myanimelist.net</a>.</div>
+                    </div>
+              </div>
                 </div>
             </div>
             <div className="bg-lightgrey w-full rounded-lg mt-10">
+<<<<<<< HEAD
               right
 >>>>>>> da45d36 (started styling friends components)
+=======
+              
+>>>>>>> ffeb2f9 (alignment of components)
             </div>
           </div>
         
