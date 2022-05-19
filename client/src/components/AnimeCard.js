@@ -4,8 +4,11 @@ import axios from "axios";
 import "../styles/globals.css";
 import { PassThrough } from "stream";
 import defaultAnime from "./defaultAnime.svg";
+<<<<<<< HEAD
 import { CardWrapper } from "../components/MotionComponents";
 import { AnimatePresence } from "framer-motion";
+=======
+>>>>>>> da45d36 (started styling friends components)
 
 
 
@@ -27,6 +30,7 @@ const Animes = (props) => {
     return (
         <div className="grid grid-cols-3 gap-10">
             {props.animeList.map((anime, i) => {
+<<<<<<< HEAD
                 return (
                     <AnimatePresence>
                         <CardWrapper>
@@ -34,6 +38,9 @@ const Animes = (props) => {
                         </CardWrapper>
                     </AnimatePresence>
                 );
+=======
+                return <AnimeCard title={anime.title} image={anime.main_picture ? anime.main_picture.medium : defaultAnime} id={anime.id}  delAnime={props.delAnime} key={anime.id}/>;
+>>>>>>> da45d36 (started styling friends components)
             })}
         </div>
         

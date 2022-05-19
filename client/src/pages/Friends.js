@@ -5,12 +5,15 @@ import Profile from "../components/Profile";
 import Navbar from "../components/Navbar/index";
 import Nav from "../components/Nav";
 import SearchBarProto from "../components/SearchBarTest";
+<<<<<<< HEAD
 import paul1 from "../pauls/paul1.png";
 import MiniButton from "../components/MiniButton";
 
 import CountUp from 'react-countup';
 import { Circle } from 'rc-progress';
 import { SlidingWrapper } from "../components/MotionComponents";
+=======
+>>>>>>> da45d36 (started styling friends components)
 
 const CompareUser = () => {
   const [similarity, setSimilarity] = useState();//temp
@@ -109,11 +112,16 @@ useEffect(() => {
         <div className="flex justify-left sm:justify-center w-full pt-10 pb-10">   
         <div className="flex flex-col gap-2 sm:gap-5 w-3/4 max-w-5xl">
           <div className="flex justify-between gap-x-40">
+<<<<<<< HEAD
             <div className="flex flex-col gap-5 w-full">
+=======
+            <div>
+>>>>>>> da45d36 (started styling friends components)
                 <div className="font-serif text-xl text-blue">
                   Compare with friends
                 </div>
                 <div className="">
+<<<<<<< HEAD
                   Want to find out how similar your anime taste is to other users? Or do you want to find an anime club? 
                 </div>
                 <div className="text-blue">
@@ -167,6 +175,25 @@ useEffect(() => {
                   <div>{userProfile.username}</div>
                 </div>
               }
+=======
+                  Want to find out how similar your anime taste is to your fellow list collaborators? 
+                </div>
+                <div className="text-blue mb-40">
+                  Search for a friend below. 
+                </div>
+                <div className="absolute pt-20 w-1/3">
+                    <SearchBarProto name="Friends"/>
+                </div>
+                <div className="font-serif text-xl text-blue">
+                  Your Recommended Friend
+                </div>
+                <div className="bg-lightgrey w-max h-40 rounded-lg">
+
+                </div>
+            </div>
+            <div className="bg-lightgrey w-full rounded-lg mt-10">
+              right
+>>>>>>> da45d36 (started styling friends components)
             </div>
           </div>
         
