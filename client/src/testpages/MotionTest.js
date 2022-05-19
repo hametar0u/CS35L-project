@@ -1,5 +1,7 @@
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
+import ModalTest from "./ModalTest";
+import { useState } from "react";
 
 const pageVariants = {
   initial: {
@@ -23,7 +25,8 @@ const pageTransitions = {
 };
 
 const pageStyle = {
-  position: "absolute"
+  position: "absolute",
+  width: "100%",
 };
 
 export const MotionTestPage1 = () => {
@@ -61,7 +64,9 @@ export const MotionTestPage2 = () => {
 }
 
 export const MotionTestPage3 = () => {
+  const [showModal, setShowModal] = useState(true);
   return ( 
+    <>
     <motion.div 
     style={pageStyle}
     exit="out" 
@@ -74,6 +79,8 @@ export const MotionTestPage3 = () => {
       <Link to="/motion2">motion2</Link>
       <h1>I beat yo ass up</h1>
     </motion.div>
+    <ModalTest showModal={showModal} closeModal={() => setShowModal(false)}/>
+    </>
   );
 }
 

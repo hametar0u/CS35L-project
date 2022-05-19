@@ -19,9 +19,9 @@ const HomePage = () => {
     setOpen(!open);
   }
 
-  if(open) {
+  // if(open) {
     return(
-      <ZoomInWrapper>
+      <ZoomInWrapper className="w-full">
       <div>
 
               {/* <Nav /> */}
@@ -36,36 +36,35 @@ const HomePage = () => {
                   </div>
                   </div>
               </div>
-              <div className="absolute top-0 left-0 pt-50 pl-105">
-                <Modal onClick={doClick}/>
-              </div>
-              
+              {/* <div className="absolute top-0 left-0 pt-50 pl-105"> */}
+                <Modal showModal={open} closeModal={() => setOpen(false)}/>
+              {/* </div>               */}
             </div>
             </ZoomInWrapper>
     );
-  }
-  else {
-    return(
-      <ZoomInWrapper>
-      <div>
-              {/* <Nav /> */}
-              <div className="p-10">
-              <div className="flex justify-left sm:justify-center w-full pt-10 pb-10">               
-                  <div className="flex flex-col gap-12 sm:gap-16 w-3/4 max-w-5xl">
-                  <div className="font-serif text-xl text-blue">
-                    Our Anime List Home
-                  </div>
-                  <div className="flex flex-row gap-10">
-                    <MinList/>
-                    <NewList onClick={doClick}/>
-                  </div>
-                  </div>
-              </div>
-            </div>
-      </div>  
-      </ZoomInWrapper>
-    );
-  }
+  // }
+  // else {
+  //   return(
+  //     <ZoomInWrapper>
+  //     <div>
+  //             {/* <Nav /> */}
+  //             <div className="p-10">
+  //             <div className="flex justify-left sm:justify-center w-full pt-10 pb-10">               
+  //                 <div className="flex flex-col gap-12 sm:gap-16 w-3/4 max-w-5xl">
+  //                 <div className="font-serif text-xl text-blue">
+  //                   Our Anime List Home
+  //                 </div>
+  //                 <div className="flex flex-row gap-10">
+  //                   <MinList/>
+  //                   <NewList onClick={doClick}/>
+  //                 </div>
+  //                 </div>
+  //             </div>
+  //           </div>
+  //     </div>  
+  //     </ZoomInWrapper>
+  //   );
+  // }
   
 }
 
