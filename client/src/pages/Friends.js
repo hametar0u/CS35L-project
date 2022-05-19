@@ -19,7 +19,11 @@ import { SlidingWrapper } from "../components/MotionComponents";
 import paul1 from "../pauls/paul1.png";
 >>>>>>> ffeb2f9 (alignment of components)
 
+import CountUp from 'react-countup';
+import { Circle } from 'rc-progress';
+
 const CompareUser = () => {
+<<<<<<< HEAD
   const [similarity, setSimilarity] = useState();//temp
   const [progress, setProgress] = useState(1);
   const [index, setIndex] = useState(0);
@@ -107,6 +111,24 @@ const getRecommendedUser = async () => {
 useEffect(() => {
   getRecommendedUser();
 }, []);
+=======
+  const [similarity, setSimilarity] = useState(70);//temp
+  const [progress, setProgress] = useState(1);
+  const [index, setIndex] = useState(0);
+
+  useEffect(() => {
+    if (!similarity) return;
+    if (similarity) {
+        if (progress < similarity) {
+            setTimeout(() => {
+                setProgress(similarity*Math.tanh(similarity/100*0.02*index))
+                setIndex((prev) => {return prev + 1;});
+            }, 10);
+        }
+    }
+    
+}, [similarity, progress]);
+>>>>>>> 1cbfae0 (add progress)
 
   return (
     <div>
@@ -209,11 +231,22 @@ useEffect(() => {
             </div>
             <div className="bg-lightgrey w-full rounded-lg mt-10">
 <<<<<<< HEAD
+<<<<<<< HEAD
               right
 >>>>>>> da45d36 (started styling friends components)
 =======
               
 >>>>>>> ffeb2f9 (alignment of components)
+=======
+              <CountUp style={{fontWeight: 700, fontSize: 120, color: '#F3C950'}} end={similarity} useEasing="true" />
+              <Circle 
+                  percent={progress}
+                  strokeWidth="6" 
+                  strokeColor="#F3C950" 
+                  trailColor={similarity === 0 ? "#d3d3d3" : "#477BE8"}
+                  trailWidth="6"
+              /> 
+>>>>>>> 1cbfae0 (add progress)
             </div>
           </div>
         
