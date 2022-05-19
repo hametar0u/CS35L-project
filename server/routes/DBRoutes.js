@@ -565,7 +565,7 @@ userRoute.route("/listings/allanimes").post(async (req, res) => {
         await axios
             .get(url, params)
             .then((response) => {
-                console.log(response.data.data[0].node);
+                // console.log(response.data.data[0].node);
                 var count = Object.keys(response.data.data).length;
                 console.log(count);
                 for(let k = 0; k < count; k++) {
