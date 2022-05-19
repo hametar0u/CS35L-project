@@ -5,6 +5,7 @@ import Nav from "../components/Nav";
 import paul1 from "../pauls/paul1.png";
 import paul2 from "../pauls/paul2.png";
 import paul3 from "../pauls/paul3.jpg";
+import { SlidingWrapper } from "../testpages/MotionTest";
 
 const handleClick = () => {
   window.location.href = "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
@@ -13,7 +14,8 @@ const handleClick = () => {
 const About = () => {
   return (
     <div>
-      <Nav/>
+      {/* <Nav/> */}
+      <SlidingWrapper>
         <div className="p-10">
         
           {/* <Link className="bg-blue rounded-full m-2 p-2 text-white" to="/home">Back</Link> */}
@@ -42,6 +44,7 @@ const About = () => {
             </div> 
             </div>
       </div>
+      </SlidingWrapper>
     </div>
     
   );
