@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import "../styles/globals.css";
 import { PassThrough } from "stream";
+import defaultAnime from "./defaultAnime.svg";
 
 
 
@@ -24,7 +25,7 @@ const Animes = (props) => {
     return (
         <div className="grid grid-cols-4 gap-10">
             {props.animeList.map((anime, i) => {
-                return <AnimeCard title={anime.title} image={anime.main_picture ? anime.main_picture.medium : ""} id={anime.id}  delAnime={props.delAnime} key={anime.id}/>;
+                return <AnimeCard title={anime.title} image={anime.main_picture ? anime.main_picture.medium : defaultAnime} id={anime.id}  delAnime={props.delAnime} key={anime.id}/>;
             })}
         </div>
         
