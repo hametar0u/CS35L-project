@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import Profile from "../components/Profile";
 import Navbar from "../components/Navbar/index";
 import Nav from "../components/Nav";
-import { SlidingWrapper } from "../testpages/MotionTest";
+import { SlidingWrapper } from "../components/MotionComponents";
 
 const CompareUser = () => {
   return (

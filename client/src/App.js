@@ -16,7 +16,6 @@ import CompareUser from "./pages/Friends";
 import Contact from "./pages/Contact";
 import FindUser from "./pages/FindUser";
 import Nav from "./components/Nav";
-import TestTable from "./testpages/TableTest";
 
 import axios from "axios";
 axios.defaults.baseURL = 'http://localhost:5001';
@@ -99,7 +98,6 @@ const App = () => {
           <Route path="/auth" element={<MALAuthTest2 code={query.get("code")}/>} />
           <Route path="/usertest" element={<UserTestTest />} />
           <Route path="/search" element={<SearchBarProto />} />
-          <Route path="/table" element={<TestTable />} />
         </Routes>
       </AnimatePresence>
     </UserContext.Provider>

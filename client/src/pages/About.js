@@ -5,7 +5,7 @@ import Nav from "../components/Nav";
 import paul1 from "../pauls/paul1.png";
 import paul2 from "../pauls/paul2.png";
 import paul3 from "../pauls/paul3.jpg";
-import { SlidingWrapper } from "../testpages/MotionTest";
+import { SlidingWrapper } from "../components/MotionComponents";
 
 const handleClick = () => {
   window.location.href = "https://www.youtube.com/watch?v=dQw4w9WgXcQ"

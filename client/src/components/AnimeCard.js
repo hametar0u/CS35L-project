@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import "../styles/globals.css";
 import { PassThrough } from "stream";
-import { CardWrapper } from "../testpages/MotionTest";
+import { CardWrapper } from "../components/MotionComponents";
 import { AnimatePresence } from "framer-motion";
 
 

@@ -5,7 +5,7 @@ import axios from "axios";
 
 import SmallButton from "../components/SmallButton.js";
 import logo from "../components/s.svg";
-import { FadeInWrapper } from "../testpages/MotionTest";
+import { FadeInWrapper } from "../components/MotionComponents";
 import "../styles/globals.css";
 
 import BigButton from "../components/BigButton.js";

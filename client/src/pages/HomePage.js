@@ -9,7 +9,7 @@ import Navbar from "../components/Navbar/index";
 import NewList from "../components/NewList";
 import Modal from "../components/Modal";
 import Nav from "../components/Nav";
-import { ZoomInWrapper } from "../testpages/MotionTest";
+import { ZoomInWrapper } from "../components/MotionComponents";
 
 const HomePage = () => {
 

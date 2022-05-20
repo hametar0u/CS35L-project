@@ -3,7 +3,7 @@ import axios from 'axios';
 import Animes from "../components/AnimeCard";
 import Nav from "../components/Nav";
 import SearchBarProto from "../components/SearchBarTest";
-import { ZoomInWrapper } from "../testpages/MotionTest";
+import { ZoomInWrapper } from "../components/MotionComponents";
 
 //helper func
 const getDifference = (array1, array2) => {
