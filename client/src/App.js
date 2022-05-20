@@ -16,7 +16,7 @@ import CompareUser from "./pages/Friends";
 import Contact from "./pages/Contact";
 import FindUser from "./pages/FindUser";
 import Nav from "./components/Nav";
-import { MotionTestPage1, MotionTestPage2, MotionTestPage3 } from "./testpages/MotionTest";
+import TestTable from "./testpages/TableTest";
 
 import axios from "axios";
 axios.defaults.baseURL = 'http://localhost:5001';
@@ -65,7 +65,7 @@ const App = () => {
   return (
     <UserContext.Provider value={value}>
       {location.pathname !== "/" && <Nav />}
-      <AnimatePresence>
+      <AnimatePresence exitBeforeEnter>
 
         <Routes location={location} key={location.pathname}>
           <Route exact path="/" element={<LandingPage code={query.get("code")} handleLogin={login}/>} />
@@ -99,9 +99,7 @@ const App = () => {
           <Route path="/auth" element={<MALAuthTest2 code={query.get("code")}/>} />
           <Route path="/usertest" element={<UserTestTest />} />
           <Route path="/search" element={<SearchBarProto />} />
-          <Route path="/motion1" element={<MotionTestPage1 />} />
-          <Route path="/motion2" element={<MotionTestPage2 />} />
-          <Route path="/motion3" element={<MotionTestPage3 />} />
+          <Route path="/table" element={<TestTable />} />
         </Routes>
       </AnimatePresence>
     </UserContext.Provider>

@@ -3,13 +3,13 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import "../styles/globals.css";
 import { PassThrough } from "stream";
-import { ZoomInWrapper, CardWrapper } from "../testpages/MotionTest";
+import { CardWrapper } from "../testpages/MotionTest";
+import { AnimatePresence } from "framer-motion";
 
 
 
 const AnimeCard = (props) => {
     return(
-        <CardWrapper>
         <div className="bg-lightgrey p-5 rounded-lg flex flex-col gap-2">
             <div className="flex flex-row-reverse">
                 <button className="bg-red items-center rounded-full justify-center w-5 h-5 text-xs text-white" onClick={() => props.delAnime(props.id)}>x</button>
@@ -19,7 +19,6 @@ const AnimeCard = (props) => {
 
             {/* <div>ID: {props.id}</div> */}
         </div>
-        </CardWrapper>
     );
 };
 
@@ -27,7 +26,13 @@ const Animes = (props) => {
     return (
         <div className="grid grid-cols-4 gap-10">
             {props.animeList.map((anime, i) => {
-                return <AnimeCard title={anime.title} image={anime.main_picture ? anime.main_picture.medium : ""} id={anime.id}  delAnime={props.delAnime} key={anime.id}/>;
+                return (
+                    <AnimatePresence>
+                        <CardWrapper>
+                            <AnimeCard title={anime.title} image={anime.main_picture ? anime.main_picture.medium : ""} id={anime.id}  delAnime={props.delAnime} key={anime.id}/>
+                        </CardWrapper>
+                    </AnimatePresence>
+                );
             })}
         </div>
         

@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
-import ModalTest from "./ModalTest";
+import ModalTest from "../testpages/ModalTest";
 import { useState } from "react";
 
 const pageVariants = {
@@ -28,61 +28,6 @@ const pageStyle = {
   position: "absolute",
   width: "100%",
 };
-
-export const MotionTestPage1 = () => {
-  return ( 
-    <motion.div 
-    style={pageStyle}
-    exit="out" 
-    animate="in"
-    initial="initial"
-    variants={pageVariants}
-    transition={pageTransitions}
-    >
-      <Link to="/motion2">motion2</Link>
-      <Link to="/motion3">motion3</Link>
-      <h1>AYO WASSUP</h1>
-    </motion.div>
-  );
-}
-
-export const MotionTestPage2 = () => {
-  return ( 
-    <motion.div 
-    style={pageStyle}
-    exit="out" 
-    animate="in"
-    initial="initial"
-    variants={pageVariants}
-    transition={pageTransitions}
-    >
-      <Link to="/motion1">motion1</Link>
-      <Link to="/motion3">motion3</Link>
-      <h1>wanna scrap???!</h1>
-    </motion.div>
-  );
-}
-
-export const MotionTestPage3 = () => {
-  const [showModal, setShowModal] = useState(true);
-  return ( 
-    <>
-    <motion.div 
-    style={pageStyle}
-    exit="out" 
-    animate="in"
-    initial="initial"
-    variants={pageVariants}
-    transition={pageTransitions}
-    >
-      <Link to="/motion1">motion1</Link>
-      <Link to="/motion2">motion2</Link>
-      <h1>I beat yo ass up</h1>
-    </motion.div>
-    <ModalTest showModal={showModal} closeModal={() => setShowModal(false)}/>
-    </>
-  );
-}
 
 export const SlidingWrapper = ({children}) => {
   return ( 
@@ -129,7 +74,7 @@ export const ZoomInWrapper = ({children}) => {
       {children}
     </motion.div>  
   );
-}
+};
 
 export const CardWrapper = ({children}) => {
   return ( 
@@ -139,6 +84,37 @@ export const CardWrapper = ({children}) => {
     initial="initial"
     variants={zoompageVariants}
     transition={pageTransitions}
+    >
+      {children}
+    </motion.div>  
+  );
+};
+
+const fadeVariants = {
+  initial: {
+    opacity: 0,
+  },
+  in: {
+  opacity: 1,
+
+  },
+  out: {
+    opacity: 0,
+  }
+};
+
+export const FadeInWrapper = ({children}) => {
+  return ( 
+    <motion.div 
+    style={pageStyle}
+    exit="out" 
+    animate="in"
+    initial="initial"
+    variants={fadeVariants}
+    transition={{
+      delay: 0.5,
+      duration: 1,
+    }}
     >
       {children}
     </motion.div>  
