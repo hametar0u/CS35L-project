@@ -78,6 +78,20 @@ const MALAuthTest2 = (props) => {
         setError(err.response);
       });
   };
+  
+  const generateSimScore = async () => {
+    await axios
+      .get("/llistings/createSimScore", {
+        withCredentials: true,
+      })
+      .then((response) => {
+        console.log(response.data);
+      })
+      .catch((err) => {
+        console.log(err);
+        setError(err.response);
+      });
+  }
 
   const getPageViews = async () => {
     await axios
@@ -313,7 +327,8 @@ const MALAuthTest2 = (props) => {
       <input ref={input} />
       <button className="bg-bermuda rounded-full m-2 p-2" onClick={handleClick}>click for vBucks</button>
       <button className="bg-bermuda rounded-full m-2 p-2" onClick={checkSession}>check whats in session</button>
-      <button className="bg-bermuda rounded-full m-2 p-2" onClick={getPageViews}>check times visited</button>
+      <button className="bg-bermuda rounded-full m-2 p-2" onClick={checkSession}>check whats in session</button>
+      <button className="bg-bermuda rounded-full m-2 p-2" onClick={generateSimScore}>generate simscores</button>
       <button className="bg-bermuda rounded-full m-2 p-2" onClick={resetSession}>reset</button>
       <button className="bg-bermuda rounded-full m-2 p-2" onClick={listOfAnimesFromMAL}>Generate Anime List from MAL</button>
       <button className="bg-bermuda rounded-full m-2 p-2" onClick={listOfAnimesFromMongo}>Generate Anime List from MongoDb</button>

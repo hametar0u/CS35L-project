@@ -25,6 +25,139 @@ userRoute.route("/listings").get(async (req, res) => {
         });
 });
 
+userRoute.route("/llistings/createSimScore").get(async (req, res) => {
+    const dbConnect = dbo.getDb();
+    try{
+        const userid = req.session.userprofile.id; //user id stored here
+        const access_token = req.session.tokens.access_token; //access token stored here
+
+        //grab both lists
+        let sharedlist = {};
+        await axios
+            .get("http://localhost:5001/listings/sharedList")
+            .then((response) => {
+                sharedlist = response.data;
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+            
+
+        let userlist = {};
+        await axios
+        .get("http://localhost:5001/listings")
+        .then((response) => {
+            userlist = response.data;
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+        //search for user's profile and grab their anime list
+        let useranimelist = {};
+        let username = null;
+        let usersharedid = null;
+        var count = Object.keys(userlist).length;
+        for(let i = 0; i < count; i++)
+        {
+            if(userlist[i].id == userid)
+            {
+                username = userlist[i].info.name;
+                usersharedid = userlist[i].sharedlist_id;
+                break;
+            }
+        }
+        var count2 = Object.keys(sharedlist).length;
+        for(let i = 0; i < count2; i++)
+        {
+            if(sharedlist[i]._id == usersharedid)
+            {
+                useranimelist = sharedlist[i];
+                break;
+            }
+        }
+        //use this list to create sim scores of everyone on mongodb
+        let simscore = {
+            user: []
+        }
+        let counter = 0; 
+        let newcounter = 0;
+        let user = {
+            userid: null,
+            score: null
+        }
+        var animeamount = Object.keys(useranimelist.anime).length; //all user anime
+        for(let i = 0; i < count2; i++) //for each shared list
+        {
+            var count3 = Object.keys(sharedlist[i].anime).length;
+            for(let j = 0; j < animeamount; j++) //for each currrent user anime
+            {
+                for(let k = 0; k < count3; k++) //for each anime in the other shared list
+                {
+                    if(useranimelist.anime[j].title == sharedlist[i].anime[k].title)
+                    {
+                        counter++;
+                    }
+                }
+            }
+            let score = counter / animeamount;
+            var count4 = Object.keys(sharedlist[i].users).length;
+            for(let j = newcounter; j < count4 + newcounter; j++)
+            {
+                user = {
+                    userid: sharedlist[i].users[j],
+                    score: score   
+                }
+                console.log(user);
+                var count5 = Object.keys(simscore.user).length;
+                if( count5 == 0)
+                {
+                    simscore.user[j] = user;
+                }
+                var count6 = Object.keys(simscore.user).length;
+                for(let b = 0; b < count6; b++)
+                {
+                    if(simscore.user[b].userid == username || simscore.user[b].userid == user.userid)
+                    {
+                        console.log("already there");
+                    }
+                    else {
+                        simscore.user[j] = user;
+                    }
+                }
+            }
+            counter = 0;
+
+        }
+        console.log(simscore);
+        dbConnect
+                .collection("UserList")
+                .findOneAndUpdate({id: userid},
+                    {$set: {simscore: simscore}});        
+        res.send("Success in creating sim scores");    
+    }
+    catch {
+        res.status(500).send("You are not logged in");
+    }
+
+    
+});
+
+userRoute.route("/listings/similarity").post(async (req, res) => {
+    const dbConnect = dbo.getDb();
+
+    let sharedList = {};
+    await axios
+        .get("http://localhost:5001/listings/sharedList")
+        .then((response) => {
+            sharedList = response.data;
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+
+    
+});
+
 userRoute.route("/listings/sharedList").get(async (req, res) => {
     const dbConnect = dbo.getDb();
 
@@ -35,7 +168,7 @@ userRoute.route("/listings/sharedList").get(async (req, res) => {
             if (err) {
                 res.status(400).send("Error fetching shared_lists!");
             } else {
-                console.log(result);
+                //console.log(result);
                 res.json(result);
             }
         });
