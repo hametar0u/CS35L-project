@@ -31,6 +31,7 @@ const MALAuthTest2 = (props) => {
   const [delanime, setDelAnime] = useState(null);
   const [adduser, setAddUser] = useState(null);
   const [searchResults, setSearchResults] = useState([]);
+  const [finduser, setfindUser] = useState(null);
 
   useEffect(() => {
     setChallenge(userData.code_challenge);
@@ -78,7 +79,36 @@ const MALAuthTest2 = (props) => {
         setError(err.response);
       });
   };
-
+  
+  const generateSimScore = async () => {
+    await axios
+      .get("/listings/ReccomendUser", {
+        withCredentials: true,
+      })
+      .then((response) => {
+        console.log(response.data);
+      })
+      .catch((err) => {
+        console.log(err);
+        setError(err.response);
+      });
+  }
+  const getUserFromMAL = async () => {
+    const obj = {
+      id: finduser,
+    }
+    await axios
+      .post("/listings/getUserFromMAL", obj, {
+        withCredentials: true,
+      })
+      .then((response) => {
+        console.log(response.data);
+      })
+      .catch((err) => {
+        console.log(err);
+        setError(err.response);
+      });
+  }
   const getPageViews = async () => {
     await axios
       .get("/sessioncount", {
@@ -265,6 +295,9 @@ const MALAuthTest2 = (props) => {
   function getData3(val) {
     setAddUser(val.target.value);
   }
+  function getData4(val) {
+    setfindUser(val.target.value);
+  }
 
   const jikanFilter = async (val) => {
     if (!val) {
@@ -313,7 +346,8 @@ const MALAuthTest2 = (props) => {
       <input ref={input} />
       <button className="bg-bermuda rounded-full m-2 p-2" onClick={handleClick}>click for vBucks</button>
       <button className="bg-bermuda rounded-full m-2 p-2" onClick={checkSession}>check whats in session</button>
-      <button className="bg-bermuda rounded-full m-2 p-2" onClick={getPageViews}>check times visited</button>
+      <button className="bg-bermuda rounded-full m-2 p-2" onClick={checkSession}>check whats in session</button>
+      <button className="bg-bermuda rounded-full m-2 p-2" onClick={generateSimScore}>generate simscores</button>
       <button className="bg-bermuda rounded-full m-2 p-2" onClick={resetSession}>reset</button>
       <button className="bg-bermuda rounded-full m-2 p-2" onClick={listOfAnimesFromMAL}>Generate Anime List from MAL</button>
       <button className="bg-bermuda rounded-full m-2 p-2" onClick={listOfAnimesFromMongo}>Generate Anime List from MongoDb</button>
@@ -330,6 +364,9 @@ const MALAuthTest2 = (props) => {
       <button onClick={UserColab}>Join User's Colab List</button></div>
       <div className="bg-bermuda rounded-full m-2 p-2">
         <input type="text" placeholder="Jikan Filter" onChange={handleChange} ref={anime}></input></div>
+        <div className="bg-bermuda rounded-full m-2 p-2">
+        <input type="text" placeholder="Enter user's id" onChange={getData}></input>
+      <button onClick={getUserFromMAL}>get user by malId</button></div>
       <div>
         {searchResults && searchResults.map((result, i) => {
           return <div>{result.title}</div>;
