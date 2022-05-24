@@ -3,6 +3,7 @@ import axios from 'axios';
 import Animes from "../components/AnimeCard";
 import Nav from "../components/Nav";
 import SearchBarProto from "../components/SearchBarTest";
+import { ZoomInWrapper } from "../components/MotionComponents";
 
 //helper func
 const getDifference = (array1, array2) => {
@@ -105,8 +106,9 @@ const ListPage = () => {
 
 
   return(
+    <ZoomInWrapper>
     <div>
-    <Nav/>
+    {/* <Nav/> */}
       <div className="p-10">
       
         {/* <Link className="bg-blue rounded-full m-2 p-2 text-white" to="/home">Back</Link> */}
@@ -115,7 +117,7 @@ const ListPage = () => {
           <div className="font-serif text-xl text-blue pb-15">
               Shared List
           </div>
-          <div className="absolute pt-10 w-full">
+          <div className="absolute pt-10 w-full z-40">
             <SearchBarProto addAnime={addAnime}/>
           </div>
           <div>
@@ -125,6 +127,7 @@ const ListPage = () => {
       </div>
     </div>
   </div>
+  </ZoomInWrapper>
   );
 }
 
