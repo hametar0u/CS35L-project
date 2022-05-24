@@ -126,6 +126,22 @@ userRoute.route("/listings/mainGenre").get(async (req, res) => {
 
 });
 
+userRoute.route("/listings/getUserById").post(async (req, res) => {
+    let obj = {};
+    console.log(req.body);
+    
+    let url = `https://api.jikan.moe/v4/users/${req.body.username}`
+        await axios
+            .get(url)
+            .then((response) => {
+                obj = response.data.data;
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    res.send(obj);
+})
+
 userRoute.route("/listings/ReccomendUser").get(async (req, res) => {
     const dbConnect = dbo.getDb();
     try{
@@ -177,6 +193,7 @@ userRoute.route("/listings/ReccomendUser").get(async (req, res) => {
         //compare with each user's most popular genre
         var count3;
         let username = "";
+        let recuserId = 0;
         let otherc = 0;
         for(let i = 0; i < count; i++)
         {
@@ -192,6 +209,7 @@ userRoute.route("/listings/ReccomendUser").get(async (req, res) => {
                         {
                             username = userlist[i].info.name;
                             otherc = userlist[i].score[j].counter;
+                            recuserId = userlist[i].id;
                         }
                     }
                 }
@@ -207,100 +225,29 @@ userRoute.route("/listings/ReccomendUser").get(async (req, res) => {
         else{
             ratio = otherc / counter;
         }
-        res.send("The user most similar is " + username + " and the similarity score is " + ratio); 
-    }
-    catch {
-        res.status(500).send("You are not logged in");
-    }
-});
 
-userRoute.route("/listings/createSimScore").get(async (req, res) => {
-    const dbConnect = dbo.getDb();
-    try{
-        const userid = req.session.userprofile.id; //user id stored here
-        const access_token = req.session.tokens.access_token; //access token stored here
-
-        //grab both lists
-        let sharedlist = {};
+        //get reccomended user's profile
+        let information = {};
         await axios
-            .get("http://localhost:5001/listings/sharedList")
+            .post("http://localhost:5001/listings/getUserById", {username: username})
             .then((response) => {
-                sharedlist = response.data;
+                information = response.data;
             })
             .catch((err) => {
                 console.log(err);
             });
-            
+        obj = {
+            username : username,
+            userid: recuserId,
+            simscore: ratio,
+            information: information
 
-        let userlist = {};
-        await axios
-        .get("http://localhost:5001/listings")
-        .then((response) => {
-            userlist = response.data;
-        })
-        .catch((err) => {
-            console.log(err);
-        });
-        //search for user's profile and grab their anime list
-        let useranimelist = {};
-        let username = null;
-        let usersharedid = null;
-        var count = Object.keys(userlist).length;
-        for(let i = 0; i < count; i++)
-        {
-            if(userlist[i].id == userid)
-            {
-                username = userlist[i].info.name;
-                usersharedid = userlist[i].sharedlist_id;
-                break;
-            }
         }
-        var count2 = Object.keys(sharedlist).length;
-        for(let i = 0; i < count2; i++)
-        {
-            if(sharedlist[i]._id == usersharedid)
-            {
-                useranimelist = sharedlist[i];
-                break;
-            }
-        }
-        //use this list to get genre information
-        let scores = {
-            genre: null,
-            counter: 0
-        }
-        let simscore = []
-        let counter = 0;
-        var count3 = Object.keys(useranimelist.anime).length;
-        for(let i = 0; i < count3; i++)
-        {
-            var count4 = Object.keys(useranimelist.anime[i].genres).length;
-            for(let j = 0; j < count4; j++)
-            {
-                if(useranimelist.anime[i].genres[0].name == useranimelist.anime[j].genres[0].name)
-                {
-                    counter++;
-                }
-            }
-            scores = {
-                genre: useranimelist.anime[i].genres[0].name,
-                counter: counter
-            }
-            simscore[i] = scores;
-        }
-        dbConnect
-                .collection("UserList")
-                .findOneAndUpdate({id: userid},
-                    {$set: {score: simscore}});
-
-                
-        res.send("Success in creating sim scores");    
+        res.send(obj); 
     }
     catch {
         res.status(500).send("You are not logged in");
     }
-
-    
 });
 
 userRoute.route("/listings/similarity").post(async (req, res) => {
@@ -672,8 +619,9 @@ userRoute.route("/listings/animeAddByMalID").post(async (req, res) => {
             console.log(err);
         });
         console.log(obj);
+        console.log("=============================");
              //Check if current user has a sharedlist
-             if (!currentuser.sharedlist_id) {
+             if (!currentuser.sharedlist_id) { //if the user doesn't have a sharedlist, create one
                 let u = []
                 u[0] = currentuser.info.name;
                 let newsharedlist = [];
@@ -699,12 +647,14 @@ userRoute.route("/listings/animeAddByMalID").post(async (req, res) => {
                 res.send("Successfully created a colab list for user");
                 return;
             }
+            else { // Otherwise user has a sharedlist, add anime to that list
             dbConnect
                 .collection("shared_lists")
                 .updateOne({_id: ObjectId(currentuser.sharedlist_id),
-                anime: {$ne: obj}},
+                anime:  {$ne: obj}},
                     {$push: {anime: obj}});
             res.send("Successfully added anime to shared list");
+                }
     }
     catch {
         res.status(500).send("Something");
@@ -712,7 +662,6 @@ userRoute.route("/listings/animeAddByMalID").post(async (req, res) => {
         
    
 })
-
 
 userRoute.route("/listings/animeAdd").post(async (req, res) => {
     const dbConnect = dbo.getDb();
@@ -900,12 +849,14 @@ userRoute.route("/listings/getUserFromMAL").post(async (req, res) => {
         res.status(500).send("You are not logged in");
     }
 })
+
 userRoute.route("/listings/allanimes").post(async (req, res) => {
     try {
         const userid = req.session.userprofile.id; //user id stored here
         const access_token = req.session.tokens.access_token; //access token stored here
         let userlist = {}
         let url2 = `http://localhost:5001/listings`
+        //Get current user document
         await axios
             .get(url2)
             .then((response) => {
@@ -929,6 +880,7 @@ userRoute.route("/listings/allanimes").post(async (req, res) => {
             res.send("User Doesn't exist");
             return;
         }
+        //get all anime from user
         let url = `https://api.myanimelist.net/v2/users/${currentuser.info.name}/animelist?fields=title&limit=100`
         let prev = ""
         const dbConnect = dbo.getDb();
@@ -946,7 +898,6 @@ userRoute.route("/listings/allanimes").post(async (req, res) => {
         await axios
             .get(url, params)
             .then((response) => {
-                // console.log(response.data.data[0].node);
                 var count = Object.keys(response.data.data).length;
                 console.log(count);
                 for(let k = 0; k < count; k++) {

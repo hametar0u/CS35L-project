@@ -95,10 +95,10 @@ const MALAuthTest2 = (props) => {
   }
   const getUserFromMAL = async () => {
     const obj = {
-      id: finduser,
+      username: finduser
     }
     await axios
-      .post("/listings/getUserFromMAL", obj, {
+      .post("/listings/getUserById", obj, {
         withCredentials: true,
       })
       .then((response) => {
@@ -296,7 +296,9 @@ const MALAuthTest2 = (props) => {
     setAddUser(val.target.value);
   }
   function getData4(val) {
+    console.log(val.target.value);
     setfindUser(val.target.value);
+    console.log(finduser);
   }
 
   const jikanFilter = async (val) => {
@@ -365,7 +367,7 @@ const MALAuthTest2 = (props) => {
       <div className="bg-bermuda rounded-full m-2 p-2">
         <input type="text" placeholder="Jikan Filter" onChange={handleChange} ref={anime}></input></div>
         <div className="bg-bermuda rounded-full m-2 p-2">
-        <input type="text" placeholder="Enter user's id" onChange={getData}></input>
+        <input type="text" placeholder="Enter user's id" onChange={getData4}></input>
       <button onClick={getUserFromMAL}>get user by malId</button></div>
       <div>
         {searchResults && searchResults.map((result, i) => {
