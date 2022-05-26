@@ -129,8 +129,10 @@ const ListPage = () => {
               <div className="font-serif text-xl text-blue">
                 Recommended
               </div>
-              <div className="bg-lightgrey rounded-lg w-full h-full">
-                <Recs animeList={animeList} delAnime={delAnime} className=""/>
+              <div className="bg-purple rounded-lg w-fit h-full justify-center items-center">
+                <div className="p-5">
+                <Recs animeList={animeList} delAnime={delAnime}/>
+                </div>
               </div>
             </div>
 
