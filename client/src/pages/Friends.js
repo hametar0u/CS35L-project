@@ -152,6 +152,7 @@ useEffect(() => {
                 </div>
                 <div className="">
 <<<<<<< HEAD
+<<<<<<< HEAD
                   Want to find out how similar your anime taste is to other users? Or do you want to find an anime club? 
                 </div>
                 <div className="text-blue">
@@ -207,6 +208,9 @@ useEffect(() => {
               }
 =======
                   Want to find out how similar your anime taste is to your fellow list collaborators? 
+=======
+                  Want to find out how similar your anime taste is to other users? Or do you want to find an anime club? 
+>>>>>>> f50b01f (polished styling for friends page)
                 </div>
                 <div className="text-blue mb-40">
                   Search for a friend below. 
@@ -217,9 +221,11 @@ useEffect(() => {
                 <div className="font-serif text-xl text-blue">
                   Your Recommended Friend
                 </div>
-                <div className="bg-lightgrey w-max h-40 rounded-lg">
-                    <div className="flex flex-row gap-5">
-                      <Profile name="Jeffrey Kwan" image={paul1}/>
+                <div className="bg-lightgrey w-max rounded-lg">
+                    <div className="flex flex-row">
+                    <div className="ml-20 mr-0">
+                      <Profile name="YOUR FRIEND" image={paul1}/>
+                    </div>
                     <div className="flex flex-col gap-5 p-5">
                       <div className="font-bold">
                         70% Similarity
@@ -229,6 +235,7 @@ useEffect(() => {
               </div>
                 </div>
             </div>
+<<<<<<< HEAD
             <div className="bg-lightgrey w-full rounded-lg mt-10">
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -239,11 +246,18 @@ useEffect(() => {
 >>>>>>> ffeb2f9 (alignment of components)
 =======
               <CountUp style={{fontWeight: 700, fontSize: 120, color: '#F3C950'}} end={similarity} useEasing="true" />
+=======
+            <div className="bg-lightgrey w-full rounded-lg px-10 py-5">
+              <div className="flex flex-row gap-2 items-center">
+              <CountUp style={{fontWeight: 700, fontSize: 70, color: '#000000'}} end={similarity} useEasing="true" />
+              <div className="text-black text-6xl font-semibold">%</div>
+              </div>
+>>>>>>> f50b01f (polished styling for friends page)
               <Circle 
                   percent={progress}
                   strokeWidth="6" 
-                  strokeColor="#F3C950" 
-                  trailColor={similarity === 0 ? "#d3d3d3" : "#477BE8"}
+                  strokeColor="#BCD8C1" 
+                  trailColor={similarity === 0 ? "#d3d3d3" : "#d3d3d3"}
                   trailWidth="6"
               /> 
 >>>>>>> 1cbfae0 (add progress)
