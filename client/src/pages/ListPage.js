@@ -140,6 +140,7 @@ const ListPage = () => {
                 Recommended
               </div>
 <<<<<<< HEAD
+<<<<<<< HEAD
               <div className="bg-purple rounded-lg w-fit h-full justify-center items-center">
                 <div className="p-5">
                   <RecommendedAnime animeList={recommendedAnimeList} addAnime={addAnime}/>
@@ -148,6 +149,12 @@ const ListPage = () => {
               <div className="bg-lightgrey rounded-lg w-full h-full">
                 <Recs animeList={animeList} delAnime={delAnime} className=""/>
 >>>>>>> 26dde40 (started adding recs list)
+=======
+              <div className="bg-purple rounded-lg w-fit h-full justify-center items-center">
+                <div className="p-5">
+                <Recs animeList={animeList} delAnime={delAnime}/>
+                </div>
+>>>>>>> 13a98ec (added styling for rec part)
               </div>
             </div>
 

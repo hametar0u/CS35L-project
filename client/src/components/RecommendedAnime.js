@@ -50,12 +50,12 @@ import { AnimatePresence } from "framer-motion";
 
 const AnimeCard = (props) => {
     return(
-        <div className="bg-lightgrey p-5 rounded-lg flex flex-col gap-2">
+        <div className="bg-lightgrey p-5 rounded-lg flex flex-col gap-2 w-full">
             <div className="flex flex-row-reverse">
                 <button className="bg-mint items-center rounded-full justify-center w-5 h-5 text-xs text-white" onClick={() => props.delAnime(props.id)}>+</button>
             </div>
-            <div className=""><img src={props.image} className="object-contain h-60"/></div>
-            <div className="">{props.title}</div>
+            <div className="w-3/4"><img src={props.image}/></div>
+            <div className="text-xs">{props.title}</div>
 
             {/* <div>ID: {props.id}</div> */}
         </div>
