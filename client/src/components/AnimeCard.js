@@ -3,12 +3,18 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import "../styles/globals.css";
 import { PassThrough } from "stream";
+<<<<<<< HEAD
 import defaultAnime from "./defaultAnime.svg";
 <<<<<<< HEAD
 import { CardWrapper } from "../components/MotionComponents";
 import { AnimatePresence } from "framer-motion";
 =======
 >>>>>>> da45d36 (started styling friends components)
+=======
+import { CardWrapper } from "../components/MotionComponents";
+import { AnimatePresence } from "framer-motion";
+import defaultAnime from "./defaultAnime.svg";
+>>>>>>> 7c8330b (fixed the anime card conflicts)
 
 
 
@@ -31,6 +37,7 @@ const Animes = (props) => {
         <div className="grid grid-cols-3 gap-10">
             {props.animeList.map((anime, i) => {
 <<<<<<< HEAD
+<<<<<<< HEAD
                 return (
                     <AnimatePresence>
                         <CardWrapper>
@@ -41,6 +48,9 @@ const Animes = (props) => {
 =======
                 return <AnimeCard title={anime.title} image={anime.main_picture ? anime.main_picture.medium : defaultAnime} id={anime.id}  delAnime={props.delAnime} key={anime.id}/>;
 >>>>>>> da45d36 (started styling friends components)
+=======
+                return <AnimeCard title={anime.title} image={anime.main_picture ? anime.main_picture.medium : defaultAnime} id={anime.id}  delAnime={props.delAnime} key={anime.id}/>;
+>>>>>>> 7c8330b (fixed the anime card conflicts)
             })}
         </div>
         
