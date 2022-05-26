@@ -4,7 +4,11 @@ import Animes from "../components/AnimeCard";
 import Nav from "../components/Nav";
 import SearchBarProto from "../components/SearchBarTest";
 import { ZoomInWrapper } from "../components/MotionComponents";
+<<<<<<< HEAD
 import RecommendedAnime from "../components/RecommendedAnime";
+=======
+import Recs from "../components/RecommendedAnime";
+>>>>>>> 26dde40 (started adding recs list)
 
 //helper func
 const getDifference = (array1, array2) => {
@@ -135,10 +139,15 @@ const ListPage = () => {
               <div className="font-serif text-xl text-blue">
                 Recommended
               </div>
+<<<<<<< HEAD
               <div className="bg-purple rounded-lg w-fit h-full justify-center items-center">
                 <div className="p-5">
                   <RecommendedAnime animeList={recommendedAnimeList} addAnime={addAnime}/>
                 </div>
+=======
+              <div className="bg-lightgrey rounded-lg w-full h-full">
+                <Recs animeList={animeList} delAnime={delAnime} className=""/>
+>>>>>>> 26dde40 (started adding recs list)
               </div>
             </div>
 
