@@ -9,6 +9,7 @@ import SearchBarProto from "../components/SearchBarTest";
 <<<<<<< HEAD
 import paul1 from "../pauls/paul1.png";
 import MiniButton from "../components/MiniButton";
+<<<<<<< HEAD
 
 import CountUp from 'react-countup';
 import { Circle } from 'rc-progress';
@@ -18,6 +19,8 @@ import { SlidingWrapper } from "../components/MotionComponents";
 =======
 import paul1 from "../pauls/paul1.png";
 >>>>>>> ffeb2f9 (alignment of components)
+=======
+>>>>>>> dffd90d (added buttons for search)
 
 import CountUp from 'react-countup';
 import { Circle } from 'rc-progress';
@@ -140,6 +143,7 @@ useEffect(() => {
           <div className="flex justify-between gap-x-40">
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
             <div className="flex flex-col gap-5 w-full">
 =======
             <div>
@@ -147,6 +151,9 @@ useEffect(() => {
 =======
             <div className="flex flex-col gap-5">
 >>>>>>> ffeb2f9 (alignment of components)
+=======
+            <div className="flex flex-col gap-5 w-full">
+>>>>>>> dffd90d (added buttons for search)
                 <div className="font-serif text-xl text-blue">
                   Compare with friends
                 </div>
@@ -157,6 +164,7 @@ useEffect(() => {
                 </div>
                 <div className="text-blue">
                   Search by...
+<<<<<<< HEAD
                 </div>
                 <div className="flex flex-row gap-2 mb-40">
                   <MiniButton name="MAL database" handleClick={() => {setSearchType("MALuser");}}></MiniButton>
@@ -214,8 +222,15 @@ useEffect(() => {
                 </div>
                 <div className="text-blue mb-40">
                   Search for a friend below. 
+=======
+>>>>>>> dffd90d (added buttons for search)
                 </div>
-                <div className="absolute pt-40 w-max">
+                <div className="flex flex-row gap-2 mb-40">
+                  <MiniButton name="MAL database"></MiniButton>
+                  <MiniButton name="Site database"></MiniButton>
+                  <MiniButton name="MAL clubs"></MiniButton>
+                </div>
+                <div className="absolute pt-50 w-max">
                     <SearchBarProto name="Friends"/>
                 </div>
                 <div className="font-serif text-xl text-blue">
