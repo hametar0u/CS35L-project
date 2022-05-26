@@ -5,6 +5,7 @@ import Navbar from "../components/Navbar/index";
 import Nav from "../components/Nav";
 import SearchBarProto from "../components/SearchBarTest";
 import paul1 from "../pauls/paul1.png";
+import MiniButton from "../components/MiniButton";
 
 import CountUp from 'react-countup';
 import { Circle } from 'rc-progress';
@@ -34,17 +35,22 @@ const CompareUser = () => {
         <div className="flex justify-left sm:justify-center w-full pt-10 pb-10">   
         <div className="flex flex-col gap-2 sm:gap-5 w-3/4 max-w-5xl">
           <div className="flex justify-between gap-x-40">
-            <div className="flex flex-col gap-5">
+            <div className="flex flex-col gap-5 w-full">
                 <div className="font-serif text-xl text-blue">
                   Compare with friends
                 </div>
                 <div className="">
                   Want to find out how similar your anime taste is to other users? Or do you want to find an anime club? 
                 </div>
-                <div className="text-blue mb-40">
-                  Search for a friend below. 
+                <div className="text-blue">
+                  Search by...
                 </div>
-                <div className="absolute pt-40 w-max">
+                <div className="flex flex-row gap-2 mb-40">
+                  <MiniButton name="MAL database"></MiniButton>
+                  <MiniButton name="Site database"></MiniButton>
+                  <MiniButton name="MAL clubs"></MiniButton>
+                </div>
+                <div className="absolute pt-50 w-max">
                     <SearchBarProto name="Friends"/>
                 </div>
                 <div className="font-serif text-xl text-blue">
