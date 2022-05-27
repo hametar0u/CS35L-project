@@ -9,6 +9,7 @@
     "autoprefixer": "^10.4.7",
     "axios": "^0.26.1",
     "boostrap": "^2.0.0",
+    "framer-motion": "^6.3.3",
     "next.js": "^1.0.3",
     "node.js": "^0.0.1-security",
     "postcss": "^8.4.13",

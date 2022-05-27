@@ -55,7 +55,7 @@ MAL.route("/auth/v2/login").post(async (req, res, next) => {
       .catch((err) => {
         //TODO: if access token expired, redirect to /auth/refresh-token
         console.log(err.response);
-        if (err.response.status === 401) {
+        if (err.response && err.response.status === 401) {
           if (!req.body.code_challenge) {
             res.status(400).send("bad code challenge");
           } else {

@@ -9,6 +9,7 @@ import MiniButton from "../components/MiniButton";
 
 import CountUp from 'react-countup';
 import { Circle } from 'rc-progress';
+import { SlidingWrapper } from "../components/MotionComponents";
 
 const CompareUser = () => {
   const [similarity, setSimilarity] = useState(70);//temp
@@ -30,7 +31,8 @@ const CompareUser = () => {
 
   return (
     <div>
-      <Nav />
+      {/* <Nav /> */}
+      <SlidingWrapper>
       <div className="p-10">
         <div className="flex justify-left sm:justify-center w-full pt-10 pb-10">   
         <div className="flex flex-col gap-2 sm:gap-5 w-3/4 max-w-5xl">
@@ -88,6 +90,7 @@ const CompareUser = () => {
         </div> 
         </div>
     </div>
+    </SlidingWrapper>
     </div>
     
   );
