@@ -43,14 +43,15 @@ MAL.route("/auth/v2/login").post(async (req, res, next) => {
       .then((response) => {
         //console.log(response.data);
         req.session.userprofile = response.data;
-        res.status(200).send(response.data);
         const dbConnect = dbo.getDb();
-
+        
         dbConnect
-          .collection("UserList")
-          .findOneAndUpdate({id: response.data.id},
-            {$set: {info: response.data, access_token: access_token}},
-            {upsert: true});
+        .collection("UserList")
+        .findOneAndUpdate({id: response.data.id},
+          {$set: {info: response.data, access_token: access_token}},
+          {upsert: true});
+          
+        res.status(200).send(response.data);
       })
       .catch((err) => {
         //TODO: if access token expired, redirect to /auth/refresh-token
