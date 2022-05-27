@@ -4,7 +4,7 @@ import Animes from "../components/AnimeCard";
 import Nav from "../components/Nav";
 import SearchBarProto from "../components/SearchBarTest";
 import { ZoomInWrapper } from "../components/MotionComponents";
-import Recs from "../components/RecommendedAnime";
+import RecommendedAnime from "../components/RecommendedAnime";
 
 //helper func
 const getDifference = (array1, array2) => {
@@ -19,6 +19,7 @@ const getDifference = (array1, array2) => {
 const ListPage = () => {
   const [error, setError] = useState();
   const [animeList, setAnimeList] = useState([]);
+  const [recommendedAnimeList, setRecommendedAnimeList] = useState([]);
   const config = {
     withCredentials: true
   };
@@ -26,15 +27,19 @@ const ListPage = () => {
   useEffect(() => {
     getAnime();
   }, []);
+  
 
   const getAnime = async () => {
     axios.all([
       axios.post("/listings/allanimes", {}, config), //MAL
-      axios.post(`/listings/allanimesSharedList`, {}, config) //DB
+      axios.post(`/listings/allanimesSharedList`, {}, config), //DB
+      axios.post("/listings/listOfRecommendedAnime", {}, config)
     ])
-    .then(axios.spread((MALdata, DBdata) => {
+    .then(axios.spread((MALdata, DBdata, RecommendedAnimeData) => {
+      console.log(MALdata,DBdata,RecommendedAnimeData);
       MALdata = MALdata.data;
       DBdata = DBdata.data;
+      RecommendedAnimeData = RecommendedAnimeData.data;
       DBdata = DBdata.filter(element => { //remove empty object
         if (Object.keys(element).length !== 0) {
           return true;
@@ -50,11 +55,12 @@ const ListPage = () => {
       if (animeToDelete.length !== 0) {
         animeToDelete.forEach(anime => delAnime(anime.id));
       }
-      if(animeToAdd.length !== 0) {
+      if (animeToAdd.length !== 0) {
         animeToAdd.forEach(anime => addAnime(anime.id));
       }
 
       setAnimeList(DBdata);
+      setRecommendedAnimeList(RecommendedAnimeData);
     }))
     .catch(err => {
       console.log(err);
@@ -131,7 +137,7 @@ const ListPage = () => {
               </div>
               <div className="bg-purple rounded-lg w-fit h-full justify-center items-center">
                 <div className="p-5">
-                <Recs animeList={animeList} delAnime={delAnime}/>
+                  <RecommendedAnime animeList={recommendedAnimeList} addAnime={addAnime}/>
                 </div>
               </div>
             </div>

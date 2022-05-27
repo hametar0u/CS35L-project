@@ -63,7 +63,6 @@ UserTest.route("/deleteFromList/:id").post(async (req, res, next) => {
   
   });
 
-
 //   UserTest.route("/addToList/:id").patch(async (req, res, next) => {
 //     console.log("i got to patch");
 //     console.log(req.session);
@@ -130,5 +129,10 @@ UserTest.route("/addToList/:id").post(async (req, res, next) => {
     }
   
   });
+
+UserTest.route("/listings/getClubs").post(async (req, res, next) => {
+  console.log(req.body);
+  res.send(`https://myanimelist.net/clubs.php?action=find&q=${req.body.club_name}&cat=club`);
+});
 
 module.exports = UserTest;
