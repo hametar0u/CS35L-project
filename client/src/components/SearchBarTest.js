@@ -48,8 +48,7 @@ const SearchBarProto = (props) => {
     <>
     <div className="bg-light-blue rounded-lg">
       <div className="rounded-full m-2 p-2">
-          <input className="rounded-lg pl-2 pr-2 w-1/3" type="text" placeholder="Search Anime" value={searchInput} onChange={handleChange}></input>
-      </div>
+          <input className="rounded-lg pl-2 pr-2 w-max" type="text" placeholder={"Search " + props.name} onChange={handleChange}></input></div>
         <div>
           {searchResults && searchResults.map((result, i) => {
             return (
