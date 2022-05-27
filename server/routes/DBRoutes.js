@@ -1177,34 +1177,7 @@ userRoute.route("/listings/SearchUserMAL").post(async (req, res) => {
                 console.log(err);
             });
         console.log("checkpoint 2");
-        //compare with each user's most popular genre
-        // var count3;
-        // let otherc = 0;
-        //     if(searcheduser.hasOwnProperty('score'))
-        //     {
-                
-        //         count3 = Object.keys(specificuser.score).length;
-        //         for(let j = 0; j < count3; j++)
-        //         {
-        //             if(userlist[i].score[j] != null)
-        //             {
-        //                 if(userlist[i].score[j].counter > otherc && userlist[i].score[j].genre == genre && userlist[i].sharedlist_id != user.sharedlist_id)
-        //                 {
-        //                     otherc = userlist[i].score[j].counter;
-        //                 }
-        //             }
-        //         }
-        //     }
-            
-        // let ratio = 0;
-        // if(otherc > counter)
-        // {
-        //     ratio = counter / otherc;
-        // }
-        // else{
-        //     ratio = otherc / counter;
-        // }
-
+        
         //get reccomended user's profile
         let information = {};
         await axios
@@ -1215,17 +1188,81 @@ userRoute.route("/listings/SearchUserMAL").post(async (req, res) => {
             .catch((err) => {
                 console.log(err);
             });
+        //generate simscore
+        let otherc = 0;
+        var count5 = Object.keys(searcheduser.data).length;
+        let id = 0;
+        let item = {
+            id: 0
+        }
+
+        for(let i = 0; i < count5; i ++)
+        {
+            id = searcheduser.data[i].node.id;
+            console.log(id);
+            item = {
+                params: params,
+                id: id
+            }
+            await axios
+                .post("http://localhost:5001/listings/getGenre", item)
+                .then((response) => {
+                    if(genre == response.data.genre)
+                    {
+                        otherc++;
+                    }
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
+        }
+        let simscore = 0;
+        if(otherc > counter) {
+            simscore = counter / otherc;
+        }
+        else {
+            simscore = otherc / counter;
+        }
+
         console.log("checkpoint 3");
         obj = {
             username : req.body.name,
-            //simscore: ratio,
-            information: information
+            searcheduser: searcheduser,
+            information: information,
+            simscore: simscore
 
         }
         res.send(obj); 
     }
     catch {
         res.status(500).send("You are not logged in");
+    }
+})
+
+userRoute.route("/listings/getGenre").post(async (req, res) => {
+    const dbConnect = dbo.getDb();
+    try{
+        //const userid = req.session.userprofile.id; //user id stored here
+        //const access_token = req.session.tokens.access_token; //access token stored here
+        console.log(req.body);
+        
+        //find anime genre
+        let genre = ""
+        await axios
+            .get(`https://api.myanimelist.net/v2/anime/${req.body.id}?fields=genres`, req.body.params)
+            .then((response) => {
+                genre = response.data.genres[0].name
+            })
+            .catch((err) => {
+                console.log(err);
+            })
+            let info = {
+                genre: genre
+            };
+            res.send(info);
+    }
+    catch {
+        console.log("user not logged in");
     }
 })
 
