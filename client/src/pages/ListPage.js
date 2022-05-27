@@ -4,6 +4,7 @@ import Animes from "../components/AnimeCard";
 import Nav from "../components/Nav";
 import SearchBarProto from "../components/SearchBarTest";
 import { ZoomInWrapper } from "../components/MotionComponents";
+import RecommendedAnime from "../components/RecommendedAnime";
 
 //helper func
 const getDifference = (array1, array2) => {
@@ -123,6 +124,7 @@ const ListPage = () => {
           <div>
             <Animes animeList={animeList} delAnime={delAnime}/>
           </div>
+          <RecommendedAnime />
         </div>
       </div>
     </div>

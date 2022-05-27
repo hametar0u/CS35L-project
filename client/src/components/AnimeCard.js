@@ -9,7 +9,7 @@ import { AnimatePresence } from "framer-motion";
 
 
 
-const AnimeCard = (props) => {
+export const AnimeCard = (props) => {
     return(
         <div className="bg-lightgrey p-5 rounded-lg flex flex-col gap-2">
             <div className="flex flex-row-reverse">

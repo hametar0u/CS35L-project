@@ -7,18 +7,32 @@ const SearchBarProto = (props) => {
   const [searchResults, setSearchResults] = useState([]);
   const [searchInput, setSearchInput] = useState('');
 
-  const jikanFilter = async (val) => {
+  const searchFilter = async (val) => {
     if (!val) {
       setSearchResults([]);
       return;
     }
 
     const obj = {
-      anime: val
+      anime: val, //hacky solution since each call only uses one of these fields
+      username: val,
+      club_name: val
     };
 
+    let url;
+    if (props.type === "MALuser") {
+      url = "/listings/getUserById";
+    }
+    else if (props.type === "DBuser") {
+      url = "/listings/getUserById"; //TODO: ROUTE NOT THERE YET
+    }
+    else { //anime
+      url = "/listings/jikanInfo";
+    }
+
+
     await axios
-      .post("/listings/jikanInfo", obj, {
+      .post(url, obj, {
         withCredentials: true
       })
       .then((response) => {
@@ -30,9 +44,10 @@ const SearchBarProto = (props) => {
       });
   };
 
-  const throttledFn = useThrottle(jikanFilter);
+  const throttledFn = useThrottle(searchFilter);
+  
   const memoizedThrottle = useCallback(throttledFn, [throttledFn]);
-  const debouncedFn = useDebounce(jikanFilter);
+  const debouncedFn = useDebounce(searchFilter);
   const memoizedDebounce = useCallback(debouncedFn, [debouncedFn]);
 
   const handleChange = (e) => {
