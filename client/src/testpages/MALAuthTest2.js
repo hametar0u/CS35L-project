@@ -253,7 +253,7 @@ const MALAuthTest2 = (props) => {
     };
 
     await axios 
-      .post("/getClub", obj, {
+      .post("/listings/getClubs", obj, {
         withCredentials: true,
       })
       .then((response) => {
