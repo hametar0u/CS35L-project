@@ -63,7 +63,6 @@ UserTest.route("/deleteFromList/:id").post(async (req, res, next) => {
   
   });
 
-
 //   UserTest.route("/addToList/:id").patch(async (req, res, next) => {
 //     console.log("i got to patch");
 //     console.log(req.session);
@@ -130,5 +129,6 @@ UserTest.route("/addToList/:id").post(async (req, res, next) => {
     }
   
   });
+
 
 module.exports = UserTest;

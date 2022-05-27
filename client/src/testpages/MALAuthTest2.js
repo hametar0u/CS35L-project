@@ -80,6 +80,37 @@ const MALAuthTest2 = (props) => {
       });
   };
   
+  const generateRecommendedList = async () => {
+    await axios
+      .get("/listings/listOfRecommendedAnime", {
+        withCredentials: true,
+      })
+      .then((response) => {
+        console.log(response.data);
+      })
+      .catch((err) => {
+        console.log(err);
+        setError(err.response);
+      });
+  }
+
+  const searchSpecificUser = async () => {
+    const obj = {
+      name: "DevelopermonkE"
+    }
+    await axios
+      .post("/listings/SearchUserMAL", obj, {
+        withCredentials: true,
+      })
+      .then((response) => {
+        console.log(response.data);
+      })
+      .catch((err) => {
+        console.log(err);
+        setError(err.response);
+      });
+  }
+
   const generateSimScore = async () => {
     await axios
       .get("/listings/ReccomendUser", {
@@ -346,6 +377,8 @@ const MALAuthTest2 = (props) => {
       {user && <p>welcome {user.name}</p>}
       <p>{count}</p>
       <input ref={input} />
+      <button className="bg-bermuda rounded-full m-2 p-2" onClick={searchSpecificUser}>search for specific user list</button>
+      <button className="bg-bermuda rounded-full m-2 p-2" onClick={generateRecommendedList}>generate RecommendedList</button>
       <button className="bg-bermuda rounded-full m-2 p-2" onClick={handleClick}>click for vBucks</button>
       <button className="bg-bermuda rounded-full m-2 p-2" onClick={checkSession}>check whats in session</button>
       <button className="bg-bermuda rounded-full m-2 p-2" onClick={checkSession}>check whats in session</button>
