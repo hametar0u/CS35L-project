@@ -1267,7 +1267,7 @@ userRoute.route("/listings/getGenre").post(async (req, res) => {
 })
 
 //grab list of recommended anime from MAL, with limit 10
-userRoute.route("/listings/listOfRecommendedAnime").get(async (req, res) => {
+userRoute.route("/listings/listOfRecommendedAnime").post(async (req, res) => {
     try {
         const userid = req.session.userprofile.id; //user id stored here
         const access_token = req.session.tokens.access_token; //access token stored here

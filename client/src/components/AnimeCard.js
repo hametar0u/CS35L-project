@@ -25,7 +25,7 @@ export const AnimeCard = (props) => {
 
 const Animes = (props) => {
     return (
-        <div className="grid grid-cols-4 gap-10">
+        <div className="grid grid-cols-3 gap-10">
             {props.animeList.map((anime, i) => {
                 return (
                     <AnimatePresence>

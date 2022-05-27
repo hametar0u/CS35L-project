@@ -83,7 +83,7 @@ const MALAuthTest2 = (props) => {
   
   const generateRecommendedList = async () => {
     await axios
-      .get("/listings/listOfRecommendedAnime", {
+      .post("/listings/listOfRecommendedAnime", {}, {
         withCredentials: true,
       })
       .then((response) => {
