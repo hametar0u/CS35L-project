@@ -130,5 +130,9 @@ UserTest.route("/addToList/:id").post(async (req, res, next) => {
   
   });
 
+UserTest.route("/listings/getClubs").post(async (req, res, next) => {
+  console.log(req.body);
+  res.send(`https://myanimelist.net/clubs.php?action=find&q=${req.body.club_name}&cat=club`);
+});
 
 module.exports = UserTest;

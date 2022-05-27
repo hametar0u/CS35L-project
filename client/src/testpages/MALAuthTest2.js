@@ -32,6 +32,7 @@ const MALAuthTest2 = (props) => {
   const [adduser, setAddUser] = useState(null);
   const [searchResults, setSearchResults] = useState([]);
   const [finduser, setfindUser] = useState(null);
+  const [club, setClub] = useState();
 
   useEffect(() => {
     setChallenge(userData.code_challenge);
@@ -275,7 +276,27 @@ const MALAuthTest2 = (props) => {
       .catch((error) => {
         console.log(error);
       });
-  }
+  };
+
+  const findClubs = async () => {
+    const obj = {
+      club_name: club
+    };
+
+    await axios 
+      .post("/listings/getClubs", obj, {
+        withCredentials: true,
+      })
+      .then((response) => {
+        console.log(response.data);
+        setClub("");
+        window.open(response.data, "_blank");
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
   const generateAnimeList = async () => {
     //First needs to grab Access_code and username
     const obj = {
@@ -402,6 +423,9 @@ const MALAuthTest2 = (props) => {
         <div className="bg-bermuda rounded-full m-2 p-2">
         <input type="text" placeholder="Enter user's id" onChange={getData4}></input>
       <button onClick={getUserFromMAL}>get user by malId</button></div>
+      <div className="bg-bermuda rounded-full m-2 p-2">
+        <input type="text" placeholder="Enter club name" value={club} onChange={(e) => setClub(e.target.value)}></input>
+      <button onClick={findClubs}>find Clubs</button></div>
       <div>
         {searchResults && searchResults.map((result, i) => {
           return <div>{result.title}</div>;
