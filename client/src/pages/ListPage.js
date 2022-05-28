@@ -4,15 +4,8 @@ import Animes from "../components/AnimeCard";
 import Nav from "../components/Nav";
 import SearchBarProto from "../components/SearchBarTest";
 import { ZoomInWrapper } from "../components/MotionComponents";
-<<<<<<< HEAD
 import RecommendedAnime from "../components/RecommendedAnime";
-<<<<<<< HEAD
-=======
 import Recs from "../components/RecommendedAnime";
->>>>>>> 26dde40 (started adding recs list)
-=======
-import Recs from "../components/RecommendedAnime";
->>>>>>> margaret4
 
 //helper func
 const getDifference = (array1, array2) => {
@@ -143,26 +136,10 @@ const ListPage = () => {
               <div className="font-serif text-xl text-blue">
                 Recommended
               </div>
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-              <div className="bg-purple rounded-lg w-fit h-full justify-center items-center">
-=======
               <div className="bg-purple rounded-lg w-fit h-150 overflow-y-scroll justify-center items-center">
->>>>>>> margaret4
                 <div className="p-5">
                   <RecommendedAnime animeList={recommendedAnimeList} addAnime={addAnime}/>
                 </div>
-=======
-              <div className="bg-lightgrey rounded-lg w-full h-full">
-                <Recs animeList={animeList} delAnime={delAnime} className=""/>
->>>>>>> 26dde40 (started adding recs list)
-=======
-              <div className="bg-purple rounded-lg w-fit h-full justify-center items-center">
-                <div className="p-5">
-                <Recs animeList={animeList} delAnime={delAnime}/>
-                </div>
->>>>>>> 13a98ec (added styling for rec part)
               </div>
             </div>
 
