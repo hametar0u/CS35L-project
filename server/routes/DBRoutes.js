@@ -1183,7 +1183,13 @@ userRoute.route("/listings/SearchUserMAL").post(async (req, res) => {
         await axios
             .post("http://localhost:5001/listings/getUserById", {username: req.body.name})
             .then((response) => {
-                information = response.data;
+                if (response.data === {}) {
+                    res.status(400).send("No user found!");
+                    return;
+                }
+                else {
+                    information = response.data;
+                }
             })
             .catch((err) => {
                 console.log(err);

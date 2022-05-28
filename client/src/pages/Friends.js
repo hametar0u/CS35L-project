@@ -17,38 +17,65 @@ const CompareUser = () => {
   const [progress, setProgress] = useState(1);
   const [index, setIndex] = useState(0);
   const [searchType, setSearchType] = useState("DBuser");
-  const [club, setClub] = useState();
+  const [searchInput, setSearchInput] = useState();
   const [mostSimilarUser, setMostSimilarUser] = useState();
+  const [userProfile, setUserProfile] = useState(mostSimilarUser);
   const [error, setError] = useState();
 
-  useEffect(() => {
-    if (!similarity) return;
-    if (similarity) {
-        if (progress < similarity) {
-            setTimeout(() => {
-                setProgress(similarity*Math.tanh(similarity/100*0.02*index))
-                setIndex((prev) => {return prev + 1;});
-            }, 10);
-        }
-    }
+//   useEffect(() => {
+//     if (!similarity) return;
+//     if (similarity) {
+//         if (progress !== similarity) {
+//             setTimeout(() => {
+//                 setProgress(similarity*Math.tanh(similarity/100*0.02*index))
+//                 setIndex((prev) => {return progress < similarity ? prev + 1 : prev - 1;});
+//             }, 10);
+//         }
+//     }
     
-}, [similarity, progress]);
+// }, [similarity, progress]);
 
-const findClubs = async (e) => {
+const handleSubmit = async (e) => {
   e.preventDefault();
 
   const obj = {
-    club_name: club
+    club_name: searchInput, //club
+    name: searchInput, //MAL, DB user
   };
 
+  let url;
+  if (searchType === "club") {
+    url = "/listings/getClubs";
+  }
+  else if (searchType === "MALuser") {
+    url = "/listings/SearchUserMAL";
+  }
+  else { //DBuser
+    url = "/listings/SpecificUser";
+  }
+
+
   await axios 
-    .post("/listings/getClubs", obj, {
+    .post(url, obj, {
       withCredentials: true,
     })
     .then((response) => {
       console.log(response.data);
-      setClub("");
-      window.open(response.data, "_blank");
+      setSearchInput("");
+      if (searchType === "club") {
+        window.open(response.data, "_blank");
+      }
+      else {
+        if (response.data.information && response.data.information === {}) {
+          alert("no such user!");
+        }
+        else {
+          setUserProfile(response.data);
+          // const simscore = response.data.simscore === 0 ? 1 : response.data.simscore * 100;
+          setSimilarity(response.data.simscore * 100);
+          setProgress(response.data.simscore * 100);
+        }
+      }
     })
     .catch((error) => {
       console.log(error);
@@ -63,7 +90,6 @@ const getRecommendedUser = async () => {
     .then((response) => {
       console.log(response.data);
       setMostSimilarUser(response.data);
-      setSimilarity(response.data.simscore * 100);
     })
     .catch((err) => {
       console.log(err);
@@ -94,19 +120,14 @@ useEffect(() => {
                   Search by...
                 </div>
                 <div className="flex flex-row gap-2 mb-40">
-                  <MiniButton name="MAL database" handleClick={() => {setSearchType("MALuser"); console.log(searchType);}}></MiniButton>
-                  <MiniButton name="Site database" handleClick={() => {setSearchType("DBuser"); console.log(searchType);}}></MiniButton>
-                  <MiniButton name="MAL clubs" handleClick={() => {setSearchType("club"); console.log(searchType);}}></MiniButton>
+                  <MiniButton name="MAL database" handleClick={() => {setSearchType("MALuser");}}></MiniButton>
+                  <MiniButton name="Site database" handleClick={() => {setSearchType("DBuser");}}></MiniButton>
+                  <MiniButton name="MAL clubs" handleClick={() => {setSearchType("club");}}></MiniButton>
                 </div>
                 <div className="absolute pt-50 w-max">
-                {searchType !== "club" && 
-                    <SearchBarProto name="Friends" type={searchType}/>
-                }
-                {searchType === "club" &&
-                  <form onSubmit={findClubs}>
-                    <input type="text" value={club} onChange={(e) => setClub(e.target.value)} placeholder="input a club name" />
-                  </form>
-                }
+                <form onSubmit={handleSubmit}>
+                  <input type="text" value={searchInput} onChange={(e) => setSearchInput(e.target.value)} placeholder="type input here" />
+                </form>
                 </div>
 
                 
@@ -121,7 +142,7 @@ useEffect(() => {
                       </div>
                       <div className="flex flex-col gap-5 p-5">
                         <div className="font-bold">
-                          {similarity}% Similarity
+                          {mostSimilarUser.simscore * 100}% Similarity
                         </div>
                           <div>Reach out to your new friend on <a href={mostSimilarUser.information.url} className="text-blue hover:text-grey"> myanimelist.net</a>.</div>
                       </div>
@@ -141,9 +162,9 @@ useEffect(() => {
                   trailColor={similarity === 0 ? "#d3d3d3" : "#d3d3d3"}
                   trailWidth="6"
               /> 
-              {mostSimilarUser && 
+              {userProfile && 
                 <div>
-                  <div>{mostSimilarUser.username}</div>
+                  <div>{userProfile.username}</div>
                 </div>
               }
             </div>
