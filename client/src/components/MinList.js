@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
-<<<<<<< HEAD
-
+import Profiles from "./ListProfiles";
 
 //helper func
 const getDifference = (array1, array2) => {
@@ -12,15 +11,11 @@ const getDifference = (array1, array2) => {
       });
     });
   }
-=======
-import Profiles from "./ListProfiles";
-
->>>>>>> 55558b2 (added profiles to min list)
 
 const MinAnimeCard = (props) => {
     return(
         <div>
-            <div className="h-min"><img src={props.image}/></div>
+            <div className=""><img className="h-40 w-30 object-cover" src={props.image}/></div>
         </div>
     );
 };
@@ -131,7 +126,7 @@ const MinList = () => {
     };
 
     return (
-        <div className="bg-lightgrey p-5 flex flex-col gap-5 w-1/2 rounded-lg" onClick={doEdit}>
+        <div className="bg-lightgrey p-5 flex flex-col gap-5 w-1/3 rounded-lg" onClick={doEdit}>
             <div className="flex flex-row justify-between">
                 List 1
                 <button className="bg-blue w-20 rounded-full text-white" onClick={doEdit}>edit</button>

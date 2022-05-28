@@ -10,6 +10,7 @@ import NewList from "../components/NewList";
 import Modal from "../components/Modal";
 import Nav from "../components/Nav";
 import { ZoomInWrapper } from "../components/MotionComponents";
+import WarningModal from "../components/WarningModal";
 
 
 //helper func
@@ -87,7 +88,7 @@ const HomePage = () => {
               Our Anime List Home
             </div>
                   <div className="flex flex-row gap-5">
-                    <MinList />
+                    <MinList/>
                     <NewList onClick={doClick}/>
                   </div>
                   </div>
