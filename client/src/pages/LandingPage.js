@@ -59,7 +59,7 @@ const LandingPage = (props) => {
       <div className="justify-center">
       <div className="h-screen flex justify-left sm:justify-center w-full pt-40 pb-10">
       <div className="transition duration-100 ease-in-out transform hover:-translate-y-1 hover:scale-110 flex flex-col gap-12 sm:gap-16 w-3/4 max-w-5xl">
-      <div className="relative w-full max-w-lg -z-10">
+      <div className="relative w-full max-w-lg -z-10 blur-xl">
         <div className="absolute top-0 -left-4 w-72 h-72 bg-purple rounded-full mix-blend-multiply filter blur-xl opacity-50 animate-blob"></div>
         <div className="absolute top-0 -right-4 w-72 h-72 bg-mint rounded-full mix-blend-multiply filter blur-2xl opacity-50 animate-blob animation-delay-2000"></div>
         <div className="absolute -bottom-8 left-20 w-72 h-72 bg-light-blue rounded-full mix-blend-multiply filter blur-2xl opacity-50 animate-blob animation-delay-4000"></div>
@@ -69,7 +69,7 @@ const LandingPage = (props) => {
             <img src={logo} />
           </div>
           <div className="flex flex-col gap-10">
-            <div className="font-serif text-4xl text-blue">
+            <div className="font-serif text-4xl text-blue blur">
               Welcome to Our Anime List!
             </div>
             <div className="">

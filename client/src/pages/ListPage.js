@@ -6,6 +6,7 @@ import SearchBarProto from "../components/SearchBarTest";
 import { ZoomInWrapper } from "../components/MotionComponents";
 import RecommendedAnime from "../components/RecommendedAnime";
 import Recs from "../components/RecommendedAnime";
+import MiniButton from "../components/MiniButton";
 
 //helper func
 const getDifference = (array1, array2) => {
@@ -109,9 +110,10 @@ const ListPage = () => {
     });
   };
 
-
-
-
+const clearAnime = () => {
+  console.log(animeList);
+  animeList.forEach(element => delAnime(element.id));
+}
 
   return(
     <ZoomInWrapper>
@@ -123,17 +125,20 @@ const ListPage = () => {
         {/* <Link className="bg-blue rounded-full m-2 p-2 text-white" to="/home">Back</Link> */}
           <div className="flex justify-left sm:justify-center w-full pt-10 pb-10">   
           <div className="relative flex flex-col gap-2 sm:gap-5 w-3/4 max-w-5xl">
-          <div className="font-serif text-xl text-blue pb-15">
+          <div className="font-serif text-xl text-blue pb-5">
               Shared List
           </div>
           <div className="absolute pt-10 w-3/4 z-40">
-            <SearchBarProto name={"Anime"} addAnime={addAnime}/>
-          </div>
+              <SearchBarProto name={"Anime"} addAnime={addAnime}/>
+            </div>    
+            <div className="flex flex-row-reverse self-end w-full">
+              <MiniButton name="clear" onClick={clearAnime}/>
+              </div>
           <div className="flex flex-row gap-10 justify-between">
             <div className="w-3/4">
               <Animes animeList={animeList} delAnime={delAnime}/>
             </div>
-            <div className="w-1/4 flex flex-col gap-5">
+            <div className="h-fit w-1/4 flex flex-col gap-5">
               <div className="font-serif text-xl text-blue">
                 Recommended
               </div>
