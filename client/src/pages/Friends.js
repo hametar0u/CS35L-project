@@ -5,28 +5,14 @@ import Profile from "../components/Profile";
 import Navbar from "../components/Navbar/index";
 import Nav from "../components/Nav";
 import SearchBarProto from "../components/SearchBarTest";
-<<<<<<< HEAD
-<<<<<<< HEAD
 import paul1 from "../pauls/paul1.png";
 import MiniButton from "../components/MiniButton";
-<<<<<<< HEAD
 
 import CountUp from 'react-countup';
 import { Circle } from 'rc-progress';
 import { SlidingWrapper } from "../components/MotionComponents";
-=======
->>>>>>> da45d36 (started styling friends components)
-=======
-import paul1 from "../pauls/paul1.png";
->>>>>>> ffeb2f9 (alignment of components)
-=======
->>>>>>> dffd90d (added buttons for search)
-
-import CountUp from 'react-countup';
-import { Circle } from 'rc-progress';
 
 const CompareUser = () => {
-<<<<<<< HEAD
   const [similarity, setSimilarity] = useState();//temp
   const [progress, setProgress] = useState(1);
   const [index, setIndex] = useState(0);
@@ -114,24 +100,6 @@ const getRecommendedUser = async () => {
 useEffect(() => {
   getRecommendedUser();
 }, []);
-=======
-  const [similarity, setSimilarity] = useState(70);//temp
-  const [progress, setProgress] = useState(1);
-  const [index, setIndex] = useState(0);
-
-  useEffect(() => {
-    if (!similarity) return;
-    if (similarity) {
-        if (progress < similarity) {
-            setTimeout(() => {
-                setProgress(similarity*Math.tanh(similarity/100*0.02*index))
-                setIndex((prev) => {return prev + 1;});
-            }, 10);
-        }
-    }
-    
-}, [similarity, progress]);
->>>>>>> 1cbfae0 (add progress)
 
   return (
     <div>
@@ -141,34 +109,15 @@ useEffect(() => {
         <div className="flex justify-left sm:justify-center w-full pt-10 pb-10">   
         <div className="flex flex-col gap-2 sm:gap-5 w-3/4 max-w-5xl">
           <div className="flex justify-between gap-x-40">
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-            <div className="flex flex-col gap-5 w-full">
-=======
-            <div>
->>>>>>> da45d36 (started styling friends components)
-=======
-            <div className="flex flex-col gap-5">
->>>>>>> ffeb2f9 (alignment of components)
-=======
-            <div className="flex flex-col gap-5 w-full">
->>>>>>> dffd90d (added buttons for search)
-=======
             <div className="flex flex-col gap-5 w-full relative">
->>>>>>> margaret4
                 <div className="font-serif text-xl text-blue">
                   Compare with friends
                 </div>
                 <div className="">
-<<<<<<< HEAD
-<<<<<<< HEAD
                   Want to find out how similar your anime taste is to other users? Or do you want to find an anime club? 
                 </div>
                 <div className="text-blue">
                   Search by...
-<<<<<<< HEAD
                 </div>
                 <div className="flex flex-col gap-5 mb-30">
                   <div className="flex flex-row gap-2">
@@ -225,68 +174,6 @@ useEffect(() => {
                   <div>{userProfile.username}</div>
                 </div>
               }
-=======
-                  Want to find out how similar your anime taste is to your fellow list collaborators? 
-=======
-                  Want to find out how similar your anime taste is to other users? Or do you want to find an anime club? 
->>>>>>> f50b01f (polished styling for friends page)
-                </div>
-                <div className="text-blue mb-40">
-                  Search for a friend below. 
-=======
->>>>>>> dffd90d (added buttons for search)
-                </div>
-                <div className="flex flex-row gap-2 mb-40">
-                  <MiniButton name="MAL database"></MiniButton>
-                  <MiniButton name="Site database"></MiniButton>
-                  <MiniButton name="MAL clubs"></MiniButton>
-                </div>
-                <div className="absolute pt-50 w-max">
-                    <SearchBarProto name="Friends"/>
-                </div>
-                <div className="font-serif text-xl text-blue">
-                  Your Recommended Friend
-                </div>
-                <div className="bg-lightgrey w-max rounded-lg">
-                    <div className="flex flex-row">
-                    <div className="ml-20 mr-0">
-                      <Profile name="YOUR FRIEND" image={paul1}/>
-                    </div>
-                    <div className="flex flex-col gap-5 p-5">
-                      <div className="font-bold">
-                        70% Similarity
-                      </div>
-                        <div>Reach out to your new friend on <a href="https://myanimelist.net/" className="text-blue hover:text-grey"> myanimelist.net</a>.</div>
-                    </div>
-              </div>
-                </div>
-            </div>
-<<<<<<< HEAD
-            <div className="bg-lightgrey w-full rounded-lg mt-10">
-<<<<<<< HEAD
-<<<<<<< HEAD
-              right
->>>>>>> da45d36 (started styling friends components)
-=======
-              
->>>>>>> ffeb2f9 (alignment of components)
-=======
-              <CountUp style={{fontWeight: 700, fontSize: 120, color: '#F3C950'}} end={similarity} useEasing="true" />
-=======
-            <div className="bg-lightgrey w-full rounded-lg px-10 py-5">
-              <div className="flex flex-row gap-2 items-center">
-              <CountUp style={{fontWeight: 700, fontSize: 70, color: '#000000'}} end={similarity} useEasing="true" />
-              <div className="text-black text-6xl font-semibold">%</div>
-              </div>
->>>>>>> f50b01f (polished styling for friends page)
-              <Circle 
-                  percent={progress}
-                  strokeWidth="6" 
-                  strokeColor="#BCD8C1" 
-                  trailColor={similarity === 0 ? "#d3d3d3" : "#d3d3d3"}
-                  trailWidth="6"
-              /> 
->>>>>>> 1cbfae0 (add progress)
             </div>
           </div>
         
