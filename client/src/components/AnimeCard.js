@@ -3,18 +3,9 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import "../styles/globals.css";
 import { PassThrough } from "stream";
-<<<<<<< HEAD
 import defaultAnime from "./defaultAnime.svg";
-<<<<<<< HEAD
 import { CardWrapper } from "../components/MotionComponents";
 import { AnimatePresence } from "framer-motion";
-=======
->>>>>>> da45d36 (started styling friends components)
-=======
-import { CardWrapper } from "../components/MotionComponents";
-import { AnimatePresence } from "framer-motion";
-import defaultAnime from "./defaultAnime.svg";
->>>>>>> 7c8330b (fixed the anime card conflicts)
 
 
 
