@@ -22,7 +22,7 @@ const AnimeCard = (props) => {
 
 const RecommendedAnime = (props) => {
   return ( 
-    <div className="grid grid-cols-4 gap-10">
+    <div className="grid grid-cols-1 gap-10">
         {props.animeList.map((anime, i) => {
           return (
             <AnimatePresence>

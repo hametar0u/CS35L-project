@@ -144,6 +144,7 @@ useEffect(() => {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
             <div className="flex flex-col gap-5 w-full">
 =======
             <div>
@@ -154,6 +155,9 @@ useEffect(() => {
 =======
             <div className="flex flex-col gap-5 w-full">
 >>>>>>> dffd90d (added buttons for search)
+=======
+            <div className="flex flex-col gap-5 w-full relative">
+>>>>>>> margaret4
                 <div className="font-serif text-xl text-blue">
                   Compare with friends
                 </div>
@@ -166,16 +170,23 @@ useEffect(() => {
                   Search by...
 <<<<<<< HEAD
                 </div>
-                <div className="flex flex-row gap-2 mb-40">
+                <div className="flex flex-col gap-5 mb-30">
+                  <div className="flex flex-row gap-2">
                   <MiniButton name="MAL database" handleClick={() => {setSearchType("MALuser");}}></MiniButton>
                   <MiniButton name="Site database" handleClick={() => {setSearchType("DBuser");}}></MiniButton>
                   <MiniButton name="MAL clubs" handleClick={() => {setSearchType("club");}}></MiniButton>
+                  </div>
+                  <div>
+                    <div className="w-max">
+                    <div className="bg-light-blue rounded-lg w-full">
+                    <form className="p-2" onSubmit={handleSubmit}>
+                      <input type="text" value={searchInput} onChange={(e) => setSearchInput(e.target.value)} placeholder="Search Clubs" />
+                    </form>
+                  </div>
+                  </div>
+                  </div>
                 </div>
-                <div className="absolute pt-50 w-max">
-                <form onSubmit={handleSubmit}>
-                  <input type="text" value={searchInput} onChange={(e) => setSearchInput(e.target.value)} placeholder="type input here" />
-                </form>
-                </div>
+                
 
                 
                 <div className="font-serif text-xl text-blue">
