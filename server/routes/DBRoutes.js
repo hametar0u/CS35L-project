@@ -9,7 +9,7 @@ const { ConnectionPoolClearnedEvent, ObjectId } = require("mongodb");
 const { response } = require("express");
 const { exit } = require("process");
 
-
+//Extension function, not meant for frontend
 userRoute.route("/listings").get(async (req, res) => {
     const dbConnect = dbo.getDb();
 
@@ -25,6 +25,7 @@ userRoute.route("/listings").get(async (req, res) => {
         });
 });
 
+//Extension function, not meant for frontend
 userRoute.route("/listings/mainGenre").get(async (req, res) => {
     const dbConnect = dbo.getDb();
     try{
@@ -126,6 +127,7 @@ userRoute.route("/listings/mainGenre").get(async (req, res) => {
 
 });
 
+//Extension function, not meant for frontend
 userRoute.route("/listings/getUserById").post(async (req, res) => {
     let obj = {};
     console.log(req.body);
@@ -142,7 +144,7 @@ userRoute.route("/listings/getUserById").post(async (req, res) => {
     res.send(obj);
 })
 
-//Return user w/ highest sim score
+//Return user w/ highest sim score (doesn't need any req)
 userRoute.route("/listings/ReccomendUser").get(async (req, res) => {
     const dbConnect = dbo.getDb();
     try{
@@ -251,7 +253,7 @@ userRoute.route("/listings/ReccomendUser").get(async (req, res) => {
     }
 });
 
-//search specific user (and calculate sim score) from db
+//search specific user (and calculates sim score) from db (needs req.body.name)
 userRoute.route("/listings/SpecificUser").post(async (req, res) => {
     const dbConnect = dbo.getDb();
     try{
@@ -357,22 +359,7 @@ userRoute.route("/listings/SpecificUser").post(async (req, res) => {
     }
 });
 
-userRoute.route("/listings/similarity").post(async (req, res) => {
-    const dbConnect = dbo.getDb();
-
-    let sharedList = {};
-    await axios
-        .get("http://localhost:5001/listings/sharedList")
-        .then((response) => {
-            sharedList = response.data;
-        })
-        .catch((err) => {
-            console.log(err);
-        });
-
-    
-});
-
+//Extension function, not meant for frontend
 userRoute.route("/listings/sharedList").get(async (req, res) => {
     const dbConnect = dbo.getDb();
 
@@ -389,6 +376,7 @@ userRoute.route("/listings/sharedList").get(async (req, res) => {
         });
 });
 
+//Jikan filter (needs req.body.anime == anime name)
 userRoute.route("/listings/jikanInfo").post(async (req, res) => {
     let str = ""
     let filter = {};
@@ -433,6 +421,7 @@ userRoute.route("/listings/jikanInfo").post(async (req, res) => {
 
 });
 
+//Extension function, not meant for frontend
 userRoute.route("/listings/info").get(async (req, res) => {
     const dbConnect = dbo.getDb();
     console.log(req.query);
@@ -445,6 +434,7 @@ userRoute.route("/listings/info").get(async (req, res) => {
     });
 });
 
+//Adds current user to another shared list (needs req.body.colabuser)
 userRoute.route("/listings/addUser").post(async (req, res) => {
     try {
         const dbConnect = dbo.getDb();
@@ -465,7 +455,7 @@ userRoute.route("/listings/addUser").post(async (req, res) => {
                 console.log(err);
             });
             console.log(current_user);
-             //Check if user is adding themselves
+        //Check if user is adding themselves
         if(current_user.info.name == req.body.colabuser)
         {
             res.send("You can't add urself");
@@ -536,7 +526,7 @@ userRoute.route("/listings/addUser").post(async (req, res) => {
                 .collection("UserList")
                 .findOneAndUpdate({id: append_user.id},
                     {$set: {sharedlist_id: ObjectId(current_user.sharedlist_id)}});
-            res.send("Successfully added user to colab list");
+            res.send("Successfully added other user to current users colab list");
             return;
         }
         else {
@@ -556,6 +546,7 @@ userRoute.route("/listings/addUser").post(async (req, res) => {
     }
 })
 
+//Extension function, not meant for frontend
 userRoute.route("/listings/retreiveUserById").get(async (req, res) => {
     const dbConnect = dbo.getDb();
     dbConnect
@@ -575,6 +566,7 @@ userRoute.route("/listings/retreiveUserById").get(async (req, res) => {
         });  
 })
 
+//Extension function, not meant for frontend
 userRoute.route("/listings/retrieveUserByName").get(async (req, res) => {
     const dbConnect = dbo.getDb();
     console.log(req.query.name);
@@ -594,10 +586,12 @@ userRoute.route("/listings/retrieveUserByName").get(async (req, res) => {
         });
 })
 
+//Deletes anime by the MAL ID (needs req.body.malId)
 userRoute.route("/listings/animeDelete").post(async (req, res) => {
     try {
         const userid = req.session.userprofile.id; //user id stored here
         const dbConnect = dbo.getDb();
+        //Find current user profile on MongoDB
         let userlist = {}
         let url2 = `http://localhost:5001/listings`
         await axios
@@ -628,6 +622,7 @@ userRoute.route("/listings/animeDelete").post(async (req, res) => {
             res.send("User doesn't have a colablist yet");
             return;
         }
+        //Find user's shared list
         let shared = {}
         await axios 
         .get("http://localhost:5001/listings/sharedList")
@@ -645,6 +640,7 @@ userRoute.route("/listings/animeDelete").post(async (req, res) => {
                 users_shared_list = shared[i];
             }
         }
+        //Find specific anime on shared list
         var count2 = Object.keys(users_shared_list.anime).length;
         let exist = false;
         let index = 0;
@@ -678,6 +674,7 @@ userRoute.route("/listings/animeDelete").post(async (req, res) => {
     }
 })
 
+//Adds anime by the MAL ID (needs req.body.malId)
 userRoute.route("/listings/animeAddByMalID").post(async (req, res) => {
     const dbConnect = dbo.getDb();
     //Access user's list
@@ -710,66 +707,63 @@ userRoute.route("/listings/animeAddByMalID").post(async (req, res) => {
             return;
         }
         //Get information about the anime
-    let url = `https://api.myanimelist.net/v2/anime/${req.body.malId}?fields=id,title,genres`
-    let params = {
-        headers: {
-            Authorization: "Bearer " + access_token,
-        },
-    };
-    let obj = {}
-    await axios
-        .get(url, params)
-        .then((response) => {
-            obj = response.data;
-        })
-        .catch((err) => {
-            console.log(err);
-        });
-        console.log(obj);
-        console.log("=============================");
-             //Check if current user has a sharedlist
-             if (!currentuser.sharedlist_id) { //if the user doesn't have a sharedlist, create one
-                let u = []
-                u[0] = currentuser.info.name;
-                let newsharedlist = [];
-                newsharedlist[0] = obj;
-                let data = {
-                    users: u,
-                    anime: newsharedlist
+        let url = `https://api.myanimelist.net/v2/anime/${req.body.malId}?fields=id,title,genres`
+        let params = {
+            headers: {
+                Authorization: "Bearer " + access_token,
+            },
+        };
+        let obj = {}
+        await axios
+            .get(url, params)
+            .then((response) => {
+                obj = response.data;
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+        //Check if current user has a sharedlist
+        if (!currentuser.sharedlist_id) { //if the user doesn't have a sharedlist, create one
+        let u = []
+        u[0] = currentuser.info.name;
+        let newsharedlist = [];
+        newsharedlist[0] = obj;
+        let data = {
+            users: u,
+            anime: newsharedlist
+        }
+        var groupid = 0;
+        dbConnect
+            .collection("shared_lists")
+            .insertOne(data, function(err) {
+                if (err) {
+                    return;
                 }
-                var groupid = 0;
-                dbConnect
-                    .collection("shared_lists")
-                    .insertOne(data, function(err) {
-                        if (err) {
-                            return;
-                        }
-                        else {
-                            dbConnect
-                    .collection("UserList")
-                    .findOneAndUpdate({id: req.body.user},
-                        {$set: {sharedlist_id: data._id}});
-                        }
-                    });
-                res.send("Successfully created a colab list for user");
-                return;
+                else {
+                    dbConnect
+            .collection("UserList")
+            .findOneAndUpdate({id: req.body.user},
+                {$set: {sharedlist_id: data._id}});
+                }
+            });
+        res.send("Successfully created a colab list for user");
+        return;
+        }
+        else { // Otherwise user has a sharedlist, add anime to that list
+        dbConnect
+            .collection("shared_lists")
+            .updateOne({_id: ObjectId(currentuser.sharedlist_id),
+            anime:  {$ne: obj}},
+                {$push: {anime: obj}});
+        res.send("Successfully added anime to shared list");
             }
-            else { // Otherwise user has a sharedlist, add anime to that list
-            dbConnect
-                .collection("shared_lists")
-                .updateOne({_id: ObjectId(currentuser.sharedlist_id),
-                anime:  {$ne: obj}},
-                    {$push: {anime: obj}});
-            res.send("Successfully added anime to shared list");
-                }
     }
     catch {
         res.status(500).send("Couldn't add anime");
-    }
-        
-   
+    }   
 })
 
+//Depracated
 userRoute.route("/listings/animeAdd").post(async (req, res) => {
     const dbConnect = dbo.getDb();
     let str = ""
@@ -872,12 +866,14 @@ userRoute.route("/listings/animeAdd").post(async (req, res) => {
     }
 })
 
+//Returns specific user's anime from MAL (needs req.body.id)
 userRoute.route("/listings/getUserFromMAL").post(async (req, res) => {
     try {
         const userid = req.session.userprofile.id; //user id stored here
         const access_token = req.session.tokens.access_token; //access token stored here
         let userlist = {}
         let url2 = `http://localhost:5001/listings`
+        //Get specific user from MongoDB (not current user)
         await axios
             .get(url2)
             .then((response) => {
@@ -901,6 +897,7 @@ userRoute.route("/listings/getUserFromMAL").post(async (req, res) => {
             res.send("User Doesn't exist");
             return;
         }
+        //Get specific user's anime's from MAL
         let url = `https://api.myanimelist.net/v2/users/${otheruser.info.name}/animelist?fields=title&limit=100`
         let prev = ""
         const dbConnect = dbo.getDb();
@@ -918,7 +915,6 @@ userRoute.route("/listings/getUserFromMAL").post(async (req, res) => {
         await axios
             .get(url, params)
             .then((response) => {
-                // console.log(response.data.data[0].node);
                 var count = Object.keys(response.data.data).length;
                 console.log(count);
                 for(let k = 0; k < count; k++) {
@@ -928,8 +924,6 @@ userRoute.route("/listings/getUserFromMAL").post(async (req, res) => {
                         main_picture: response.data.data[k].node.main_picture,
                     }
                     anime.title[i] = node;
-                    //anime.title[i] = response.data.data[k].node.title;
-                    //anime.title[i].image = response.data.data[k].node.main_picture.medium;
                     i++;
                 }
 
@@ -950,13 +944,14 @@ userRoute.route("/listings/getUserFromMAL").post(async (req, res) => {
             //         .findOneAndUpdate({user: currentuser.info.name},
             //                         {$set: {anime: anime}}, 
             //                         {upsert: true});
-                    res.send(anime.title);
+        res.send(anime.title);
     }
     catch {
         res.status(500).send("You are not logged in");
     }
 })
 
+//Returns all animes of user's profile on MAL (doesn't need any req)
 userRoute.route("/listings/allanimes").post(async (req, res) => {
     try {
         const userid = req.session.userprofile.id; //user id stored here
@@ -1044,6 +1039,7 @@ userRoute.route("/listings/allanimes").post(async (req, res) => {
         
 });
 
+//Returns all animes from MongoDB shared list (doesn't need any req)
 userRoute.route("/listings/allanimesSharedList").post(async (req, res) => {
     try {
         const userid = req.session.userprofile.id; //user id stored here
@@ -1109,12 +1105,13 @@ userRoute.route("/listings/allanimesSharedList").post(async (req, res) => {
     }
 });
 
-//Search specific user by MAL and calculate sim score, work in progress
+//Search specific user by MAL and calculate sim score (needs req.body.name == searched User's name)
 userRoute.route("/listings/SearchUserMAL").post(async (req, res) => {
     const dbConnect = dbo.getDb();
     try{
         const userid = req.session.userprofile.id; //user id stored here
         const access_token = req.session.tokens.access_token; //access token stored here
+        //Reallocate Genres
         await axios
             .get("http://localhost:5001/listings/mainGenre")
             .then((response) => {
@@ -1159,7 +1156,6 @@ userRoute.route("/listings/SearchUserMAL").post(async (req, res) => {
                 }
             }
         }
-        console.log("checkpoint 1");
         //Grab searched user's anime list from MAL
         let url = `https://api.myanimelist.net/v2/users/${req.body.name}/animelist?fields=list_status&limit=10`
         let params = {
@@ -1176,15 +1172,14 @@ userRoute.route("/listings/SearchUserMAL").post(async (req, res) => {
             .catch((err) => {
                 console.log(err);
             });
-        console.log("checkpoint 2");
         
-        //get reccomended user's profile
+        //get searched user's profile if they exist on MongoDB
         let information = {};
         await axios
             .post("http://localhost:5001/listings/getUserById", {username: req.body.name})
             .then((response) => {
                 if (response.data === {}) {
-                    res.status(400).send("No user found!");
+                    res.status(400).send("No user found in MongoDB!");
                     return;
                 }
                 else {
@@ -1205,7 +1200,6 @@ userRoute.route("/listings/SearchUserMAL").post(async (req, res) => {
         for(let i = 0; i < count5; i ++)
         {
             id = searcheduser.data[i].node.id;
-            console.log(id);
             item = {
                 params: params,
                 id: id
@@ -1230,13 +1224,11 @@ userRoute.route("/listings/SearchUserMAL").post(async (req, res) => {
             simscore = otherc / counter;
         }
 
-        console.log("checkpoint 3");
         obj = {
             username : req.body.name,
             searcheduser: searcheduser,
             information: information,
             simscore: simscore
-
         }
         res.send(obj); 
     }
@@ -1245,6 +1237,7 @@ userRoute.route("/listings/SearchUserMAL").post(async (req, res) => {
     }
 })
 
+//Finds the given anime genre (Extension function, not meant for frontend)
 userRoute.route("/listings/getGenre").post(async (req, res) => {
     const dbConnect = dbo.getDb();
     try{
@@ -1272,7 +1265,7 @@ userRoute.route("/listings/getGenre").post(async (req, res) => {
     }
 })
 
-//grab list of recommended anime from MAL, with limit 10
+//grab list of recommended anime from MAL, with limit 10 (doesn't need any req)
 userRoute.route("/listings/listOfRecommendedAnime").post(async (req, res) => {
     try {
         const userid = req.session.userprofile.id; //user id stored here
@@ -1303,7 +1296,7 @@ userRoute.route("/listings/listOfRecommendedAnime").post(async (req, res) => {
             res.send("User Doesn't exist");
             return;
         }
-        //get all anime from user
+        //get suggested anime from user's MAL profile
         let url = `https://api.myanimelist.net/v2/anime/suggestions?limit=10`
         let prev = ""
         const dbConnect = dbo.getDb();
@@ -1341,13 +1334,13 @@ userRoute.route("/listings/listOfRecommendedAnime").post(async (req, res) => {
             //         .findOneAndUpdate({user: currentuser.info.name},
             //                         {$set: {anime: anime}}, 
             //                         {upsert: true});
-                    res.send(anime.title);
+        res.send(anime.title);
     }
     catch {
         res.status(500).send("You are not logged in");
     }
 })
-/* !!!!!!!EXAMPLE ROUTE YUGIOH CLOWN BOI WHAT AM I EVEN SAYING !!!!!!*/
+/* Example Route for req.session */ 
 userRoute.route("/get-userid-from-session").get((req, res) => { 
     try {
         //note: you have to be logged in for this to work; so either you guarantee guarantee these things are only accessed when user is logged in, or wrap this is a try-catch like I did in this exmaple.
