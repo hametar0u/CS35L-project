@@ -56,9 +56,15 @@ const LandingPage = (props) => {
 
   return (
     <FadeInWrapper>
-    <div className="flex justify-left sm:justify-center w-full pt-40 pb-10">
-      <div className="flex flex-col gap-12 sm:gap-16 w-3/4 max-w-5xl">
-        <div className="flex flex-row gap-x-10">
+      <div className="justify-center">
+      <div className="h-screen flex justify-left sm:justify-center w-full pt-40 pb-10">
+      <div className="transition duration-100 ease-in-out transform hover:-translate-y-1 hover:scale-110 flex flex-col gap-12 sm:gap-16 w-3/4 max-w-5xl">
+      <div className="relative w-full max-w-lg -z-10">
+        <div className="absolute top-0 -left-4 w-72 h-72 bg-purple rounded-full mix-blend-multiply filter blur-xl opacity-50 animate-blob"></div>
+        <div className="absolute top-0 -right-4 w-72 h-72 bg-mint rounded-full mix-blend-multiply filter blur-2xl opacity-50 animate-blob animation-delay-2000"></div>
+        <div className="absolute -bottom-8 left-20 w-72 h-72 bg-light-blue rounded-full mix-blend-multiply filter blur-2xl opacity-50 animate-blob animation-delay-4000"></div>
+      </div>
+        <div className="flex flex-row gap-x-10 z-50">
           <div className="w-full">
             <img src={logo} />
           </div>
@@ -79,6 +85,7 @@ const LandingPage = (props) => {
         </div>
       </div>
     </div>
+      </div>
     </FadeInWrapper>
   );
 };

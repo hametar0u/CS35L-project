@@ -36,7 +36,7 @@ const Modal = ({ showModal, closeModal }) => {
                 exit="hidden"
             >
                 <motion.div 
-                    className="bg-white shadow-xl p-5 flex flex-col gap-10 rounded-lg align-middle w-1/3 m-auto"
+                    className="bg-white shadow-xl p-5 flex flex-col gap-10 rounded-lg align-middle w-1/3 m-auto opacity-100"
                     variants={modal}
                 >
                     <button className="bg-red w-5 h-5 align-center items-center text-xs rounded-full text-white" onClick={closeModal}>x</button>

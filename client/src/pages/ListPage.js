@@ -117,6 +117,7 @@ const ListPage = () => {
     <ZoomInWrapper>
     <div>
     {/* <Nav/> */}
+    <div className="h-max w-screen bg-gradient-to-r from-mint via-light-blue to-purple animate-bg">
       <div className="p-10">
       
         {/* <Link className="bg-blue rounded-full m-2 p-2 text-white" to="/home">Back</Link> */}
@@ -136,7 +137,7 @@ const ListPage = () => {
               <div className="font-serif text-xl text-blue">
                 Recommended
               </div>
-              <div className="bg-purple rounded-lg w-fit h-150 overflow-y-scroll justify-center items-center">
+              <div className="bg-purple rounded-lg w-fit h-155 overflow-y-scroll justify-center items-center">
                 <div className="p-5">
                   <RecommendedAnime animeList={recommendedAnimeList} addAnime={addAnime}/>
                 </div>
@@ -148,6 +149,7 @@ const ListPage = () => {
         </div>
       </div>
     </div>
+  </div>
   </div>
   </ZoomInWrapper>
   );

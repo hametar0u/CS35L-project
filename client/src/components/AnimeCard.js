@@ -11,7 +11,7 @@ import { AnimatePresence } from "framer-motion";
 
 export const AnimeCard = (props) => {
     return(
-        <div className="bg-lightgrey p-5 rounded-lg flex flex-col gap-2">
+        <div className="bg-lightgrey p-5 rounded-lg flex flex-col gap-2 h-max min-h-90">
             <div className="flex flex-row-reverse">
                 <button className="bg-red items-center rounded-full justify-center w-5 h-5 text-xs text-white" onClick={() => props.delAnime(props.id)}>x</button>
             </div>

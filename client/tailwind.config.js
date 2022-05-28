@@ -40,17 +40,51 @@ module.exports = {
         "11": "44px",
         "15": "60px",
         "18": "72px",
+        "20": "80px",
         "22": "88px",
         "30": "120px",
         "33": "132px",
         "50": "200px",
         "51": "204px",
         "60": "240px",
+        "72": "288px",
+        "90": "360px",
         "99": "396px",
         "105": "420px",
         "108": "432px",
         "117": "468px",
         "150": "600px",
+        "155": "620px",
+      },
+      animation: {
+        blob: "blob 7s infinite",
+        bg: "bg 7s infinite",
+      },
+      keyframes: {
+        blob: {
+          "0%": {
+            transform: "translate(0px, 0px) scale(1)",
+          },
+          "33%": {
+            transform: "translate(30px, -50px) scale(1.1)",
+          },
+          "66%": {
+            transform: "translate(-20px, 20px) scale(0.9)",
+          },
+          "100%": {
+            transform: "tranlate(0px, 0px) scale(1)",
+          },
+        },
+        'bg': {
+          '0%, 100%': {
+             'background-size':'200% 200%',
+              'background-position': 'left center'
+          },
+          '50%': {
+             'background-size':'200% 200%',
+              'background-position': 'right center'
+          }
+      },
       },
     },
   },

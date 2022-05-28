@@ -15,7 +15,7 @@ const getDifference = (array1, array2) => {
 const MinAnimeCard = (props) => {
     return(
         <div>
-            <div><img src={props.image}/></div>
+            <div className="h-min"><img src={props.image}/></div>
         </div>
     );
 };
