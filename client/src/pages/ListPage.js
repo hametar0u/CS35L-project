@@ -5,6 +5,7 @@ import Nav from "../components/Nav";
 import SearchBarProto from "../components/SearchBarTest";
 import { ZoomInWrapper } from "../components/MotionComponents";
 import RecommendedAnime from "../components/RecommendedAnime";
+import Recs from "../components/RecommendedAnime";
 
 //helper func
 const getDifference = (array1, array2) => {
@@ -125,7 +126,7 @@ const ListPage = () => {
               Shared List
           </div>
           <div className="absolute pt-10 w-3/4 z-40">
-            <SearchBarProto addAnime={addAnime}/>
+            <SearchBarProto name={"Anime"} addAnime={addAnime}/>
           </div>
           <div className="flex flex-row gap-10 justify-between">
             <div className="w-3/4">
@@ -135,7 +136,7 @@ const ListPage = () => {
               <div className="font-serif text-xl text-blue">
                 Recommended
               </div>
-              <div className="bg-purple rounded-lg w-fit h-full justify-center items-center">
+              <div className="bg-purple rounded-lg w-fit h-150 overflow-y-scroll justify-center items-center">
                 <div className="p-5">
                   <RecommendedAnime animeList={recommendedAnimeList} addAnime={addAnime}/>
                 </div>
