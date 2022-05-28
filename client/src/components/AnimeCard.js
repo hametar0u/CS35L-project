@@ -27,8 +27,6 @@ const Animes = (props) => {
     return (
         <div className="grid grid-cols-3 gap-10">
             {props.animeList.map((anime, i) => {
-<<<<<<< HEAD
-<<<<<<< HEAD
                 return (
                     <AnimatePresence>
                         <CardWrapper>
@@ -36,12 +34,6 @@ const Animes = (props) => {
                         </CardWrapper>
                     </AnimatePresence>
                 );
-=======
-                return <AnimeCard title={anime.title} image={anime.main_picture ? anime.main_picture.medium : defaultAnime} id={anime.id}  delAnime={props.delAnime} key={anime.id}/>;
->>>>>>> da45d36 (started styling friends components)
-=======
-                return <AnimeCard title={anime.title} image={anime.main_picture ? anime.main_picture.medium : defaultAnime} id={anime.id}  delAnime={props.delAnime} key={anime.id}/>;
->>>>>>> 7c8330b (fixed the anime card conflicts)
             })}
         </div>
         
