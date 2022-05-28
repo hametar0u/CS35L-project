@@ -33,6 +33,9 @@ module.exports = {
       'purple': "#E5CBFF",
       'light-purple': "#F6F0FF",
       'light-blue': "#CDDFF5",
+      'background-purple': "#F5EAFF",
+      'background-mint': "#E6F2E8",
+      'background-blue': "#EAF1FA",
 
     },
     extend: {

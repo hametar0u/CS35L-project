@@ -7,6 +7,8 @@ import { ZoomInWrapper } from "../components/MotionComponents";
 import RecommendedAnime from "../components/RecommendedAnime";
 import Recs from "../components/RecommendedAnime";
 import MiniButton from "../components/MiniButton";
+import JoinList from "../components/JoinList";
+import Profiles from "../components/ListProfiles";
 
 //helper func
 const getDifference = (array1, array2) => {
@@ -111,30 +113,39 @@ const ListPage = () => {
   };
 
 const clearAnime = () => {
-  console.log(animeList);
-  animeList.forEach(element => delAnime(element.id));
+  
 }
 
   return(
     <ZoomInWrapper>
     <div>
     {/* <Nav/> */}
-    <div className="h-max w-screen bg-gradient-to-r from-mint via-light-blue to-purple animate-bg">
-      <div className="p-10">
+    <div className="h-max w-screen bg-gradient-to-r from-background-mint via-background-blue to-background-purple animate-bg">
+      <div className="p-10 relative">
       
         {/* <Link className="bg-blue rounded-full m-2 p-2 text-white" to="/home">Back</Link> */}
           <div className="flex justify-left sm:justify-center w-full pt-10 pb-10">   
           <div className="relative flex flex-col gap-2 sm:gap-5 w-3/4 max-w-5xl">
-          <div className="font-serif text-xl text-blue pb-5">
-              Shared List
-          </div>
-          <div className="absolute pt-10 w-3/4 z-40">
-              <SearchBarProto name={"Anime"} addAnime={addAnime}/>
+            <div className="flex flex-row gap-10 items-center">
+                  <div className="font-serif text-xl text-blue">
+                    Shared List
+                </div>
+                <div className="">
+                <Profiles/>
+                </div>
+            </div>
+          
+          <div className="absolute pt-20 items-end w-3/4 z-40 flex flex-row gap-20 justify-between pr-5">
+            <div className="w-full">
+            <SearchBarProto className="w-full" name={"Anime"} addAnime={addAnime}/>
+            </div>
+             
+              <MiniButton className="w-full" name="Clear all Anime" onClick={clearAnime}/>
             </div>    
-            <div className="flex flex-row-reverse self-end w-full">
-              <MiniButton name="clear" onClick={clearAnime}/>
-              </div>
-          <div className="flex flex-row gap-10 justify-between">
+            {/* <div className="flex flex-row-reverse self-end w-full">
+              <MiniButton name="Clear all Anime" onClick={clearAnime}/>
+              </div> */}
+          <div className="mt-20 flex flex-row gap-10 justify-between">
             <div className="w-3/4">
               <Animes animeList={animeList} delAnime={delAnime}/>
             </div>
@@ -142,9 +153,17 @@ const clearAnime = () => {
               <div className="font-serif text-xl text-blue">
                 Recommended
               </div>
-              <div className="bg-purple rounded-lg w-fit h-155 overflow-y-scroll justify-center items-center">
+              <div className="bg-purple rounded-lg w-fit h-155 overflow-y-auto justify-center items-center">
                 <div className="p-5">
                   <RecommendedAnime animeList={recommendedAnimeList} addAnime={addAnime}/>
+                </div>
+              </div>
+              <div className="font-serif text-xl text-blue pt-10">
+                Join a new list
+              </div>
+               <div className="bg-purple rounded-lg w-fit h-155 overflow-y-auto justify-center items-center">
+                <div className="p-5">
+                  <JoinList animeList={recommendedAnimeList} joinNewList={addAnime}/>
                 </div>
               </div>
             </div>

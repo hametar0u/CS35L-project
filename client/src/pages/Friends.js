@@ -105,7 +105,7 @@ useEffect(() => {
     <div>
       {/* <Nav /> */}
       <SlidingWrapper>
-      <div className="h-max w-screen bg-gradient-to-r from-mint via-light-blue to-purple animate-bg">
+      <div className="h-max w-screen bg-gradient-to-r from-background-mint via-background-blue to-background-purple animate-bg">
       <div className="p-10">
         <div className="flex justify-left sm:justify-center w-full pt-10 pb-10">   
         <div className="flex flex-col gap-2 sm:gap-5 w-3/4 max-w-5xl">
@@ -166,7 +166,7 @@ useEffect(() => {
               <Circle 
                   percent={progress}
                   strokeWidth="6" 
-                  strokeColor="#BCD8C1" 
+                  strokeColor="#4a8fe7" 
                   trailColor={similarity === 0 ? "#d3d3d3" : "#d3d3d3"}
                   trailWidth="6"
               /> 
