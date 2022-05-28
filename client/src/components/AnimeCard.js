@@ -5,13 +5,21 @@ import "../styles/globals.css";
 import { PassThrough } from "stream";
 import defaultAnime from "./defaultAnime.svg";
 import { CardWrapper } from "../components/MotionComponents";
-import { AnimatePresence } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 
 
 
-export const AnimeCard = (props) => {
+export const AnimeCard = React.forwardRef((props, ref)=> {
     return(
-        <div className="bg-lightgrey p-5 rounded-lg flex flex-col gap-2">
+        <div>
+        <motion.div
+        style={{
+            
+        }}
+            animate={{ rotate: 360 }}
+            transition={{ duration: 2, repeat: Infinity}}
+        />
+        <div className="bg-lightgrey p-5 rounded-lg flex flex-col gap-2 h-max min-h-90">
             <div className="flex flex-row-reverse">
                 <button className="bg-red items-center rounded-full justify-center w-5 h-5 text-xs text-white" onClick={() => props.delAnime(props.id)}>x</button>
             </div>
@@ -20,17 +28,25 @@ export const AnimeCard = (props) => {
 
             {/* <div>ID: {props.id}</div> */}
         </div>
+        </div>
     );
-};
+});
+
+export const MotionAnimeCard = motion(AnimeCard);
+
 
 const Animes = (props) => {
+    <motion.div
+    animate={{ rotate: 360 }}
+    transition={{ duration: 2 }}
+  />
     return (
         <div className="grid grid-cols-3 gap-10">
             {props.animeList.map((anime, i) => {
                 return (
                     <AnimatePresence>
                         <CardWrapper>
-                            <AnimeCard title={anime.title} image={anime.main_picture ? anime.main_picture.medium : defaultAnime} id={anime.id}  delAnime={props.delAnime} key={anime.id}/>
+                            <MotionAnimeCard title={anime.title} image={anime.main_picture ? anime.main_picture.medium : defaultAnime} id={anime.id}  delAnime={props.delAnime} key={anime.id}/>
                         </CardWrapper>
                     </AnimatePresence>
                 );
@@ -40,6 +56,5 @@ const Animes = (props) => {
     );
 }
 
-
-
 export default Animes;
+

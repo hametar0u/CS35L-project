@@ -18,11 +18,10 @@ const backdrop = {
     },
   }
 
-const Modal = ({ showModal, closeModal }) => {
+const WarningModal = ({ showModal, closeModal }) => {
 
     const handleClick = () => {
         console.log("do click");
-        window.location.href = "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
     };
 
     return (
@@ -42,12 +41,12 @@ const Modal = ({ showModal, closeModal }) => {
                     <button className="bg-red w-5 h-5 align-center items-center text-xs rounded-full text-white" onClick={closeModal}>x</button>
                     <div className="flex flex-col gap-5 align-middle items-left">
                         <div className="text-blue text-2xl font-bold">
-                            Want unlimited lists?
+                            Warning! 
                         </div>
                         <div className="mb-5">
-                            Join Our Anime List Premium for the low low price of $99999999999!
+                            You are about to join a new list and exit your current list. Are you sure you want to do this?
                         </div>
-                        <SmallButton name={"Join OAL Premium"} handleClick={handleClick}/>
+                        <SmallButton name={"Continue"} handleClick={handleClick}/>
                     </div>
                 </motion.div>
             </motion.div>
@@ -62,4 +61,4 @@ const Modal = ({ showModal, closeModal }) => {
 }
 
 
-export default Modal;
+export default WarningModal;

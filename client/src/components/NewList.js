@@ -12,14 +12,19 @@ const NewList = (props) => {
     };
 
     return (
-        <div className="bg-lightgrey p-5 flex flex-col gap-5 w-1/2 rounded-lg align-middle" onClick={props.onClick}>
-             <div className="flex flex-col gap-5 align-middle items-center">
-                <div>
-                    Create a new list
-                </div>
-                <button className="bg-blue w-20 rounded-full text-white" onClick={props.onClick}>+</button>
+        <div className="flex flex-row gap-10 w-2/3">
+            <div className="bg-lightgrey p-5 flex flex-col gap-5 w-full h-fit rounded-lg align-middle items-center" onClick={props.onClick}>
+             <div className="justify-center align-middle items-center">
+                <div className="self-center text-center text-blue text-6xl">+</div>
              </div>
         </div>
+        <div className="bg-lightgrey p-5 flex flex-col gap-5 w-full h-fit rounded-lg align-middle items-center" onClick={props.onClick}>
+             <div className="justify-center align-middle items-center">
+                <div className="self-center text-center text-blue text-6xl">+</div>
+             </div>
+        </div>
+        </div>
+        
         
         
         

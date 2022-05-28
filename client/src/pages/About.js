@@ -16,8 +16,8 @@ const About = () => {
     <div>
       {/* <Nav/> */}
       <SlidingWrapper>
+      <div className="h-max w-screen bg-gradient-to-r from-background-mint via-background-blue to-background-purple animate-bg">
         <div className="p-10">
-        
           {/* <Link className="bg-blue rounded-full m-2 p-2 text-white" to="/home">Back</Link> */}
             <div className="flex justify-left sm:justify-center w-full pt-10 pb-10">   
             <div className="flex flex-col gap-2 sm:gap-5 w-3/4 max-w-5xl">
@@ -44,8 +44,11 @@ const About = () => {
             </div> 
             </div>
       </div>
+      </div>
+
       </SlidingWrapper>
     </div>
+    
     
   );
 };
