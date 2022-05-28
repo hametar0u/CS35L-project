@@ -12,8 +12,8 @@ const NewList = (props) => {
     };
 
     return (
-        <div className="bg-lightgrey p-5 flex flex-col gap-5 w-1/2 rounded-lg align-middle" onClick={props.onClick}>
-             <div className="flex flex-col gap-5 align-middle items-center">
+        <div className="bg-lightgrey p-5 flex flex-col gap-5 w-1/2 h-fit rounded-lg align-middle" onClick={props.onClick}>
+             <div className="flex flex-row justify-between gap-5 align-middle items-center">
                 <div>
                     Create a new list
                 </div>

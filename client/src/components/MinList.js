@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+<<<<<<< HEAD
 
 
 //helper func
@@ -11,6 +12,10 @@ const getDifference = (array1, array2) => {
       });
     });
   }
+=======
+import Profiles from "./ListProfiles";
+
+>>>>>>> 55558b2 (added profiles to min list)
 
 const MinAnimeCard = (props) => {
     return(
@@ -127,8 +132,11 @@ const MinList = () => {
 
     return (
         <div className="bg-lightgrey p-5 flex flex-col gap-5 w-1/2 rounded-lg" onClick={doEdit}>
-             List 1
-             <button className="bg-blue w-20 rounded-full text-white" onClick={doEdit}>edit</button>
+            <div className="flex flex-row justify-between">
+                List 1
+                <button className="bg-blue w-20 rounded-full text-white" onClick={doEdit}>edit</button>
+            </div>
+             <Profiles/>
             <div className="flex gap-5">
             <div className="grid grid-cols-2 gap-0">
                 {/* <MinAnimeCard className="object-contain h-50" image={animeList[0].main_picture.medium}/>
