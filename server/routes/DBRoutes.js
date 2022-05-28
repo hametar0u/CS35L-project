@@ -8,6 +8,7 @@ const dbo = require("../db/conn");
 const { ConnectionPoolClearnedEvent, ObjectId } = require("mongodb");
 const { response } = require("express");
 const { exit } = require("process");
+const { append } = require("express/lib/response");
 
 //Extension function, not meant for frontend
 userRoute.route("/listings").get(async (req, res) => {
@@ -474,6 +475,32 @@ userRoute.route("/listings/info").get(async (req, res) => {
     });
 });
 
+//Extension function, not meant for frontend
+userRoute.route("/getMALinfo").post(async (req, res) => {
+    const dbConnect = dbo.getDb();
+    try {
+        const userid = req.session.userprofile.id; //user id stored here
+        const access_token = req.session.tokens.access_token; //access token stored here
+        let url = `https://api.myanimelist.net/v2/users/${req.body.name}/animelist?fields=list_status&limit=10`
+        let params = {
+            headers: {
+                Authorization: "Bearer " + access_token,
+            },
+        };
+        await axios
+            .get(url, params)
+            .then((response) => {
+                res.send(response.data);
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    }
+    catch {
+        console.log("You are not logged in");
+    }
+})
+
 //Adds current user to another shared list (needs req.body.colabuser)
 userRoute.route("/listings/addUser").post(async (req, res) => {
     try {
@@ -525,16 +552,71 @@ userRoute.route("/listings/addUser").post(async (req, res) => {
             //Check if other user has a shared list
             if(append_user.sharedlist_id)
             {
+                let information = {};
+                await axios
+                .post("http://localhost:5001/listings/getUserById", {username: current_user.info.name})
+                .then((response) => {
+                    if (response.data === {}) {
+                        res.status(400).send("No user found in MongoDB!");
+                        return;
+                    }
+                    else {
+                        information = response.data;
+                    }
+                })
+            .catch((err) => {
+                console.log(err);
+            });
+                let profile = {
+                    name: current_user.info.name,
+                    image: information.images.jpg.image_url,
+                    url: information.url
+                }
                 dbConnect
                     .collection("UserList")
                     .findOneAndUpdate({id: current_user.id},
-                    {$set: {sharedlist_id: ObjectId(append_user.sharedlist_id)}});
+                    {$set: {sharedlist_id: ObjectId(append_user.sharedlist_id)}},
+                    {$push: {users: profile}});
                 res.send("Successfully added user to colab list");
                 return;
             }
             else 
             {
-                let users = [current_user.info.name, append_user.info.name];
+                let information1 = {};
+                await axios
+                .post("http://localhost:5001/listings/getUserById", {username: current_user.info.name})
+                .then((response) => {
+                    if (response.data === {}) {
+                        res.status(400).send("No user found in MongoDB!");
+                        return;
+                    }
+                    else {
+                        information1 = response.data;
+                    }
+                });
+                let information2 = {};
+                await axios
+                .post("http://localhost:5001/listings/getUserById", {username: append_user.info.name})
+                .then((response) => {
+                    if (response.data === {}) {
+                        res.status(400).send("No user found in MongoDB!");
+                        return;
+                    }
+                    else {
+                        information2 = response.data;
+                    }
+                });
+                let profile1 = {
+                    name: current_user.info.name,
+                    image: information1.images.jpg.image_url,
+                    url: information1.url
+                }
+                let profile2 = {
+                    name: append_user.info.name,
+                    image: information2.images.jpg.image_url,
+                    url: information2.url
+                }
+                let users = [profile1, profile2];
                 let anime = []
                 data = {
                     users: users,
@@ -562,17 +644,61 @@ userRoute.route("/listings/addUser").post(async (req, res) => {
         }
         else if(!append_user.sharedlist_id)
         {
+            let information = {};
+                await axios
+                .post("http://localhost:5001/listings/getUserById", {username: append_user.info.name})
+                .then((response) => {
+                    if (response.data === {}) {
+                        res.status(400).send("No user found in MongoDB!");
+                        return;
+                    }
+                    else {
+                        information = response.data;
+                    }
+                })
+                let profile = {
+                    name: append_user.info.name,
+                    image: information.images.jpg.image_url,
+                    url: information.url
+                }
             dbConnect
                 .collection("UserList")
                 .findOneAndUpdate({id: append_user.id},
                     {$set: {sharedlist_id: ObjectId(current_user.sharedlist_id)}});
+            dbConnect
+                .collection("shared_lists")
+                .findOneAndUpdate({_id: ObjectId(current_user.sharedlist_id)},
+                    {$push: {users: profile}});
             res.send("Successfully added other user to current users colab list");
             return;
         }
         else {
-            // dbConnect
-            //     .collection("shared_lists")
-            //     .deleteOne({_id: Object(current_user.sharedlist_id)});
+            let information1 = {};
+                await axios
+                .post("http://localhost:5001/listings/getUserById", {username: current_user.info.name})
+                .then((response) => {
+                    if (response.data === {}) {
+                        res.status(400).send("No user found in MongoDB!");
+                        return;
+                    }
+                    else {
+                        information1 = response.data;
+                    }
+                });
+                console.log(information1);
+                let profile1 = {
+                    name: current_user.info.name,
+                    image: information1.images.jpg.image_url,
+                    url: information1.url
+                }
+            dbConnect
+                .collection("shared_lists")
+                .findOneAndUpdate({_id: ObjectId(current_user.sharedlist_id)},
+                    {$pull: {users: profile1}});
+            dbConnect
+                .collection("shared_lists")
+                .findOneAndUpdate({_id: ObjectId(append_user.sharedlist_id)},
+                    {$push: {users: profile1}})
             dbConnect
                 .collection("UserList")
                 .findOneAndUpdate({id: current_user.id},
