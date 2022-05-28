@@ -25,6 +25,46 @@ userRoute.route("/listings").get(async (req, res) => {
         });
 });
 
+//Deletes all animes in a list (doesn't need any req)
+userRoute.route("/obliterate").get(async (req, res) => {
+    const dbConnect = dbo.getDb();
+    try {
+        const userid = req.session.userprofile.id; //user id stored here
+        const access_token = req.session.tokens.access_token; //access token stored here
+        // Grab user
+        let userlist = {};
+        await axios
+        .get("http://localhost:5001/listings")
+        .then((response) => {
+            userlist = response.data;
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+        var count = Object.keys(userlist).length;
+        let user = {}
+        for(let i = 0; i < count; i++)
+        {
+            if(userlist[i].id == userid)
+            {
+                console.log("logged user");
+                user = userlist[i];
+            }
+        }
+        console.log("checkpoint 1");
+        console.log(user.sharedlist_id);
+        //Obliterate the list >:)
+        dbConnect
+            .collection("shared_lists")
+            .findOneAndUpdate({_id: ObjectId(user.sharedlist_id)},
+                {$set: {anime: []}});
+        res.send("Successfully cleared list");
+    }
+    catch {
+        console.log("User is not logged in");
+    }
+})
+
 //Extension function, not meant for frontend
 userRoute.route("/listings/mainGenre").get(async (req, res) => {
     const dbConnect = dbo.getDb();

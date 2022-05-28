@@ -296,6 +296,19 @@ const MALAuthTest2 = (props) => {
         console.log(error);
       });
   };
+  const clearList = async () => {
+    await axios
+      .get("/obliterate", {
+        withCredentials: true,
+      })
+      .then((response) => {
+        console.log(response.data);
+        console.log("pressed clearList");
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+  }
 
   const generateAnimeList = async () => {
     //First needs to grab Access_code and username
@@ -400,6 +413,7 @@ const MALAuthTest2 = (props) => {
       <input ref={input} />
       <button className="bg-bermuda rounded-full m-2 p-2" onClick={searchSpecificUser}>search for specific user list</button>
       <button className="bg-bermuda rounded-full m-2 p-2" onClick={generateRecommendedList}>generate RecommendedList</button>
+      <button className="bg-bermuda rounded-full m-2 p-2" onClick={clearList}>Clear the list</button>
       <button className="bg-bermuda rounded-full m-2 p-2" onClick={handleClick}>click for vBucks</button>
       <button className="bg-bermuda rounded-full m-2 p-2" onClick={checkSession}>check whats in session</button>
       <button className="bg-bermuda rounded-full m-2 p-2" onClick={checkSession}>check whats in session</button>
