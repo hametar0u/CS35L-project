@@ -5,7 +5,7 @@ import SmallButton from "./SmallButton";
 import { AnimatePresence, motion } from "framer-motion";
 
 const backdrop = {
-    visible: { opacity: 0.75 },
+    visible: { opacity: 0.85 },
     hidden: { opacity: 0 },
   }
   
@@ -18,18 +18,13 @@ const backdrop = {
     },
   }
 
-const Modal = ({ showModal, closeModal }) => {
-
-    const handleClick = () => {
-        console.log("do click");
-        window.location.href = "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
-    };
+const Modal = ({ showModal, closeModal, modalOptions, handleClick }) => {
 
     return (
         <AnimatePresence>
         { showModal && (
             <motion.div
-            className="fixed z-1 w-full h-screen top-0 left-0 bg-dark"
+                className="fixed z-1000 w-screen h-screen top-0 left-0 bg-black"
                 variants={backdrop}
                 initial="hidden"
                 animate="visible"
@@ -42,12 +37,12 @@ const Modal = ({ showModal, closeModal }) => {
                     <button className="bg-red w-5 h-5 align-center items-center text-xs rounded-full text-white" onClick={closeModal}>x</button>
                     <div className="flex flex-col gap-5 align-middle items-left">
                         <div className="text-blue text-2xl font-bold">
-                            Want unlimited lists?
+                            {modalOptions.title}
                         </div>
                         <div className="mb-5">
-                            Join Our Anime List Premium for the low low price of $99999999999!
+                            {modalOptions.body}
                         </div>
-                        <SmallButton name={"Join OAL Premium"} handleClick={handleClick}/>
+                        <SmallButton name={modalOptions.buttonText} handleClick={handleClick}/>
                     </div>
                 </motion.div>
             </motion.div>

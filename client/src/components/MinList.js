@@ -134,7 +134,7 @@ const MinList = () => {
                 List 1
                 <button className="bg-blue w-20 rounded-full text-white" onClick={doEdit}>edit</button>
             </div>
-             <Profiles/>
+            <Profiles/>
             <div className="flex gap-5">
             <div className="grid grid-cols-2 gap-0">
                 {/* <MinAnimeCard className="object-contain h-50" image={animeList[0].main_picture.medium}/>

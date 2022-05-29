@@ -5,7 +5,8 @@ import { AnimatePresence } from "framer-motion";
 import { CardWrapper } from "./MotionComponents";
 
 
-const Profiles = (props) => {
+const Profiles = () => {
+    const [users, setUsers] = useState([]);
 
     let dummyProfiles = [
         {
@@ -23,17 +24,33 @@ const Profiles = (props) => {
         
     ];
 
+    const redirectToProfile = (url) => {
+        window.open(url, "_blank");
+    }
+
+    useEffect(() => {
+        const config = { withCredentials: true };
+        axios.post("/getAllUsersOfList", {}, config) //users in list
+        .then(response => {
+            console.log(response.data.users);
+            setUsers(response.data.users);
+        })
+        .catch(err => {
+            console.log(err.response);
+        });
+    }, []);
+
   return ( 
     <div className="flex flex-row gap-10 overflow-x-auto">
-        {dummyProfiles.map((elt, i) => {
+        {users.map((user, i) => {
           return (
             <AnimatePresence>
                 <CardWrapper>
-                    <div className="flex flex-col justify-center text-center">
+                    <div className="flex flex-col justify-center text-center" onClick={() => redirectToProfile(user.url)} key={i}>
                         <div className="bg-white w-10 h-10 rounded-full">
-                            <img className="object-contain w-10 h-10 rounded-full" src={elt.pfp}/>
+                            <img className="object-contain w-10 h-10 rounded-full" src={user.image}/>
                         </div>
-                        <div className="text-xs">{elt.name}</div>
+                        <div className="text-xs">{user.name}</div>
                     </div>
                 
                 </CardWrapper>

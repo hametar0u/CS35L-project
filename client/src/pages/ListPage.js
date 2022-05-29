@@ -9,6 +9,7 @@ import Recs from "../components/RecommendedAnime";
 import MiniButton from "../components/MiniButton";
 import JoinList from "../components/JoinList";
 import Profiles from "../components/ListProfiles";
+import Modal from "../components/Modal";
 
 //helper func
 const getDifference = (array1, array2) => {
@@ -24,6 +25,7 @@ const ListPage = () => {
   const [error, setError] = useState();
   const [animeList, setAnimeList] = useState([]);
   const [recommendedAnimeList, setRecommendedAnimeList] = useState([]);
+  const [open, setOpen] = useState(false);
   const config = {
     withCredentials: true
   };
@@ -37,7 +39,7 @@ const ListPage = () => {
     axios.all([
       axios.post("/listings/allanimes", {}, config), //MAL
       axios.post(`/listings/allanimesSharedList`, {}, config), //DB
-      axios.post("/listings/listOfRecommendedAnime", {}, config)
+      axios.post("/listings/listOfRecommendedAnime", {}, config),
     ])
     .then(axios.spread((MALdata, DBdata, RecommendedAnimeData) => {
       console.log(MALdata,DBdata,RecommendedAnimeData);
@@ -130,7 +132,17 @@ const clearAnime = () => {
   getAnime();
 };
 
-  return(
+const modalOptions = {
+  title: "Warning: You're about to join another list",
+  body: "You might lose all the anime in your watchlist if you join another list. Do you wish to continue?",
+  buttonText: "Join Anyways"
+};
+const handleModalButtonClick = (listid) => {
+  alert("are you sure ?????!!!!!");
+  console.log("join another list");
+};
+
+return(
     <ZoomInOutWrapper>
     <div>
     {/* <Nav/> */}
@@ -177,7 +189,7 @@ const clearAnime = () => {
               </div>
                <div className="bg-purple rounded-lg w-fit h-155 overflow-y-auto justify-center items-center">
                 <div className="p-5">
-                  <JoinList animeList={recommendedAnimeList} joinNewList={addAnime}/>
+                  <JoinList animeList={recommendedAnimeList} joinNewList={() => setOpen(!open)}/>
                 </div>
               </div>
             </div>
@@ -186,6 +198,12 @@ const clearAnime = () => {
           
         </div>
       </div>
+      <Modal 
+        showModal={open} 
+        closeModal={() => setOpen(false)} 
+        modalOptions={modalOptions}
+        handleClick={handleModalButtonClick}
+      />
     </div>
   </div>
   </div>

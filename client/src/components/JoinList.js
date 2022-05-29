@@ -13,62 +13,36 @@ const JoinListCard = (props) => {
                 <div className="order-first text-sm">{props.owner}'s list</div>
           </div>
             <div className="flex flex-row">
-                <img className="w-1/4 h-15" src={props.image1}/>
-                <img className="w-1/4 h-15" src={props.image2}/>
-                <img className="w-1/4 h-15" src={props.image3}/>
-                <img className="w-1/4 h-15" src={props.image4}/>
+              {props.images.map((image, i) => {
+                return <img className="w-1/4 h-15" src={image} key={i}/>;
+              })}
             </div>
       </div>
   );
 };
 
 const JoinList = (props) => {
+    const [otherSharedLists, setOtherSharedLists] = useState([]);
 
-    let otherLists = [
-        {
-            "owner" : "Paul",
-            "image1" : "https://api-cdn.myanimelist.net/images/anime/1819/97947.jpg",
-            "image2" : "https://api-cdn.myanimelist.net/images/anime/1775/109514.jpg",
-            "image3" : "https://api-cdn.myanimelist.net/images/anime/1775/109514.jpg",
-            "image4" : "https://api-cdn.myanimelist.net/images/anime/1775/109514.jpg",
-        },
-        {
-            "owner" : "Paolo",
-            "image1" : "https://api-cdn.myanimelist.net/images/anime/1819/97947.jpg",
-            "image2" : "https://api-cdn.myanimelist.net/images/anime/1775/109514.jpg",
-            "image3" : "https://api-cdn.myanimelist.net/images/anime/1775/109514.jpg",
-            "image4" : "https://api-cdn.myanimelist.net/images/anime/1775/109514.jpg",
-        },
-        {
-            "owner" : "Pablo",
-            "image1" : "https://api-cdn.myanimelist.net/images/anime/1819/97947.jpg",
-            "image2" : "https://api-cdn.myanimelist.net/images/anime/1775/109514.jpg",
-            "image3" : "https://api-cdn.myanimelist.net/images/anime/1775/109514.jpg",
-            "image4" : "https://api-cdn.myanimelist.net/images/anime/1775/109514.jpg",
-        },
-        {
-            "owner" : "Pablo",
-            "image1" : "https://api-cdn.myanimelist.net/images/anime/1819/97947.jpg",
-            "image2" : "https://api-cdn.myanimelist.net/images/anime/1775/109514.jpg",
-            "image3" : "https://api-cdn.myanimelist.net/images/anime/1775/109514.jpg",
-            "image4" : "https://api-cdn.myanimelist.net/images/anime/1775/109514.jpg",
-        },
-        {
-            "owner" : "Pablo",
-            "image1" : "https://api-cdn.myanimelist.net/images/anime/1819/97947.jpg",
-            "image2" : "https://api-cdn.myanimelist.net/images/anime/1775/109514.jpg",
-            "image3" : "https://api-cdn.myanimelist.net/images/anime/1775/109514.jpg",
-            "image4" : "https://api-cdn.myanimelist.net/images/anime/1775/109514.jpg",
-        },
-    ];
+    useEffect(() => {
+      const config = { withCredentials: true };
+      axios.get("/getSharedLists", config)
+      .then((response) => {
+        console.log(response.data.animelists);
+          setOtherSharedLists(response.data.animelists);
+      })
+      .catch((err) => {
+          console.log(err);
+      });
+    }, []);
 
   return ( 
     <div className="grid grid-cols-1 gap-10">
-        {otherLists.map((list, i) => {
+        {otherSharedLists.map((list, i) => {
           return (
             <AnimatePresence>
                 <CardWrapper>
-                  <JoinListCard owner={list.owner} image1={list.image1} image2={list.image1} image3={list.image1} image4={list.image1} joinNewList={props.joinNewList}/>
+                  <JoinListCard owner={list.username} images={list.anime} joinNewList={props.joinNewList}/>
                 </CardWrapper>
             </AnimatePresence>
           );
