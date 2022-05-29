@@ -145,7 +145,7 @@ useEffect(() => {
                 <div className="text-blue">
                   Search by...
                 </div>
-                <div className="flex flex-col gap-5 mb-30">
+                <div className="flex flex-col gap-5 mb-10">
                   <div className="flex flex-row gap-2">
                   <MiniButton name="MAL database" handleClick={() => {setSearchType("MALuser");}}></MiniButton>
                   <MiniButton name="Site database" handleClick={() => {setSearchType("DBuser");}}></MiniButton>
@@ -161,9 +161,7 @@ useEffect(() => {
                   </div>
                   </div>
                 </div>
-                
-
-                
+      
                 <div className="font-serif text-xl text-blue">
                   Your Recommended Friend
                 </div>

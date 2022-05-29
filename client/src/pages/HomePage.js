@@ -79,13 +79,13 @@ const HomePage = () => {
   // if(open) {
     return(
       <ZoomInWrapper className="w-full">
-    <div className="h-max w-screen bg-gradient-to-r from-background-mint via-background-blue to-background-purple animate-bg">
+    <div className="h-screen w-screen bg-gradient-to-r from-background-mint via-background-blue to-background-purple animate-bg">
         <div className="p-10">
           {/* <Link className="bg-blue rounded-full m-2 p-2 text-white" to="/home">Back</Link> */}
             <div className="flex justify-left sm:justify-center w-full pt-10 pb-10">   
             <div className="flex flex-col gap-2 sm:gap-5 w-3/4 max-w-5xl">
             <div className="font-serif text-xl text-blue">
-              Our Anime List Home
+              Home
             </div>
                   <div className="flex flex-row gap-5">
                     <MinList/>
