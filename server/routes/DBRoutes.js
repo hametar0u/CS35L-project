@@ -502,7 +502,7 @@ userRoute.route("/getMALinfo").post(async (req, res) => {
 })
 
 //Adds current user to another shared list (needs req.body.colabuser)
-userRoute.route("/listings/addUser").post(async (req, res) => {
+userRoute.route("/joinList").post(async (req, res) => {
     try {
         const dbConnect = dbo.getDb();
         const userid = req.session.userprofile.id; //user id stored here
