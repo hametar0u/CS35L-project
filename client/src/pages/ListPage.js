@@ -55,12 +55,14 @@ const ListPage = () => {
       console.log("animeToDelete: ", animeToDelete);
       let animeToAdd = getDifference(DBdata, MALdata);
       console.log("animeToAdd: ", animeToAdd);
+
       
       if (animeToDelete.length !== 0) {
-        animeToDelete.forEach(anime => delAnime(anime.id));
+        delAnime(animeToDelete[0].id); //del recursive calls getAnime so I only have to delete one thing
       }
       if (animeToAdd.length !== 0) {
-        animeToAdd.forEach(anime => addAnime(anime.id));
+        // animeToAdd.forEach(anime => addAnime(anime.id));
+        addAnime(animeToAdd[0].id);
       }
 
       setAnimeList(DBdata);
@@ -113,8 +115,20 @@ const ListPage = () => {
   };
 
 const clearAnime = () => {
-  
-}
+  console.log("clear anime");
+  axios
+    .get("/obliterate", {
+      withCredentials: true,
+    })
+    .then((response) => {
+      console.log(response.data);
+      console.log("pressed clearList");
+    })
+    .catch((err) => {
+      console.log(err);
+    })
+  getAnime();
+};
 
   return(
     <ZoomInWrapper>
@@ -140,7 +154,7 @@ const clearAnime = () => {
             <SearchBarProto className="w-full" name={"Anime"} addAnime={addAnime}/>
             </div>
              
-              <MiniButton className="w-full" name="Clear all Anime" onClick={clearAnime}/>
+              <MiniButton className="w-full" name="Clear all Anime" handleClick={clearAnime}/>
             </div>    
             {/* <div className="flex flex-row-reverse self-end w-full">
               <MiniButton name="Clear all Anime" onClick={clearAnime}/>
