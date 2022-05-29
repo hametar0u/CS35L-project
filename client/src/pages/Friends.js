@@ -119,13 +119,13 @@ useEffect(() => {
 
 useEffect(() => {
   if (searchType === "club") {
-    setSearchBarPlaceholder("search MyAnimeList clubs");
+    setSearchBarPlaceholder("Search MyAnimeList clubs");
   }
   else if (searchType === "MALuser") {
-    setSearchBarPlaceholder("search for MyAnimeList users");
+    setSearchBarPlaceholder("Search for MyAnimeList users");
   }
   else { //DBuser
-    setSearchBarPlaceholder("search for fellow site users");
+    setSearchBarPlaceholder("Search for fellow site users");
   }
 }, [searchType]);
 
@@ -133,7 +133,7 @@ useEffect(() => {
     <div>
       {/* <Nav /> */}
       <SlidingWrapper>
-      <div className="h-max w-screen bg-gradient-to-r from-background-mint via-background-blue to-background-purple animate-bg">
+      <div className="h-screen w-screen bg-gradient-to-r from-background-mint via-background-blue to-white animate-bg">
       <div className="p-10">
         <div className="flex justify-left sm:justify-center w-full pt-10 pb-10">   
         <div className="flex flex-col gap-2 sm:gap-5 w-3/4 max-w-5xl">
@@ -157,9 +157,8 @@ useEffect(() => {
                   <div>
                     <div className="w-max">
                     <div className="bg-light-blue rounded-lg w-full">
-                    <form className="p-2 w-full flex row" onSubmit={handleSubmit}>
-                      <input className="mr-2" type="text" value={searchInput} onChange={(e) => setSearchInput(e.target.value)} placeholder={searchBarPlaceholder} />
-                      <MiniButton handleClick={handleSubmit} name="Search" />
+                    <form className="p-2" onSubmit={handleSubmit}>
+                      <input type="text" className="w-3/4 rounded-lg px-2" value={searchInput} onChange={(e) => setSearchInput(e.target.value)} placeholder={searchBarPlaceholder} />
                     </form>
                   </div>
                   </div>

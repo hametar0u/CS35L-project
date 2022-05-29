@@ -16,7 +16,7 @@ const About = () => {
     <div>
       {/* <Nav/> */}
       <SlidingWrapper>
-      <div className="h-max w-screen bg-gradient-to-r from-background-mint via-background-blue to-background-purple animate-bg">
+      <div className="h-screen w-screen bg-gradient-to-r from-background-mint via-background-blue to-white animate-bg">
         <div className="p-10">
           {/* <Link className="bg-blue rounded-full m-2 p-2 text-white" to="/home">Back</Link> */}
             <div className="flex justify-left sm:justify-center w-full pt-10 pb-10">   
