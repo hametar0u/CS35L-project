@@ -97,7 +97,7 @@ const MALAuthTest2 = (props) => {
 
   const searchSpecificUser = async () => {
     const obj = {
-      name: "DevelopermonkE"
+      name: "kahn"
     }
     await axios
       .post("/listings/SearchUserMAL", obj, {

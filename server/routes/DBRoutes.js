@@ -1336,25 +1336,26 @@ userRoute.route("/listings/SearchUserMAL").post(async (req, res) => {
                 searcheduser = response.data
             })
             .catch((err) => {
-                console.log(err);
+                res.status(400).send("This user doesn't exist");
+                return;
             });
         
         //get searched user's profile if they exist on MongoDB
-        let information = {};
-        await axios
-            .post("http://localhost:5001/listings/getUserById", {username: req.body.name})
-            .then((response) => {
-                if (response.data === {}) {
-                    res.status(400).send("No user found in MongoDB!");
-                    return;
-                }
-                else {
-                    information = response.data;
-                }
-            })
-            .catch((err) => {
-                console.log(err);
-            });
+        // let information = {};
+        // await axios
+        //     .post("http://localhost:5001/listings/getUserById", {username: req.body.name})
+        //     .then((response) => {
+        //         if (response.data === {}) {
+        //             res.status(400).send("No user found in MongoDB!");
+        //             return;
+        //         }
+        //         else {
+        //             information = response.data;
+        //         }
+        //     })
+        //     .catch((err) => {
+        //         console.log(err);
+        //     });
         //generate simscore
         let otherc = 0;
         var count5 = Object.keys(searcheduser.data).length;
@@ -1392,8 +1393,6 @@ userRoute.route("/listings/SearchUserMAL").post(async (req, res) => {
 
         obj = {
             username : req.body.name,
-            searcheduser: searcheduser,
-            information: information,
             simscore: simscore
         }
         res.send(obj); 
