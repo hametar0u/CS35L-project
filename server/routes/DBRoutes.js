@@ -266,6 +266,7 @@ userRoute.route("/listings/mainGenre").get(async (req, res) => {
                     count4++;
             }
         }
+        console.log(simscore);
         dbConnect
                 .collection("UserList")
                 .findOneAndUpdate({id: userid},
@@ -421,6 +422,15 @@ userRoute.route("/listings/SpecificUser").post(async (req, res) => {
             .catch((err) => {
                 console.log(err);
             });
+        //Reallocate Genres
+        await axios
+        .get("http://localhost:5001/listings/mainGenre")
+        .then((response) => {
+            console.log(response.data);
+        })
+        .catch((err) => {
+            console.log(err);
+        });
         // Grab user
         let userlist = {};
         await axios
