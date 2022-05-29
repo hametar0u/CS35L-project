@@ -11,16 +11,21 @@ import MiniButton from "../components/MiniButton";
 import CountUp from 'react-countup';
 import { Circle } from 'rc-progress';
 import { SlidingWrapper } from "../components/MotionComponents";
+import HashLoader from "react-spinners/HashLoader";
+
 
 const CompareUser = () => {
   const [similarity, setSimilarity] = useState();//temp
   const [progress, setProgress] = useState(1);
+  const [loading, setLoading] = useState(false);
   const [index, setIndex] = useState(0);
   const [searchType, setSearchType] = useState("DBuser");
   const [searchInput, setSearchInput] = useState();
   const [mostSimilarUser, setMostSimilarUser] = useState();
   const [userProfile, setUserProfile] = useState(mostSimilarUser);
   const [error, setError] = useState();
+  const [color, setColor] = useState("#ffffff");
+  const [searchBarPlaceholder, setSearchBarPlaceholder] = useState("Site database");
 
 //   useEffect(() => {
 //     if (!similarity) return;
@@ -37,6 +42,7 @@ const CompareUser = () => {
 
 const handleSubmit = async (e) => {
   e.preventDefault();
+  setUserProfile();
 
   const obj = {
     club_name: searchInput, //club
@@ -54,12 +60,19 @@ const handleSubmit = async (e) => {
     url = "/listings/SpecificUser";
   }
 
+  const config = {
+    withCredentials: true,
+    onUploadProgress(progressEvent) {
+      setLoading(true);
+    }
+  };
+
 
   await axios 
-    .post(url, obj, {
-      withCredentials: true,
-    })
+    .post(url, obj, config)
     .then((response) => {
+      setLoading(false);
+
       console.log(response.data);
       setSearchInput("");
       if (searchType === "club") {
@@ -101,6 +114,18 @@ useEffect(() => {
   getRecommendedUser();
 }, []);
 
+useEffect(() => {
+  if (searchType === "club") {
+    setSearchBarPlaceholder("search MyAnimeList clubs");
+  }
+  else if (searchType === "MALuser") {
+    setSearchBarPlaceholder("search for MyAnimeList users");
+  }
+  else { //DBuser
+    setSearchBarPlaceholder("search for fellow site users");
+  }
+}, [searchType]);
+
   return (
     <div>
       {/* <Nav /> */}
@@ -130,7 +155,7 @@ useEffect(() => {
                     <div className="w-max">
                     <div className="bg-light-blue rounded-lg w-full">
                     <form className="p-2" onSubmit={handleSubmit}>
-                      <input type="text" value={searchInput} onChange={(e) => setSearchInput(e.target.value)} placeholder="Search Clubs" />
+                      <input type="text" value={searchInput} onChange={(e) => setSearchInput(e.target.value)} placeholder={searchBarPlaceholder} />
                     </form>
                   </div>
                   </div>
@@ -159,22 +184,25 @@ useEffect(() => {
                 </div>
             </div>
             <div className="bg-lightgrey w-full rounded-lg px-10 py-5">
-              <div className="flex flex-row gap-2 items-center">
-              <CountUp style={{fontWeight: 700, fontSize: 70, color: '#000000'}} end={similarity} useEasing="true" />
-              <div className="text-black text-6xl font-semibold">%</div>
-              </div>
-              <Circle 
-                  percent={progress}
-                  strokeWidth="6" 
-                  strokeColor="#4a8fe7" 
-                  trailColor={similarity === 0 ? "#d3d3d3" : "#d3d3d3"}
-                  trailWidth="6"
-              /> 
               {userProfile && 
+              <>
+                <div className="flex flex-row gap-2 items-center">
+                  <CountUp style={{fontWeight: 700, fontSize: 70, color: '#000000'}} end={similarity} useEasing="true" />
+                  <div className="text-black text-6xl font-semibold">%</div>
+                </div>
+                <Circle 
+                    percent={progress}
+                    strokeWidth="6" 
+                    strokeColor="#BCD8C1" 
+                    trailColor={similarity === 0 ? "#d3d3d3" : "#d3d3d3"}
+                    trailWidth="6"
+                /> 
                 <div>
                   <div>{userProfile.username}</div>
                 </div>
+              </>
               }
+              <HashLoader color={color} loading={loading}/>
             </div>
           </div>
         
