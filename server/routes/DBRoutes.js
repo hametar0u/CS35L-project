@@ -26,6 +26,62 @@ userRoute.route("/listings").get(async (req, res) => {
         });
 });
 
+userRoute.route("/getSharedLists").get(async (req, res) => {
+    const dbConnect = dbo.getDb();
+    let sharedlist = {};
+    
+    await axios
+        .get("http://localhost:5001/listings/sharedList")
+        .then((response) => {
+            sharedlist = response.data;
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+        console.log(sharedlist);
+        console.log("checkpoint 1");
+        var count = Object.keys(sharedlist).length;
+        let counter = 0;
+        if(count > 10)
+        {
+            counter = 10;
+        }
+        else {
+            counter = count;
+        }
+        let anime = []
+        let animeoutput = []
+        let output = {}
+        for(let i = 0; i < counter; i++)
+        {
+            var count2 = Object.keys(sharedlist[i].anime).length;
+            let othercounter = 0;
+            if(count2 > 4) {
+                othercounter = 4;
+            }
+            else {
+                othercounter = count2;
+            }
+            console.log(count2);
+            for(let j = 0; j < othercounter; j++)
+            {
+                
+                anime[j] = sharedlist[i].anime[j].main_picture.medium;
+                console.log(anime[j]);
+            }
+            output = {
+                anime: anime,
+                username: sharedlist[i].users[0].name,
+                id: sharedlist[i]._id
+            }
+            animeoutput[i] = output;
+        }
+        output = {
+            animelists: animeoutput
+        }
+        res.send(output);
+})
+
 //Deletes all animes in a list (doesn't need any req)
 userRoute.route("/obliterate").get(async (req, res) => {
     const dbConnect = dbo.getDb();

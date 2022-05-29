@@ -100,7 +100,7 @@ const MALAuthTest2 = (props) => {
       name: "kahn"
     }
     await axios
-      .post("/listings/SearchUserMAL", obj, {
+      .get("/getSharedLists", {
         withCredentials: true,
       })
       .then((response) => {
