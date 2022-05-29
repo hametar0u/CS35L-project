@@ -342,6 +342,15 @@ userRoute.route("/listings/SpecificUser").post(async (req, res) => {
                 specificuser = userlist[i];
             }
         }
+        //Check if they are in the same Shared list or if the user doesn't exist
+        if(specificuser == {} || specificuser.sharedlist_id == user.sharedlist_id)
+        {
+            let error = {
+                simscore: -1
+            }
+            res.send(error);
+            return;
+        }
         console.log(specificuser);
         //Search for user most popular genre
         var count2 = Object.keys(user.score).length;
@@ -391,6 +400,8 @@ userRoute.route("/listings/SpecificUser").post(async (req, res) => {
         obj = {
             username : req.body.name,
             simscore: ratio,
+            image: information.images.jpg.image_url,
+            url: information.url
 
         }
         res.send(obj); 
@@ -1330,72 +1341,92 @@ userRoute.route("/listings/SearchUserMAL").post(async (req, res) => {
             },
         };
         searcheduser = {}
+        let exist = false;
         await axios
             .get(url, params)
             .then((response) => {
-                searcheduser = response.data
+                searcheduser = response.data;
+                exist = true;
             })
             .catch((err) => {
-                res.status(400).send("This user doesn't exist");
-                return;
+                console.log(err);
             });
-        
-        //get searched user's profile if they exist on MongoDB
-        // let information = {};
-        // await axios
-        //     .post("http://localhost:5001/listings/getUserById", {username: req.body.name})
-        //     .then((response) => {
-        //         if (response.data === {}) {
-        //             res.status(400).send("No user found in MongoDB!");
-        //             return;
-        //         }
-        //         else {
-        //             information = response.data;
-        //         }
-        //     })
-        //     .catch((err) => {
-        //         console.log(err);
-        //     });
-        //generate simscore
-        let otherc = 0;
-        var count5 = Object.keys(searcheduser.data).length;
-        let id = 0;
-        let item = {
-            id: 0
-        }
-
-        for(let i = 0; i < count5; i ++)
-        {
-            id = searcheduser.data[i].node.id;
-            item = {
-                params: params,
-                id: id
+            if(exist == false)
+            {
+                res.status(400).send("MAL user does not exist");
             }
-            await axios
-                .post("http://localhost:5001/listings/getGenre", item)
-                .then((response) => {
-                    if(genre == response.data.genre)
-                    {
-                        otherc++;
-                    }
-                })
-                .catch((err) => {
-                    console.log(err);
-                });
-        }
-        let simscore = 0;
-        if(otherc > counter) {
-            simscore = counter / otherc;
-        }
-        else {
-            simscore = otherc / counter;
-        }
+            else {
+            
+            //get searched user's profile if they exist on MongoDB
+            // let information = {};
+            // await axios
+            //     .post("http://localhost:5001/listings/getUserById", {username: req.body.name})
+            //     .then((response) => {
+            //         if (response.data === {}) {
+            //             res.status(400).send("No user found in MongoDB!");
+            //             return;
+            //         }
+            //         else {
+            //             information = response.data;
+            //         }
+            //     })
+            //     .catch((err) => {
+            //         console.log(err);
+            //     });
+            //generate simscore
+            let otherc = 0;
+            var count5 = Object.keys(searcheduser.data).length;
+            let id = 0;
+            let item = {
+                id: 0
+            }
 
-        obj = {
-            username : req.body.name,
-            simscore: simscore
+            for(let i = 0; i < count5; i ++)
+            {
+                id = searcheduser.data[i].node.id;
+                item = {
+                    params: params,
+                    id: id
+                }
+                await axios
+                    .post("http://localhost:5001/listings/getGenre", item)
+                    .then((response) => {
+                        if(genre == response.data.genre)
+                        {
+                            otherc++;
+                        }
+                    })
+                    .catch((err) => {
+                        console.log(err);
+                    });
+            }
+            let simscore = 0;
+            if(otherc > counter) {
+                simscore = counter / otherc;
+            }
+            else {
+                simscore = otherc / counter;
+            }
+            let information = {};
+                    await axios
+                    .post("http://localhost:5001/listings/getUserById", {username: req.body.name})
+                    .then((response) => {
+                        if (response.data === {}) {
+                            res.status(400).send("No user found in MongoDB!");
+                            return;
+                        }
+                        else {
+                            information = response.data;
+                        }
+                    });
+            obj = {
+                username : req.body.name,
+                simscore: simscore,
+                image: information.images.jpg.image_url,
+                url: information.url
+            }
+            res.send(obj); 
         }
-        res.send(obj); 
     }
     catch {
         res.status(500).send("You are not logged in");
