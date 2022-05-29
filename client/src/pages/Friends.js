@@ -205,7 +205,7 @@ useEffect(() => {
                 <Circle 
                     percent={progress}
                     strokeWidth="6" 
-                    strokeColor="#BCD8C1" 
+                    strokeColor="#4a8fe7" 
                     trailColor={similarity === 0 ? "#d3d3d3" : "#d3d3d3"}
                     trailWidth="6"
                 /> 
