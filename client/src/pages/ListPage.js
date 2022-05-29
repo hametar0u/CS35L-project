@@ -134,7 +134,7 @@ const clearAnime = () => {
     <ZoomInOutWrapper>
     <div>
     {/* <Nav/> */}
-    <div className="h-max w-screen bg-gradient-to-r from-background-mint via-background-blue to-background-purple animate-bg">
+    <div className="h-max w-screen bg-gradient-to-r from-background-mint via-background-blue to-white animate-bg">
       <div className="p-10 relative">
       
         {/* <Link className="bg-blue rounded-full m-2 p-2 text-white" to="/home">Back</Link> */}
