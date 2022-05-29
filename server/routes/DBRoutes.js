@@ -26,6 +26,61 @@ userRoute.route("/listings").get(async (req, res) => {
         });
 });
 
+userRoute.route("/getAllUsersOfList").post(async (req, res) => {
+    const dbConnect = dbo.getDb();
+    try {
+        const userid = req.session.userprofile.id; //user id stored here
+        const access_token = req.session.tokens.access_token; //access token stored here
+        let sharedlist = {};
+        //Grab shared list
+        await axios
+            .get("http://localhost:5001/listings/sharedList")
+            .then((response) => {
+                sharedlist = response.data;
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+        //Grab user's name
+        let userlist = {};
+        await axios
+            .get("http://localhost:5001/listings")
+            .then((response) => {
+                userlist = response.data;
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+        var count = Object.keys(userlist).length;
+        let users_shared_list = {}
+        for(let i = 0; i < count; i++)
+        {
+            if(userlist[i].id == userid)
+            {
+                users_shared_list = userlist[i].sharedlist_id;
+            }
+        }
+        var count2 = Object.keys(sharedlist).length;
+        let listOfUsers = {};
+        for(let i = 0; i < count2; i++)
+        {
+            if(sharedlist[i]._id == users_shared_list)
+            {
+                console.log(sharedlist[i]);
+                listOfUsers = {
+                    users: sharedlist[i].users
+                }
+            }
+        }
+        res.send(listOfUsers);
+
+    }
+    catch {
+        console.log("You are not logged in");
+
+    }
+})
+
 userRoute.route("/getSharedLists").get(async (req, res) => {
     const dbConnect = dbo.getDb();
     let sharedlist = {};
