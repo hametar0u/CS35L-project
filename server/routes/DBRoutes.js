@@ -26,6 +26,7 @@ userRoute.route("/listings").get(async (req, res) => {
         });
 });
 
+//Return all the Users of a shared list (doesn't require any req)
 userRoute.route("/getAllUsersOfList").post(async (req, res) => {
     const dbConnect = dbo.getDb();
     try {
@@ -81,6 +82,7 @@ userRoute.route("/getAllUsersOfList").post(async (req, res) => {
     }
 })
 
+//Return 4 anime thumbnails, first username, and _id (doesn't require any req)
 userRoute.route("/getSharedLists").get(async (req, res) => {
     const dbConnect = dbo.getDb();
     let sharedlist = {};
@@ -499,7 +501,6 @@ userRoute.route("/listings/SpecificUser").post(async (req, res) => {
                     }
                 }
             }
-            
         let ratio = 0;
         if(otherc > counter)
         {
@@ -508,6 +509,21 @@ userRoute.route("/listings/SpecificUser").post(async (req, res) => {
         else{
             ratio = otherc / counter;
         }
+        let information = {};
+                await axios
+                .post("http://localhost:5001/listings/getUserById", {username: req.body.name})
+                .then((response) => {
+                    if (response.data === {}) {
+                        res.status(400).send("No user found in MongoDB!");
+                        return;
+                    }
+                    else {
+                        information = response.data;
+                    }
+                })
+            .catch((err) => {
+                console.log(err);
+            });
         obj = {
             username : req.body.name,
             simscore: ratio,
