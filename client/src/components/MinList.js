@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import Profiles from "./ListProfiles";
+import { CardSlideWrapper } from "./MotionComponents";
 
 //helper func
 const getDifference = (array1, array2) => {
@@ -15,7 +16,9 @@ const getDifference = (array1, array2) => {
 const MinAnimeCard = (props) => {
     return(
         <div>
-            <div className=""><img className="h-40 w-30 object-cover" src={props.image}/></div>
+            <CardSlideWrapper>
+                <div className=""><img className="h-40 w-30 object-cover" src={props.image}/></div>
+            </CardSlideWrapper>
         </div>
     );
 };

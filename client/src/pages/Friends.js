@@ -10,7 +10,8 @@ import MiniButton from "../components/MiniButton";
 
 import CountUp from 'react-countup';
 import { Circle } from 'rc-progress';
-import { SlidingWrapper } from "../components/MotionComponents";
+import { SlidingWrapper, CardWrapper } from "../components/MotionComponents";
+import { AnimatePresence } from "framer-motion";
 import HashLoader from "react-spinners/HashLoader";
 
 
@@ -26,6 +27,8 @@ const CompareUser = () => {
   const [error, setError] = useState();
   const [color, setColor] = useState("#ffffff");
   const [searchBarPlaceholder, setSearchBarPlaceholder] = useState("Site database");
+  const selectedColor = "bg-purple";
+  const unselectedColor = "bg-light-purple";
 
 //   useEffect(() => {
 //     if (!similarity) return;
@@ -147,15 +150,16 @@ useEffect(() => {
                 </div>
                 <div className="flex flex-col gap-5 mb-10">
                   <div className="flex flex-row gap-2">
-                  <MiniButton name="MAL database" handleClick={() => {setSearchType("MALuser");}}></MiniButton>
-                  <MiniButton name="Site database" handleClick={() => {setSearchType("DBuser");}}></MiniButton>
-                  <MiniButton name="MAL clubs" handleClick={() => {setSearchType("club");}}></MiniButton>
+                  <MiniButton className={searchType === "MALuser" ? selectedColor : unselectedColor} name="MAL database" handleClick={() => {setSearchType("MALuser");}}></MiniButton>
+                  <MiniButton className={searchType === "DBuser" ? selectedColor : unselectedColor} name="Site database" handleClick={() => {setSearchType("DBuser");}}></MiniButton>
+                  <MiniButton className={searchType === "club" ? selectedColor : unselectedColor} name="MAL clubs" handleClick={() => {setSearchType("club");}}></MiniButton>
                   </div>
                   <div>
                     <div className="w-max">
                     <div className="bg-light-blue rounded-lg w-full">
-                    <form className="p-2" onSubmit={handleSubmit}>
-                      <input type="text" value={searchInput} onChange={(e) => setSearchInput(e.target.value)} placeholder={searchBarPlaceholder} />
+                    <form className="p-2 w-full flex row" onSubmit={handleSubmit}>
+                      <input className="mr-2" type="text" value={searchInput} onChange={(e) => setSearchInput(e.target.value)} placeholder={searchBarPlaceholder} />
+                      <MiniButton handleClick={handleSubmit} name="Search" />
                     </form>
                   </div>
                   </div>
@@ -165,21 +169,26 @@ useEffect(() => {
                 <div className="font-serif text-xl text-blue">
                   Your Recommended Friend
                 </div>
-                <div className="bg-lightgrey w-max rounded-lg">
-                    {mostSimilarUser && 
-                    <div className="flex flex-row">
-                      <div className="ml-20 mr-0">
-                          <Profile name={mostSimilarUser.username} image={mostSimilarUser.information.images.jpg.image_url}/>
-                      </div>
-                      <div className="flex flex-col gap-5 p-5">
-                        <div className="font-bold">
-                          {mostSimilarUser.simscore * 100}% Similarity
+                
+                {mostSimilarUser &&
+                <AnimatePresence>
+                  <CardWrapper>
+                    <div className="bg-lightgrey w-max rounded-lg">
+                        <div className="flex flex-row">
+                          <div className="ml-20 mr-0">
+                              <Profile name={mostSimilarUser.username} image={mostSimilarUser.information.images.jpg.image_url}/>
+                          </div>
+                          <div className="flex flex-col gap-5 p-5">
+                            <div className="font-bold">
+                              {mostSimilarUser.simscore * 100}% Similarity
+                            </div>
+                              <div>Reach out to your new friend on <a href={mostSimilarUser.information.url} className="text-blue hover:text-grey"> myanimelist.net</a>.</div>
+                          </div>
                         </div>
-                          <div>Reach out to your new friend on <a href={mostSimilarUser.information.url} className="text-blue hover:text-grey"> myanimelist.net</a>.</div>
-                      </div>
                     </div>
-                    }
-                </div>
+                  </CardWrapper>
+                </AnimatePresence>
+                }
             </div>
             <div className="bg-lightgrey w-full rounded-lg px-10 py-5">
               {userProfile && 

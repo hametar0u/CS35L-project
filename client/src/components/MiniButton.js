@@ -8,7 +8,7 @@ const MiniButton = (props) => {
   
   return (
     <div>
-      <button className="bg-light-purple border-2 border-purple hover:bg-light-blue px-2 text-xs rounded-lg w-fit" onClick={props.handleClick}>{props.name}</button>
+      <button className={props.className + " border-2 border-purple hover:bg-light-blue focus:bg-purple px-2 text-xs rounded-lg w-fit"} onClick={props.handleClick}>{props.name}</button>
     </div>
   )
   

@@ -1,7 +1,4 @@
 import { motion } from "framer-motion";
-import { Link } from "react-router-dom";
-import ModalTest from "../testpages/ModalTest";
-import { useState } from "react";
 
 const pageVariants = {
   initial: {
@@ -56,7 +53,7 @@ const zoompageVariants = {
   },
   out: {
     opacity: 0,
-    scale: 0
+    scale: 3
   }
 };
 
@@ -76,6 +73,22 @@ export const ZoomInWrapper = ({children}) => {
   );
 };
 
+export const ZoomInOutWrapper = ({children}) => {
+  return ( 
+    <motion.div 
+    style={pageStyle}
+    exit="initial" 
+    animate="in"
+    initial="initial"
+    variants={zoompageVariants}
+    transition={pageTransitions}
+    className="w-full"
+    >
+      {children}
+    </motion.div>  
+  );
+};
+
 export const CardWrapper = ({children}) => {
   return ( 
     <motion.div 
@@ -83,6 +96,36 @@ export const CardWrapper = ({children}) => {
     animate="in"
     initial="initial"
     variants={zoompageVariants}
+    transition={pageTransitions}
+    >
+      {children}
+    </motion.div>  
+  );
+};
+
+const cardSlideVariants = {
+  initial: {
+    opacity: 0,
+    y: "100vh"
+  },
+  in: {
+  opacity: 1,
+    y: 0,
+
+  },
+  out: {
+    opacity: 0,
+    y: "-100vh"
+  }
+};
+
+export const CardSlideWrapper = ({children}) => {
+  return ( 
+    <motion.div 
+    exit="out" 
+    animate="in"
+    initial="initial"
+    variants={cardSlideVariants}
     transition={pageTransitions}
     >
       {children}

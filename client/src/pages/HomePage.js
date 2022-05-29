@@ -9,7 +9,7 @@ import Navbar from "../components/Navbar/index";
 import NewList from "../components/NewList";
 import Modal from "../components/Modal";
 import Nav from "../components/Nav";
-import { ZoomInWrapper } from "../components/MotionComponents";
+import { ZoomInWrapper, SlidingWrapper } from "../components/MotionComponents";
 import WarningModal from "../components/WarningModal";
 
 

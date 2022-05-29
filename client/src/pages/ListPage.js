@@ -3,7 +3,7 @@ import axios from 'axios';
 import Animes from "../components/AnimeCard";
 import Nav from "../components/Nav";
 import SearchBarProto from "../components/SearchBarTest";
-import { ZoomInWrapper } from "../components/MotionComponents";
+import { ZoomInOutWrapper } from "../components/MotionComponents";
 import RecommendedAnime from "../components/RecommendedAnime";
 import Recs from "../components/RecommendedAnime";
 import MiniButton from "../components/MiniButton";
@@ -131,7 +131,7 @@ const clearAnime = () => {
 };
 
   return(
-    <ZoomInWrapper>
+    <ZoomInOutWrapper>
     <div>
     {/* <Nav/> */}
     <div className="h-max w-screen bg-gradient-to-r from-background-mint via-background-blue to-background-purple animate-bg">
@@ -189,7 +189,7 @@ const clearAnime = () => {
     </div>
   </div>
   </div>
-  </ZoomInWrapper>
+  </ZoomInOutWrapper>
   );
 }
 
