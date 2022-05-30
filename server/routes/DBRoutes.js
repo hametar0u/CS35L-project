@@ -26,6 +26,24 @@ userRoute.route("/listings").get(async (req, res) => {
         });
 });
 
+//Adds current user to sharedList by sharedList Id (needs req.body.id == shared list object id)
+userRoute.route("/AddUserBySharedListId").post(async (req, res) => {
+    const dbConnect = dbo.getDb();
+    try {
+        const userid = req.session.userprofile.id; //user id stored here
+        const access_token = req.session.tokens.access_token; //access token stored here
+        
+        dbConnect
+            .collection("UserList")
+            .findOneAndUpdate({id: userid},
+                {$set: {sharedlist_id: ObjectId(req.body.id)}});
+        res.send("Successfully added user to shared list by Id");
+    }
+    catch {
+        console.log("You are not logged in");
+    }
+});
+
 //Return all the Users of a shared list (doesn't require any req)
 userRoute.route("/getAllUsersOfList").post(async (req, res) => {
     const dbConnect = dbo.getDb();
