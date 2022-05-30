@@ -82,8 +82,9 @@ const handleSubmit = async (e) => {
         window.open(response.data, "_blank");
       }
       else {
-        if (response.data.information && response.data.information === {}) {
+        if (response.data.simscore === -1) {
           alert("no such user!");
+          setUserProfile();
         }
         else {
           setUserProfile(response.data);
@@ -94,7 +95,12 @@ const handleSubmit = async (e) => {
       }
     })
     .catch((error) => {
-      console.log(error);
+      console.log(error.response);
+      if (error.response.status === 400) {
+        alert("user doesn't exist!"); //its over if the error isn't 400
+        setSearchInput("");
+        setLoading(false);
+      }
     });
 };
 
@@ -105,10 +111,21 @@ const getRecommendedUser = async () => {
     })
     .then((response) => {
       console.log(response.data);
+      if (response.data.username === '') {
+        const tempUser = response.data.information[0]
+        response.data = {
+          username: tempUser.username,
+          simscore: 0,
+          information: {
+            images: tempUser.images,
+            url: tempUser.url
+          }
+        };
+      }
       setMostSimilarUser(response.data);
     })
     .catch((err) => {
-      console.log(err);
+      console.log(err.response);
       setError(err.response);
     });
 }
@@ -175,7 +192,7 @@ useEffect(() => {
                     <div className="bg-lightgrey w-max rounded-lg">
                         <div className="flex flex-row">
                           <div className="ml-20 mr-0">
-                              <Profile name={mostSimilarUser.username} image={mostSimilarUser.information.images.jpg.image_url}/>
+                              <Profile name={mostSimilarUser.username} image={mostSimilarUser.information.images.jpg.image_url !== null ? mostSimilarUser.information.images.jpg.image_url : paul1}/>
                           </div>
                           <div className="flex flex-col gap-5 p-5">
                             <div className="font-bold">
@@ -199,12 +216,14 @@ useEffect(() => {
                 <Circle 
                     percent={progress}
                     strokeWidth="6" 
-                    strokeColor="#BCD8C1" 
+                    strokeColor="#4a8fe7" 
                     trailColor={similarity === 0 ? "#d3d3d3" : "#d3d3d3"}
                     trailWidth="6"
                 /> 
                 <div>
                   <div>{userProfile.username}</div>
+                  <img src={userProfile.image !== null ? userProfile.image : paul1}/>
+                  <div>{userProfile.url}</div>
                 </div>
               </>
               }

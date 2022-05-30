@@ -42,7 +42,7 @@ userRoute.route("/AddUserBySharedListId").post(async (req, res) => {
     catch {
         console.log("You are not logged in");
     }
-})
+});
 
 //Return all the Users of a shared list (doesn't require any req)
 userRoute.route("/getAllUsersOfList").post(async (req, res) => {

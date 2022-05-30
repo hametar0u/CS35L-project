@@ -9,6 +9,7 @@ import Recs from "../components/RecommendedAnime";
 import MiniButton from "../components/MiniButton";
 import JoinList from "../components/JoinList";
 import Profiles from "../components/ListProfiles";
+import Modal from "../components/Modal";
 
 //helper func
 const getDifference = (array1, array2) => {
@@ -24,6 +25,7 @@ const ListPage = () => {
   const [error, setError] = useState();
   const [animeList, setAnimeList] = useState([]);
   const [recommendedAnimeList, setRecommendedAnimeList] = useState([]);
+  const [open, setOpen] = useState(false);
   const config = {
     withCredentials: true
   };
@@ -37,7 +39,7 @@ const ListPage = () => {
     axios.all([
       axios.post("/listings/allanimes", {}, config), //MAL
       axios.post(`/listings/allanimesSharedList`, {}, config), //DB
-      axios.post("/listings/listOfRecommendedAnime", {}, config)
+      axios.post("/listings/listOfRecommendedAnime", {}, config),
     ])
     .then(axios.spread((MALdata, DBdata, RecommendedAnimeData) => {
       console.log(MALdata,DBdata,RecommendedAnimeData);
@@ -130,7 +132,17 @@ const clearAnime = () => {
   getAnime();
 };
 
-  return(
+const modalOptions = {
+  title: "Warning! You are about to join another anime list",
+  body: "You might lose all the anime in your watchlist if you join another list. Do you wish to continue?",
+  buttonText: "Join Anyways"
+};
+const handleModalButtonClick = (listid) => {
+  alert("are you sure ?????!!!!!");
+  console.log("join another list");
+};
+
+return(
     <ZoomInOutWrapper>
     <div>
     {/* <Nav/> */}
@@ -148,17 +160,16 @@ const clearAnime = () => {
                 <Profiles/>
                 </div>
             </div>
-          
-          <div className="absolute pt-20 items-end w-3/4 z-40 flex flex-row gap-20 justify-between pr-5">
-            <div className="w-full">
-            <SearchBarProto className="w-full" name={"Anime"} addAnime={addAnime}/>
-            </div>
-             
-              <MiniButton className="w-full" name="Clear all Anime" handleClick={clearAnime}/>
-            </div>    
-            {/* <div className="flex flex-row-reverse self-end w-full">
-              <MiniButton name="Clear all Anime" onClick={clearAnime}/>
-              </div> */}
+          <div className="relative h-1">
+            <div className="absolute pt-1 items-end w-3/4 z-40 flex flex-row gap-20 justify-between pr-5">
+              <div className="w-full">
+              <SearchBarProto className="w-full" name={"Anime"} addAnime={addAnime}/>
+              </div>
+              
+                <MiniButton className="w-full" name="Clear all Anime" handleClick={clearAnime}/>
+              </div>   
+
+          </div> 
           <div className="mt-20 flex flex-row gap-10 justify-between">
             <div className="w-3/4">
               <Animes animeList={animeList} delAnime={delAnime}/>
@@ -177,7 +188,7 @@ const clearAnime = () => {
               </div>
                <div className="bg-purple rounded-lg w-fit h-155 overflow-y-auto justify-center items-center">
                 <div className="p-5">
-                  <JoinList animeList={recommendedAnimeList} joinNewList={addAnime}/>
+                  <JoinList animeList={recommendedAnimeList} joinNewList={() => setOpen(!open)}/>
                 </div>
               </div>
             </div>
@@ -186,6 +197,12 @@ const clearAnime = () => {
           
         </div>
       </div>
+      <Modal 
+        showModal={open} 
+        closeModal={() => setOpen(false)} 
+        modalOptions={modalOptions}
+        handleClick={handleModalButtonClick}
+      />
     </div>
   </div>
   </div>
