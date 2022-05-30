@@ -492,7 +492,7 @@ userRoute.route("/listings/SpecificUser").post(async (req, res) => {
             }
         }
         //Check if they are in the same Shared list or if the user doesn't exist
-        if(specificuser == {} || specificuser.sharedlist_id == user.sharedlist_id)
+        if((!specificuser.hasOwnProperty('info')) || (specificuser.sharedlist_id == user.sharedlist_id))
         {
             let error = {
                 simscore: -1
