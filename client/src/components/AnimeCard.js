@@ -19,7 +19,7 @@ export const AnimeCard = React.forwardRef((props, ref)=> {
             animate={{ rotate: 360 }}
             transition={{ duration: 2, repeat: Infinity}}
         />
-        <div className="bg-lightgrey p-5 rounded-lg flex flex-col gap-2 h-85 overflow-x-auto min-h-90">
+        <div className="bg-lightgrey hover:shadow-md p-5 rounded-lg flex flex-col gap-2 h-85 overflow-x-auto min-h-90">
             <div className="flex flex-row-reverse">
                 <button className="bg-red items-center rounded-full justify-center w-5 h-5 text-xs text-white" onClick={() => props.delAnime(props.id)}>x</button>
             </div>

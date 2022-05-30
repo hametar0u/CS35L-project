@@ -7,7 +7,7 @@ import { CardWrapper } from "./MotionComponents";
 
 const JoinListCard = (props) => {
   return(
-      <div className="bg-lightgrey border-2 border-lightgrey hover:border-blue p-5 rounded-lg flex flex-col gap-2 w-full">
+      <div className="bg-lightgrey border-2 border-lightgrey hover:border-blue hover:shadow-md p-5 rounded-lg flex flex-col gap-2 w-full">
           <div className="flex flex-row gap-2 justify-between">
                 <button className="order-last bg-blue items-center rounded-full justify-center w-1/3 h-5 text-xs text-white" onClick={() => props.joinNewList(props.id)}>Join</button>
                 <div className=""><div className="order-first text-sm">{props.owner}'s list</div></div>

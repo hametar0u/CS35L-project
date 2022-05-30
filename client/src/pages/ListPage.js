@@ -160,17 +160,16 @@ return(
                 <Profiles/>
                 </div>
             </div>
-          
-          <div className="absolute pt-20 items-end w-3/4 z-40 flex flex-row gap-20 justify-between pr-5">
-            <div className="w-full">
-            <SearchBarProto className="w-full" name={"Anime"} addAnime={addAnime}/>
-            </div>
-             
-              <MiniButton className="w-full" name="Clear all Anime" handleClick={clearAnime}/>
-            </div>    
-            {/* <div className="flex flex-row-reverse self-end w-full">
-              <MiniButton name="Clear all Anime" onClick={clearAnime}/>
-              </div> */}
+          <div className="relative h-1">
+            <div className="absolute pt-1 items-end w-3/4 z-40 flex flex-row gap-20 justify-between pr-5">
+              <div className="w-full">
+              <SearchBarProto className="w-full" name={"Anime"} addAnime={addAnime}/>
+              </div>
+              
+                <MiniButton className="w-full" name="Clear all Anime" handleClick={clearAnime}/>
+              </div>   
+
+          </div> 
           <div className="mt-20 flex flex-row gap-10 justify-between">
             <div className="w-3/4">
               <Animes animeList={animeList} delAnime={delAnime}/>
