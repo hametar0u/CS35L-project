@@ -258,9 +258,6 @@ userRoute.route("/listings/mainGenre").post(async (req, res) => {
         let simscore = []
         let counter = 0;
         var count3 = Object.keys(useranimelist.anime).length;
-        console.log(count3);
-        console.log("==============================================");
-        var count4 = 0;
         for(let i = 0; i < count3; i++)
         {
             if(useranimelist.anime[i].hasOwnProperty('genres'))
@@ -283,17 +280,8 @@ userRoute.route("/listings/mainGenre").post(async (req, res) => {
                 
                     simscore[i] = scores;
                     counter = 0;
-                    count4++;
             }
         }
-        if(count3 == 0) {
-            scores = {
-                genre: "Action",
-                counter: counter
-            }
-            simscore[0] = scores
-        }
-        console.log(simscore);
         dbConnect
                 .collection("UserList")
                 .findOneAndUpdate({id: userid},
@@ -369,10 +357,11 @@ userRoute.route("/listings/ReccomendUser").get(async (req, res) => {
         let counter = 0;
         for(let i = 0; i < count2; i++)
         {
+            console.log("score is");
             console.log(user.score[i]);
             if(user.score[i] != null)
             {
-                if(user.score[i].counter > counter)
+                if(user.score[i].counter >= counter)
                 {
                     counter = user.score[i].counter;
                     genre = user.score[i].genre;
@@ -392,9 +381,11 @@ userRoute.route("/listings/ReccomendUser").get(async (req, res) => {
                 count3 = Object.keys(userlist[i].score).length;
                 for(let j = 0; j < count3; j++)
                 {
+                    console.log("iterating")
                     if(userlist[i].score[j] != null)
                     {
-                        if(userlist[i].score[j].counter > otherc && userlist[i].score[j].genre == genre && userlist[i].sharedlist_id != user.sharedlist_id)
+                        console.log("Bypassed null if");
+                        if(userlist[i].score[j].counter >= otherc && userlist[i].score[j].genre == genre && userlist[i].sharedlist_id != user.sharedlist_id)
                         {
                             username = userlist[i].info.name;
                             otherc = userlist[i].score[j].counter;
@@ -404,44 +395,35 @@ userRoute.route("/listings/ReccomendUser").get(async (req, res) => {
                 }
             }
         }
-        let information = {}
-        let ratio = 0;
-        if (genre == "" && counter == 0)
+        if (username == "")
         {
-            console.log("empty list");
-            username = "PaulEggert";
-            ratio = 0.6017
-            recuserId = "bruh"
-            information = {
-                info: {
-                    name: username,
-                    picture: "https://api-cdn.myanimelist.net/images/userimages/14962659.jpg?t=1653945600"
-                }
-            }
-
+            username = "pauleggie";
+            otherc = 2;
+            recuserId = 14962659;
         }
-        else {
-            console.log("list not empty");
-            console.log(username);
-            console.log(otherc);
-            if(otherc > counter)
-            {
-                ratio = counter / otherc;
-            }
-            else{
-                ratio = otherc / counter;
-            }
 
-            //get reccomended user's profile
-            await axios
-                .post("http://localhost:5001/listings/getUserById", {username: username})
-                .then((response) => {
-                    information = response.data;
-                })
-                .catch((err) => {
-                    console.log(err);
-                });
+
+        console.log(username);
+        console.log(otherc);
+        let ratio = 0;
+        if(otherc > counter)
+        {
+            ratio = counter / otherc;
         }
+        else{
+            ratio = otherc / counter;
+        }
+
+        //get reccomended user's profile
+        let information = {};
+        await axios
+            .post("http://localhost:5001/listings/getUserById", {username: username})
+            .then((response) => {
+                information = response.data;
+            })
+            .catch((err) => {
+                console.log(err);
+            });
         obj = {
             username : username,
             userid: recuserId,
@@ -466,7 +448,7 @@ userRoute.route("/listings/SpecificUser").post(async (req, res) => {
             userid: userid,
             access_token: access_token
         }
-        //Reallocate Genres 
+        //Reallocate genres
         await axios
             .post("http://localhost:5001/listings/mainGenre", empty)
             .then((response) => {
