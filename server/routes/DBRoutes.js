@@ -102,59 +102,95 @@ userRoute.route("/getAllUsersOfList").post(async (req, res) => {
 
 //Return 4 anime thumbnails, first username, and _id (doesn't require any req)
 userRoute.route("/getSharedLists").get(async (req, res) => {
-    const dbConnect = dbo.getDb();
-    let sharedlist = {};
-    
-    await axios
-        .get("http://localhost:5001/listings/sharedList")
-        .then((response) => {
-            sharedlist = response.data;
-        })
-        .catch((err) => {
-            console.log(err);
-        });
-        console.log(sharedlist);
-        console.log("checkpoint 1");
-        var count = Object.keys(sharedlist).length;
-        let counter = 0;
-        if(count > 10)
-        {
-            counter = 10;
-        }
-        else {
-            counter = count;
-        }
-        let anime = []
-        let animeoutput = []
-        let output = {}
-        for(let i = 0; i < counter; i++)
-        {
-            var count2 = Object.keys(sharedlist[i].anime).length;
-            let othercounter = 0;
-            if(count2 > 4) {
-                othercounter = 4;
+    try {
+        const userprofilename = req.session.userprofile.name;
+        console.log("the name");
+        console.log(userprofilename);
+        const dbConnect = dbo.getDb();
+        let sharedlist = {};
+        
+        await axios
+            .get("http://localhost:5001/listings/sharedList")
+            .then((response) => {
+                sharedlist = response.data;
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+            console.log(sharedlist);
+            console.log("checkpoint 1");
+            var count = Object.keys(sharedlist).length;
+            let counter = 0;
+            if(count > 10)
+            {
+                counter = 10;
             }
             else {
-                othercounter = count2;
+                counter = count;
             }
-            console.log(count2);
-            for(let j = 0; j < othercounter; j++)
+            let anime = []
+            let animeoutput = []
+            let output = {}
+            for(let i = 0; i < counter; i++)
             {
-                
-                anime[j] = sharedlist[i].anime[j].main_picture.medium;
-                console.log(anime[j]);
+                var count2 = Object.keys(sharedlist[i].anime).length;
+                let othercounter = 0;
+                if(count2 > 4) {
+                    othercounter = 4;
+                }
+                else {
+                    othercounter = count2;
+                }
+                console.log(count2);
+                for(let j = 0; j < othercounter; j++)
+                {
+                    
+                    anime[j] = sharedlist[i].anime[j].main_picture.medium;
+                    console.log(anime[j]);
+                }
+                //check if sharedlist is empty
+                if(sharedlist[i].users == [])
+                {
+                    output = {
+                        anime: anime,
+                        username: "",
+                        id: sharedlist[i]._id
+                    }
+                }
+                var count4 = Object.keys(sharedlist[i].users).length;
+                let samelist = false;
+                for(let k = 0; k < count4; k++)
+                {
+                    if(sharedlist[i].users[k].name == userprofilename)
+                    {
+                        samelist = true;
+                    }
+                }
+                if(samelist == true)
+                {
+                    output = {
+                        anime: anime,
+                        username: "",
+                        id: sharedlist[i]._id
+                    }
+                }
+                else {
+                    output = {
+                        anime: anime,
+                        username: sharedlist[i].users[0].name,
+                        id: sharedlist[i]._id
+                    }
+                }
+                animeoutput[i] = output;
             }
             output = {
-                anime: anime,
-                username: sharedlist[i].users[0].name,
-                id: sharedlist[i]._id
+                animelists: animeoutput
             }
-            animeoutput[i] = output;
-        }
-        output = {
-            animelists: animeoutput
-        }
-        res.send(output);
+            res.send(output);
+    }
+    catch {
+        res.status(500).send("You are not logged in");
+    }
 })
 
 //Deletes all animes in a list (doesn't need any req)
@@ -204,7 +240,7 @@ userRoute.route("/listings/mainGenre").post(async (req, res) => {
         const userid = req.body.userid
         const access_token = req.body.access_token
 
-        //grab both lists
+        //grab the list of users and list of shared lists
         let sharedlist = {};
         await axios
             .get("http://localhost:5001/listings/sharedList")
@@ -281,6 +317,14 @@ userRoute.route("/listings/mainGenre").post(async (req, res) => {
                     simscore[i] = scores;
                     counter = 0;
             }
+        }
+        if (count3 == 0)
+        {
+            scores = {
+                genre: "",
+                counter: counter
+            }
+            simscore[0] = scores;
         }
         dbConnect
                 .collection("UserList")
@@ -480,9 +524,6 @@ userRoute.route("/listings/SpecificUser").post(async (req, res) => {
 
         //Grab specific user
         let specificuser = {}
-        console.log(req.body.name);
-        console.log("======");
-        console.log(req.query.name);
         for(let i = 0; i < count; i++)
         {
             console.log(userlist[i].info.name);
@@ -491,8 +532,17 @@ userRoute.route("/listings/SpecificUser").post(async (req, res) => {
                 specificuser = userlist[i];
             }
         }
+        //check if user is adding themselves or a user in the same database, if so throw an error
+        if((req.body.name == user.info.name) || (specificuser.sharedlist_id == user.sharedlist_id))
+        {
+            let error = {
+                simscore: -2
+            }
+            res.send(error);
+            return;
+        }
         //Check if they are in the same Shared list or if the user doesn't exist
-        if((!specificuser.hasOwnProperty('info')) || (specificuser.sharedlist_id == user.sharedlist_id))
+        if((!specificuser.hasOwnProperty('info')))
         {
             let error = {
                 simscore: -1
@@ -500,7 +550,6 @@ userRoute.route("/listings/SpecificUser").post(async (req, res) => {
             res.send(error);
             return;
         }
-        console.log(specificuser);
         //Search for user most popular genre
         var count2 = Object.keys(user.score).length;
         let genre = "";
@@ -510,21 +559,18 @@ userRoute.route("/listings/SpecificUser").post(async (req, res) => {
             console.log(user.score[i]);
             if(user.score[i] != null)
             {
-                if(user.score[i].counter > counter)
+                if(user.score[i].counter >= counter)
                 {
                     counter = user.score[i].counter;
                     genre = user.score[i].genre;
                 }
             }
         }
-        console.log(counter);
-        console.log(genre);
         // compare with each user's most popular genre
         var count3;
         let otherc = 0;
             if(specificuser.hasOwnProperty('score'))
             {
-                console.log("iterating");
                 count3 = Object.keys(specificuser.score).length;
                 for(let j = 0; j < count3; j++)
                 {
