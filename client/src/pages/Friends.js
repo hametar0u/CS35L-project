@@ -111,6 +111,17 @@ const getRecommendedUser = async () => {
     })
     .then((response) => {
       console.log(response.data);
+      if (response.data.username === '') {
+        const tempUser = response.data.information[0]
+        response.data = {
+          username: tempUser.username,
+          simscore: 0,
+          information: {
+            images: tempUser.images,
+            url: tempUser.url
+          }
+        };
+      }
       setMostSimilarUser(response.data);
     })
     .catch((err) => {
