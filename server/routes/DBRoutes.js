@@ -26,6 +26,24 @@ userRoute.route("/listings").get(async (req, res) => {
         });
 });
 
+//Adds current user to sharedList by sharedList Id (needs req.body.id == shared list object id)
+userRoute.route("/AddUserBySharedListId").post(async (req, res) => {
+    const dbConnect = dbo.getDb();
+    try {
+        const userid = req.session.userprofile.id; //user id stored here
+        const access_token = req.session.tokens.access_token; //access token stored here
+        
+        dbConnect
+            .collection("UserList")
+            .findOneAndUpdate({id: userid},
+                {$set: {sharedlist_id: ObjectId(req.body.id)}});
+        res.send("Successfully added user to shared list by Id");
+    }
+    catch {
+        console.log("You are not logged in");
+    }
+})
+
 //Return all the Users of a shared list (doesn't require any req)
 userRoute.route("/getAllUsersOfList").post(async (req, res) => {
     const dbConnect = dbo.getDb();
@@ -180,11 +198,11 @@ userRoute.route("/obliterate").get(async (req, res) => {
 })
 
 //Extension function, not meant for frontend
-userRoute.route("/listings/mainGenre").get(async (req, res) => {
+userRoute.route("/listings/mainGenre").post(async (req, res) => {
     const dbConnect = dbo.getDb();
     try{
-        const userid = req.session.userprofile.id; //user id stored here
-        const access_token = req.session.tokens.access_token; //access token stored here
+        const userid = req.body.userid
+        const access_token = req.body.access_token
 
         //grab both lists
         let sharedlist = {};
@@ -240,6 +258,8 @@ userRoute.route("/listings/mainGenre").get(async (req, res) => {
         let simscore = []
         let counter = 0;
         var count3 = Object.keys(useranimelist.anime).length;
+        console.log(count3);
+        console.log("==============================================");
         var count4 = 0;
         for(let i = 0; i < count3; i++)
         {
@@ -265,6 +285,13 @@ userRoute.route("/listings/mainGenre").get(async (req, res) => {
                     counter = 0;
                     count4++;
             }
+        }
+        if(count3 == 0) {
+            scores = {
+                genre: "Action",
+                counter: counter
+            }
+            simscore[0] = scores
         }
         console.log(simscore);
         dbConnect
@@ -305,8 +332,12 @@ userRoute.route("/listings/ReccomendUser").get(async (req, res) => {
     try{
         const userid = req.session.userprofile.id; //user id stored here
         const access_token = req.session.tokens.access_token; //access token stored here
+        let empty = {
+            userid: userid,
+            access_token: access_token
+        }
         await axios
-            .get("http://localhost:5001/listings/mainGenre")
+            .post("http://localhost:5001/listings/mainGenre", empty)
             .then((response) => {
                 console.log(response.data);
             })
@@ -373,27 +404,44 @@ userRoute.route("/listings/ReccomendUser").get(async (req, res) => {
                 }
             }
         }
-        console.log(username);
-        console.log(otherc);
+        let information = {}
         let ratio = 0;
-        if(otherc > counter)
+        if (genre == "" && counter == 0)
         {
-            ratio = counter / otherc;
-        }
-        else{
-            ratio = otherc / counter;
-        }
+            console.log("empty list");
+            username = "PaulEggert";
+            ratio = 0.6017
+            recuserId = "bruh"
+            information = {
+                info: {
+                    name: username,
+                    picture: "https://api-cdn.myanimelist.net/images/userimages/14962659.jpg?t=1653945600"
+                }
+            }
 
-        //get reccomended user's profile
-        let information = {};
-        await axios
-            .post("http://localhost:5001/listings/getUserById", {username: username})
-            .then((response) => {
-                information = response.data;
-            })
-            .catch((err) => {
-                console.log(err);
-            });
+        }
+        else {
+            console.log("list not empty");
+            console.log(username);
+            console.log(otherc);
+            if(otherc > counter)
+            {
+                ratio = counter / otherc;
+            }
+            else{
+                ratio = otherc / counter;
+            }
+
+            //get reccomended user's profile
+            await axios
+                .post("http://localhost:5001/listings/getUserById", {username: username})
+                .then((response) => {
+                    information = response.data;
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
+        }
         obj = {
             username : username,
             userid: recuserId,
@@ -414,23 +462,19 @@ userRoute.route("/listings/SpecificUser").post(async (req, res) => {
     try{
         const userid = req.session.userprofile.id; //user id stored here
         const access_token = req.session.tokens.access_token; //access token stored here
+        let empty = {
+            userid: userid,
+            access_token: access_token
+        }
+        //Reallocate Genres 
         await axios
-            .get("http://localhost:5001/listings/mainGenre")
+            .post("http://localhost:5001/listings/mainGenre", empty)
             .then((response) => {
                 console.log(response.data);
             })
             .catch((err) => {
                 console.log(err);
             });
-        //Reallocate Genres
-        await axios
-        .get("http://localhost:5001/listings/mainGenre")
-        .then((response) => {
-            console.log(response.data);
-        })
-        .catch((err) => {
-            console.log(err);
-        });
         // Grab user
         let userlist = {};
         await axios
@@ -1426,8 +1470,12 @@ userRoute.route("/listings/SearchUserMAL").post(async (req, res) => {
         const userid = req.session.userprofile.id; //user id stored here
         const access_token = req.session.tokens.access_token; //access token stored here
         //Reallocate Genres
+        let empty = {
+            userid: userid,
+            access_token: access_token
+        }
         await axios
-            .get("http://localhost:5001/listings/mainGenre")
+            .post("http://localhost:5001/listings/mainGenre", empty)
             .then((response) => {
                 console.log(response.data);
             })
