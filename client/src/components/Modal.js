@@ -5,7 +5,7 @@ import SmallButton from "./SmallButton";
 import { AnimatePresence, motion } from "framer-motion";
 
 const backdrop = {
-    visible: { opacity: 0.85 },
+    visible: { opacity: 0.95 },
     hidden: { opacity: 0 },
   }
   
@@ -24,7 +24,7 @@ const Modal = ({ showModal, closeModal, modalOptions, handleClick }) => {
         <AnimatePresence>
         { showModal && (
             <motion.div
-                className="fixed z-1000 w-screen h-screen top-0 left-0 bg-black"
+                className="fixed z-50 w-screen h-full top-0 left-0 bg-black"
                 variants={backdrop}
                 initial="hidden"
                 animate="visible"

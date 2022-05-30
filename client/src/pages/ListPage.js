@@ -133,7 +133,7 @@ const clearAnime = () => {
 };
 
 const modalOptions = {
-  title: "Warning: You're about to join another list",
+  title: "Warning! You are about to join another anime list",
   body: "You might lose all the anime in your watchlist if you join another list. Do you wish to continue?",
   buttonText: "Join Anyways"
 };

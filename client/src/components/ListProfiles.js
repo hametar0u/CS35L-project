@@ -41,12 +41,12 @@ const Profiles = () => {
     }, []);
 
   return ( 
-    <div className="flex flex-row gap-10 overflow-x-auto">
+    <div className="flex flex-row gap-5 overflow-x-auto">
         {users.map((user, i) => {
           return (
             <AnimatePresence>
                 <CardWrapper>
-                    <div className="flex flex-col justify-center text-center" onClick={() => redirectToProfile(user.url)} key={i}>
+                    <div className="object-contain flex flex-col justify-center text-center" onClick={() => redirectToProfile(user.url)} key={i}>
                         <div className="bg-white w-10 h-10 rounded-full">
                             <img className="object-contain w-10 h-10 rounded-full" src={user.image}/>
                         </div>
