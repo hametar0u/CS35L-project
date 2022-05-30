@@ -47,7 +47,7 @@ const Profiles = () => {
             <AnimatePresence>
                 <CardWrapper>
                     <div className="object-contain flex flex-col justify-center text-center" onClick={() => redirectToProfile(user.url)} key={i}>
-                        <div className="bg-white w-10 h-10 rounded-full self-center">
+                        <div className="bg-white w-10 h-10 rounded-full self-center hover:shadow-lg">
                             <img className="object-contain w-10 h-10 rounded-full" src={user.image}/>
                         </div>
                         <div className="text-xs">{user.name}</div>

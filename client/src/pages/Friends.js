@@ -150,7 +150,7 @@ useEffect(() => {
     <div>
       {/* <Nav /> */}
       <SlidingWrapper>
-      <div className="h-screen w-screen bg-gradient-to-r from-background-mint via-background-blue to-white animate-bg">
+      <div className="h-full w-screen bg-gradient-to-r from-background-mint via-background-blue to-white animate-bg">
       <div className="p-10">
         <div className="flex justify-left sm:justify-center w-full pt-10 pb-10">   
         <div className="flex flex-col gap-2 sm:gap-5 w-3/4 max-w-5xl">
@@ -209,25 +209,34 @@ useEffect(() => {
             <div className="bg-lightgrey w-full rounded-lg px-10 py-5">
               {userProfile && 
               <>
-                <div className="flex flex-row gap-2 items-center">
+                <div className="flex flex-row gap-2 items-center relative">
                   <CountUp style={{fontWeight: 700, fontSize: 70, color: '#000000'}} end={similarity} useEasing="true" />
                   <div className="text-black text-6xl font-semibold">%</div>
+                  <div className="absolute pt-132 pl-35 -z-10">
+                    <div className="p-5 gap-5 flex flex-col items-center text-center w-1/4">
+                      <div className="w-82 h-82"><img className="rounded-full w-full h-full" src={userProfile.image !== null ? userProfile.image : paul1}/></div>
+                      <div className="text-center pt-2">{userProfile.username}</div>
+                    </div>
+                  </div>
                 </div>
-                <Circle 
+                <div className="z-40">
+                <Circle
                     percent={progress}
                     strokeWidth="6" 
                     strokeColor="#4a8fe7" 
                     trailColor={similarity === 0 ? "#d3d3d3" : "#d3d3d3"}
                     trailWidth="6"
                 /> 
+                </div>
                 <div>
-                  <div>{userProfile.username}</div>
-                  <img src={userProfile.image !== null ? userProfile.image : paul1}/>
-                  <div>{userProfile.url}</div>
+                  {/* <div>{userProfile.username}</div> */}
+                  
+                  {/* <div>{userProfile.url}</div> */}
                 </div>
               </>
               }
-              <HashLoader color={color} loading={loading}/>
+              <div className="bg-blue"><HashLoader color={"#4a8fe7"} loading={loading}/></div>
+              
             </div>
           </div>
         
