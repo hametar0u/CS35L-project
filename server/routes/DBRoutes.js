@@ -48,6 +48,7 @@ userRoute.route("/AddUserBySharedListId").post(async (req, res) => {
             .catch((err) => {
                 console.log(err);
             });
+            console.log("==================================");
             console.log(currentuser);
 
 
@@ -199,24 +200,14 @@ userRoute.route("/getSharedLists").post(async (req, res) => {
                     console.log(anime[j]);
                 }
                 //check if sharedlist is empty
-                if(sharedlist[i].users == [])
-                {
-                    output = {
-                        anime: anime,
-                        username: "",
-                        id: sharedlist[i]._id
-                    }
-                }
-                var count4 = Object.keys(sharedlist[i].users).length;
-                let samelist = false;
-                for(let k = 0; k < count4; k++)
-                {
-                    if(sharedlist[i].users[k].name == userprofilename)
-                    {
-                        samelist = true;
-                    }
-                }
-                if(samelist == true)
+                console.log(typeof sharedlist[i].users);
+                console.log("=============================================================");
+                var thelength = Object.keys(sharedlist[i].users).length;
+                console.log(thelength);
+                console.log(sharedlist[i].users);
+                console.log(sharedlist[i].users == []);
+                console.log(sharedlist[i].users == {});
+                if(thelength == 0)
                 {
                     output = {
                         anime: anime,
@@ -225,10 +216,29 @@ userRoute.route("/getSharedLists").post(async (req, res) => {
                     }
                 }
                 else {
-                    output = {
-                        anime: anime,
-                        username: sharedlist[i].users[0].name,
-                        id: sharedlist[i]._id
+                    var count4 = Object.keys(sharedlist[i].users).length;
+                    let samelist = false;
+                    for(let k = 0; k < count4; k++)
+                    {
+                        if(sharedlist[i].users[k].name == userprofilename)
+                        {
+                            samelist = true;
+                        }
+                    }
+                    if(samelist == true)
+                    {
+                        output = {
+                            anime: anime,
+                            username: "",
+                            id: sharedlist[i]._id
+                        }
+                    }
+                    else {
+                        output = {
+                            anime: anime,
+                            username: sharedlist[i].users[0].name,
+                            id: sharedlist[i]._id
+                        }
                     }
                 }
                 animeoutput[i] = output;

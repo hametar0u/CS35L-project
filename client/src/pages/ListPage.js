@@ -143,6 +143,7 @@ const modalOptions = {
   buttonText: "Join Anyways",
 };
 const handleModalButtonClick = () => {
+  console.log("wahts up dog");
   setOpen(false);
 
   const params = {
