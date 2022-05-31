@@ -83,11 +83,7 @@ userRoute.route("/AddUserBySharedListId").post(async (req, res) => {
             .collection("shared_lists")
             .findOneAndUpdate({_id: ObjectId(req.body.id)},
                 {$push: {users: profile1}})
-        dbConnect
-            .collection("UserList")
-            .findOneAndUpdate({id: current_user.id},
-                {$set: {sharedlist_id: ObjectId(req.body.id)}});
-        
+        console.log("==================================hi");
         res.send("Successfully added user to shared list by Id");
     }
     catch {
@@ -501,7 +497,7 @@ userRoute.route("/listings/ReccomendUser").get(async (req, res) => {
         }
         if (username == "")
         {
-            username = "pauleggie";
+            username = "donald_trump";
             otherc = 2;
             recuserId = 14962659;
         }
