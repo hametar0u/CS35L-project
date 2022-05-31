@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, CSSProperties } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import Profile from "../components/Profile";
@@ -30,6 +30,10 @@ const CompareUser = () => {
   const [searchBarPlaceholder, setSearchBarPlaceholder] = useState("Site database");
   const selectedColor = "bg-purple";
   const unselectedColor = "bg-light-purple";
+  const override = {
+    display: "flex",
+    margin: "auto",
+  };
 
 //   useEffect(() => {
 //     if (!similarity) return;
@@ -216,7 +220,7 @@ useEffect(() => {
                 </AnimatePresence>
                 }
             </div>
-            <div className="bg-lightgrey w-full rounded-lg px-10 py-5">
+            <div className="bg-lightgrey w-full rounded-lg px-10 py-5 items-center">
               {userProfile && 
               <>
                 <div className="flex flex-col">
@@ -255,7 +259,7 @@ useEffect(() => {
                 </div>
               </>
               }
-              <div className="bg-blue"><HashLoader color={"#4a8fe7"} loading={loading}/></div>
+              <HashLoader color={"#4a8fe7"} loading={loading} css={override}/>
               
             </div>
           </div>

@@ -59,6 +59,11 @@ const ListPage = () => {
         }
         return false;
       });
+
+      sharedListData = sharedListData.filter(element => {
+        return element.username !== '';
+      });
+
       console.log('MALdata', MALdata, 'DBdata', DBdata);
       let animeToDelete = getDifference(MALdata, DBdata);
       console.log("animeToDelete: ", animeToDelete);
@@ -157,6 +162,14 @@ const handleModalButtonClick = () => {
   .then(response => {
     console.log(response.data);
     alert("Successfully joined list");
+
+    //reset
+    setUsers([]);
+    setAnimeList([]);
+    setRecommendedAnimeList([]);
+    setOtherSharedLists([]);
+    setTargetList([]);
+
     getAnime();
   })
   .catch(err => {
