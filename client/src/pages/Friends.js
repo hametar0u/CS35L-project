@@ -93,8 +93,9 @@ const handleSubmit = async (e) => {
         else {
           setUserProfile(response.data);
           // const simscore = response.data.simscore === 0 ? 1 : response.data.simscore * 100;
-          setSimilarity(response.data.simscore * 100);
-          setProgress(response.data.simscore * 100);
+          response.data.simscore = Math.round(response.data.simscore * 100);
+          setSimilarity(response.data.simscore);
+          setProgress(response.data.simscore);
         }
       }
     })
@@ -126,6 +127,7 @@ const getRecommendedUser = async () => {
           }
         };
       }
+      response.data.simscore = Math.round(response.data.simscore * 100);
       setMostSimilarUser(response.data);
     })
     .catch((err) => {
@@ -200,7 +202,7 @@ useEffect(() => {
                           </div>
                           <div className="flex flex-col gap-5 px-5 pt-10 align-middle">
                             <div className="font-bold">
-                              {mostSimilarUser.simscore * 100}% Similarity
+                              {mostSimilarUser.simscore}% Similarity
                             </div>
                               <div>Reach out to your new friend on <a href={mostSimilarUser.information.url} className="text-blue hover:text-grey"> myanimelist.net</a>.</div>
                           </div>
@@ -213,15 +215,25 @@ useEffect(() => {
             <div className="bg-lightgrey w-full rounded-lg px-10 py-5">
               {userProfile && 
               <>
-                <div className="flex flex-row gap-2 items-center relative">
-                  <CountUp style={{fontWeight: 700, fontSize: 70, color: '#000000'}} end={similarity} useEasing="true" />
-                  <div className="text-black text-6xl font-semibold">%</div>
-                  <div className="absolute pt-122 pl-31 -z-10">
+                <div className="flex flex-col">
+                  <div className="flex flex-row gap-2 items-center">
+                    <CountUp style={{fontWeight: 700, fontSize: 70, color: '#000000'}} end={similarity} useEasing="true" />
+                    <div className="text-black text-6xl font-semibold">%</div>
+                  </div>
+                  <div className="h-1 relative">
+                    <div className="absolute pt-200 pl-35">
+                      <div className="p-5 gap-5 flex flex-col items-center text-center w-1/4">
+                        <div className="w-82 h-82"><img className="rounded-full w-full h-full" src={userProfile.image !== null ? userProfile.image : paul1}/></div>
+                        <div className="text-center pt-2">{userProfile.username}</div>
+                      </div>
+                    </div>
+                  </div>
+                  {/* <div className="absolute pt-122 pl-31 -z-10">
                     <div className="p-5 gap-5 flex flex-col items-center text-center w-1/4">
                       <div className="w-73 h-73"><img className="rounded-full w-full h-full" src={userProfile.image !== null ? userProfile.image : paul1}/></div>
                       <div className="text-center pt-2">{userProfile.username}</div>
                     </div>
-                  </div>
+                  </div> */}
                 </div>
                 <div className="z-40">
                 <Circle
