@@ -1,13 +1,13 @@
 # IMPORTANT: make sure you're not on UCLA_WEB when working with the app; the database won't connect properly. 
 
 # Getting started
-- perform npm install both in the client directory and the server directory
-- create a file in server/ called config.env
+- Perform npm install both in the client directory and the server directory
+- Create a file in server/ called config.env
 - Email Jeffrey Kwan (jkwan314@g.ucla.edu) for what to put in the config.env file. This is for security reasons. 
-- navigate to the server directory
+- Navigate to the server directory
 - npm start
     This turns on the back end.
-- navigate to the client directory
+- Navigate to the client directory
 - npm start
     This turns on the front end
 Open http://localhost:3000 to view it in your browser!
