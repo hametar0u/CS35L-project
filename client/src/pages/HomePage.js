@@ -24,51 +24,6 @@ const getDifference = (array1, array2) => {
 const HomePage = () => {
   //main component
   const [error, setError] = useState();
-  const [animeList, setAnimeList] = useState([]);
-  const [recommendedAnimeList, setRecommendedAnimeList] = useState([]);
-  const config = {
-    withCredentials: true,
-  };
-
-  useEffect(() => {
-    getAnime();
-  }, []);
-
-  const getAnime = async () => {
-    axios
-      .all([
-        axios.post("/listings/allanimes", {}, config), //MAL
-        axios.post(`/listings/allanimesSharedList`, {}, config), //DB
-        axios.post("/listings/listOfRecommendedAnime", {}, config),
-      ])
-      .then(
-        axios.spread((MALdata, DBdata, RecommendedAnimeData) => {
-          console.log(MALdata, DBdata, RecommendedAnimeData);
-          MALdata = MALdata.data;
-          DBdata = DBdata.data;
-          RecommendedAnimeData = RecommendedAnimeData.data;
-          DBdata = DBdata.filter((element) => {
-            //remove empty object
-            if (Object.keys(element).length !== 0) {
-              return true;
-            }
-            return false;
-          });
-          console.log("MALdata", MALdata, "DBdata", DBdata);
-          let animeToDelete = getDifference(MALdata, DBdata);
-          console.log("animeToDelete: ", animeToDelete);
-          let animeToAdd = getDifference(DBdata, MALdata);
-          console.log("animeToAdd: ", animeToAdd);
-
-          setAnimeList(DBdata);
-          setRecommendedAnimeList(RecommendedAnimeData);
-        })
-      )
-      .catch((err) => {
-        console.log(err);
-        setError(err.response);
-      });
-  };
 
   const [open, setOpen] = useState(false);
   const modalOptions = {
@@ -96,7 +51,7 @@ const HomePage = () => {
             <div className="flex flex-col gap-2 sm:gap-5 w-3/4 max-w-5xl">
               <div className="font-serif text-xl text-blue">Home</div>
               <div className="flex flex-row gap-5">
-                <MinList />
+                <MinList/>
                 <NewList onClick={doClick} />
               </div>
             </div>

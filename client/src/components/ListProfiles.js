@@ -5,24 +5,12 @@ import { AnimatePresence } from "framer-motion";
 import { CardWrapper } from "./MotionComponents";
 
 
-const Profiles = () => {
-    const [users, setUsers] = useState([]);
+const Profiles = (props) => {
+    const users = props.users;
 
     const redirectToProfile = (url) => {
         window.open(url, "_blank");
     }
-
-    useEffect(() => {
-        const config = { withCredentials: true };
-        axios.post("/getAllUsersOfList", {}, config) //users in list
-        .then(response => {
-            console.log(response.data.users);
-            setUsers(response.data.users);
-        })
-        .catch(err => {
-            console.log(err.response);
-        });
-    }, []);
 
   return ( 
     <div className="flex flex-row gap-5 overflow-x-auto">

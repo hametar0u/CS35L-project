@@ -25,7 +25,8 @@ const MinAnimeCard = (props) => {
 
 const MinList = () => {
     const [error, setError] = useState();
-    const [animeList, setAnimeList] = useState();
+    const [animeList, setAnimeList] = useState([]);
+    const [users, setUsers] = useState([]);
     const [pictureArray, setPictureArray] = useState([]);
     const config = {
         withCredentials: true
@@ -40,10 +41,13 @@ const MinList = () => {
         axios.all([
           axios.post("/listings/allanimes", {}, config), //MAL
           axios.post(`/listings/allanimesSharedList`, {}, config), //DB
+          axios.post("getAllUsersOfList", {}, config), //list users
         ])
-        .then(axios.spread((MALdata, DBdata) => {
+        .then(axios.spread((MALdata, DBdata, ListUserData) => {
           MALdata = MALdata.data;
           DBdata = DBdata.data;
+          ListUserData = ListUserData.data.users;
+          console.log(ListUserData);
           DBdata = DBdata.filter(element => { //remove empty object
             if (Object.keys(element).length !== 0) {
               return true;
@@ -74,6 +78,7 @@ const MinList = () => {
             
             setAnimeList(DBdata);
             setPictureArray(pictures);
+            setUsers(ListUserData);
         }))
         .catch(err => {
           console.log(err);
@@ -134,7 +139,7 @@ const MinList = () => {
                 List 1
                 <button className="bg-blue hover:shadow-md w-20 rounded-full text-white" onClick={doEdit}>edit</button>
             </div>
-            <Profiles className="z-40"/>
+            <Profiles className="z-40" users={users}/>
             <div className="flex gap-5">
             <div className="grid grid-cols-2 gap-0">
                 {/* <MinAnimeCard className="object-contain h-50" image={animeList[0].main_picture.medium}/>

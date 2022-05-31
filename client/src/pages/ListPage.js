@@ -23,10 +23,11 @@ const getDifference = (array1, array2) => {
 //main component
 const ListPage = () => {
   const [error, setError] = useState();
+  const [users, setUsers] = useState([]);
   const [animeList, setAnimeList] = useState([]);
   const [recommendedAnimeList, setRecommendedAnimeList] = useState([]);
   const [otherSharedLists, setOtherSharedLists] = useState([]);
-  const [targetList, setTargetList] = useState();
+  const [targetList, setTargetList] = useState([]);
   const [open, setOpen] = useState(false);
   const config = {
     withCredentials: true
@@ -41,13 +42,15 @@ const ListPage = () => {
     axios.all([
       axios.post("/listings/allanimes", {}, config), //MAL
       axios.post(`/listings/allanimesSharedList`, {}, config), //DB
+      axios.post("/getAllUsersOfList", {}, config), //list users
       axios.post("/listings/listOfRecommendedAnime", {}, config), //recommended anime
       axios.post("/getSharedLists", {}, config), //other shared lists
     ])
-    .then(axios.spread((MALdata, DBdata, RecommendedAnimeData, sharedListData) => {
-      console.log(MALdata,DBdata,RecommendedAnimeData, sharedListData);
+    .then(axios.spread((MALdata, DBdata, ListUserData, RecommendedAnimeData, sharedListData) => {
+      console.log(MALdata,DBdata, ListUserData, RecommendedAnimeData, sharedListData);
       MALdata = MALdata.data;
       DBdata = DBdata.data;
+      ListUserData = ListUserData.data.users;
       RecommendedAnimeData = RecommendedAnimeData.data;
       sharedListData = sharedListData.data.animelists;
       DBdata = DBdata.filter(element => { //remove empty object
@@ -72,6 +75,7 @@ const ListPage = () => {
       }
 
       setAnimeList(DBdata);
+      setUsers(ListUserData);
       setRecommendedAnimeList(RecommendedAnimeData);
       setOtherSharedLists(sharedListData);
     }))
@@ -143,7 +147,6 @@ const modalOptions = {
   buttonText: "Join Anyways",
 };
 const handleModalButtonClick = () => {
-  console.log("wahts up dog");
   setOpen(false);
 
   const params = {
@@ -182,7 +185,7 @@ return(
                     Shared List
                 </div>
                 <div className="">
-                <Profiles/>
+                <Profiles users={users}/>
                 </div>
             </div>
           <div className="relative h-1">
