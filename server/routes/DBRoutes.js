@@ -84,6 +84,19 @@ userRoute.route("/AddUserBySharedListId").post(async (req, res) => {
             .findOneAndUpdate({_id: ObjectId(req.body.id)},
                 {$push: {users: profile1}})
         console.log("==================================hi");
+        let empty = {
+            userid: userid,
+            access_token: access_token
+        }
+        //Reallocate genres
+        await axios
+            .post("http://localhost:5001/listings/mainGenre", empty)
+            .then((response) => {
+                console.log(response.data);
+            })
+            .catch((err) => {
+                console.log(err);
+            });
         res.send("Successfully added user to shared list by Id");
     }
     catch {
