@@ -101,7 +101,7 @@ userRoute.route("/getAllUsersOfList").post(async (req, res) => {
 })
 
 //Return 4 anime thumbnails, first username, and _id (doesn't require any req)
-userRoute.route("/getSharedLists").get(async (req, res) => {
+userRoute.route("/getSharedLists").post(async (req, res) => {
     try {
         const userprofilename = req.session.userprofile.name;
         console.log("the name");

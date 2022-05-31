@@ -115,7 +115,7 @@ const getRecommendedUser = async () => {
         const tempUser = response.data.information[0]
         response.data = {
           username: tempUser.username,
-          simscore: 0,
+          simscore: 0.69,
           information: {
             images: tempUser.images,
             url: tempUser.url

@@ -25,6 +25,8 @@ const ListPage = () => {
   const [error, setError] = useState();
   const [animeList, setAnimeList] = useState([]);
   const [recommendedAnimeList, setRecommendedAnimeList] = useState([]);
+  const [otherSharedLists, setOtherSharedLists] = useState([]);
+  const [targetList, setTargetList] = useState();
   const [open, setOpen] = useState(false);
   const config = {
     withCredentials: true
@@ -39,13 +41,15 @@ const ListPage = () => {
     axios.all([
       axios.post("/listings/allanimes", {}, config), //MAL
       axios.post(`/listings/allanimesSharedList`, {}, config), //DB
-      axios.post("/listings/listOfRecommendedAnime", {}, config),
+      axios.post("/listings/listOfRecommendedAnime", {}, config), //recommended anime
+      axios.post("/getSharedLists", {}, config), //other shared lists
     ])
-    .then(axios.spread((MALdata, DBdata, RecommendedAnimeData) => {
-      console.log(MALdata,DBdata,RecommendedAnimeData);
+    .then(axios.spread((MALdata, DBdata, RecommendedAnimeData, sharedListData) => {
+      console.log(MALdata,DBdata,RecommendedAnimeData, sharedListData);
       MALdata = MALdata.data;
       DBdata = DBdata.data;
       RecommendedAnimeData = RecommendedAnimeData.data;
+      sharedListData = sharedListData.data.animelists;
       DBdata = DBdata.filter(element => { //remove empty object
         if (Object.keys(element).length !== 0) {
           return true;
@@ -69,6 +73,7 @@ const ListPage = () => {
 
       setAnimeList(DBdata);
       setRecommendedAnimeList(RecommendedAnimeData);
+      setOtherSharedLists(sharedListData);
     }))
     .catch(err => {
       console.log(err);
@@ -135,12 +140,31 @@ const clearAnime = () => {
 const modalOptions = {
   title: "Warning! You are about to join another anime list",
   body: "You might lose all the anime in your watchlist if you join another list. Do you wish to continue?",
-  buttonText: "Join Anyways"
+  buttonText: "Join Anyways",
 };
-const handleModalButtonClick = (listid) => {
-  alert("are you sure ?????!!!!!");
-  console.log("join another list");
+const handleModalButtonClick = () => {
+  setOpen(false);
+
+  const params = {
+    id: targetList
+  };
+
+  axios.post("/AddUserBySharedListId", params, config)
+  .then(response => {
+    console.log(response.data);
+    alert("Successfully joined list");
+    getAnime();
+  })
+  .catch(err => {
+    console.log(err);
+  });
+
 };
+
+const updateTargetList = (listid) => {
+  setTargetList(listid);
+  // console.log(listid);
+}
 
 return(
     <ZoomInOutWrapper>
@@ -188,7 +212,7 @@ return(
               </div>
                <div className="bg-purple rounded-lg w-fit h-155 overflow-y-auto justify-center items-center">
                 <div className="p-5">
-                  <JoinList animeList={recommendedAnimeList} joinNewList={() => setOpen(!open)}/>
+                  <JoinList otherSharedLists={otherSharedLists} joinNewList={() => setOpen(!open) } setTargetList={updateTargetList} />
                 </div>
               </div>
             </div>

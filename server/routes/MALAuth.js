@@ -41,7 +41,7 @@ MAL.route("/auth/v2/login").post(async (req, res, next) => {
     await axios
       .get(url, config)
       .then((response) => {
-        //console.log(response.data);
+        console.log(response.data);
         req.session.userprofile = response.data;
         const dbConnect = dbo.getDb();
         

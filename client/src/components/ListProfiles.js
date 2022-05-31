@@ -8,22 +8,6 @@ import { CardWrapper } from "./MotionComponents";
 const Profiles = () => {
     const [users, setUsers] = useState([]);
 
-    let dummyProfiles = [
-        {
-            "pfp" : "https://api-cdn.myanimelist.net/images/anime/1819/97947.jpg",
-            "name": "Person1",
-        },
-        {
-            "pfp" : "https://api-cdn.myanimelist.net/images/anime/1819/97947.jpg",
-            "name": "Person2",
-        },
-        {
-            "pfp" : "https://api-cdn.myanimelist.net/images/anime/1819/97947.jpg",
-            "name": "Person3",
-        },
-        
-    ];
-
     const redirectToProfile = (url) => {
         window.open(url, "_blank");
     }
