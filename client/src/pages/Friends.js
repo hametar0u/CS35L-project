@@ -116,14 +116,13 @@ const getRecommendedUser = async () => {
     })
     .then((response) => {
       console.log(response.data);
-      if (response.data.username === '') {
-        const tempUser = response.data.information[0]
+      if (response.data.username === '' || response.data.username === "donald_trump") {
         response.data = {
-          username: tempUser.username,
-          simscore: 0.69,
+          username: "Paul Eggert",
+          simscore: 1.20,
           information: {
-            images: tempUser.images,
-            url: tempUser.url
+            images: paul1,
+            url: "https://www.gnu.org/software/diffutils/manual/diffutils.pdf",
           }
         };
       }
