@@ -113,8 +113,9 @@ const MALAuthTest2 = (props) => {
   }
 
   const generateSimScore = async () => {
+    let obj = {}
     await axios
-      .get("/listings/ReccomendUser", {
+      .post("/CheckIfNewUser", obj, {
         withCredentials: true,
       })
       .then((response) => {

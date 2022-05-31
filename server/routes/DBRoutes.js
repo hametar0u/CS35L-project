@@ -1218,6 +1218,103 @@ userRoute.route("/listings/animeAddByMalID").post(async (req, res) => {
     }   
 })
 
+//Checks if it is a new user, and if so creates a sharedlist for them as well as a temp simscore (doesn't need any req)
+userRoute.route("/CheckIfNewUser").post(async (req, res) => {
+    const dbConnect = dbo.getDb();
+    try {
+        const userid = req.session.userprofile.id; //user id stored here
+        const access_token = req.session.tokens.access_token; //access token stored here
+        //Get user informatioin
+        let url2 = `http://localhost:5001/listings`
+        await axios
+            .get(url2)
+            .then((response) => {
+                userlist = response.data;
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+        //Check if user exists in db
+        var count = Object.keys(userlist).length;
+        console.log(count);
+        
+        let currentuser = {}
+        for(let i = 0; i < count; i++ )
+        {
+            if(userlist[i].id == userid) 
+            {
+                currentuser = userlist[i];
+            }
+        }
+
+        //Check if the current user has a sharedlist_id and a simscore
+        if(!currentuser.hasOwnProperty('sharedlist_id') && !currentuser.hasOwnProperty('score'))
+        {
+                let information1 = {};
+                await axios
+                .post("http://localhost:5001/listings/getUserById", {username: currentuser.info.name})
+                .then((response) => {
+                    if (response.data === {}) {
+                        res.status(400).send("No user found in MongoDB!");
+                        return;
+                    }
+                    else {
+                        console.log(information1);
+                        console.log("============================================v1");
+                        information1 = response.data;
+                    }
+                });
+                console.log(information1);
+                let profile1 = {
+                    name: currentuser.info.name,
+                    image: information1.images.jpg.image_url,
+                    url: information1.url
+                }
+                let u = []
+                u[0] = profile1
+                let newsharedlist = [];
+                let data = {
+                    users: u,
+                    anime: newsharedlist
+                }
+                console.log("============================================v1");
+                console.log(data);
+                dbConnect
+                    .collection("shared_lists")
+                    .insertOne(data, function(err) {
+                        if (err) {
+                            return;
+                        }
+                        else {
+                            dbConnect
+                    .collection("UserList")
+                    .findOneAndUpdate({id: userid},
+                        {$set: {sharedlist_id: data._id}});
+                        }
+                    });
+        }
+            let empty = {
+                userid: userid,
+                access_token: access_token
+            }
+            await axios
+                .post("http://localhost:5001/listings/mainGenre", empty)
+                .then((response) => {
+                    console.log(response.data);
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
+
+        res.send("successfully allocated new user");
+
+
+    }
+    catch {
+        res.status(400).send("You are not logged in");
+    }
+})
+
 //Depracated
 userRoute.route("/listings/animeAdd").post(async (req, res) => {
     const dbConnect = dbo.getDb();
