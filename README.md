@@ -1,21 +1,24 @@
 # IMPORTANT: make sure you're not on UCLA_WEB when working with the app; the database won't connect properly. 
 
 # Getting started
-- perform npm install both in the client directory and the server directory
-- create a file in server/ called config.env
-- DM me for what to put there (idk if it works just yet but we need to test it)
-- navigate to the server directory
+- After you clone the git repo, use npm install. If this doesn't work, use npm install --save. 
+- Perform npm install both in the client directory and the server directory as well. 
+- Create a file in server/ called config.env
+- Email Jeffrey Kwan (jkwan314@g.ucla.edu) for what to put in the config.env file. This is for security reasons. 
+- Navigate to the server directory.
 - npm start
     This turns on the back end.
-- navigate to the client directory
+- Navigate to the client directory.
 - npm start
-    This turns on the front end
-Open http://localhost:3000 to view it in your browser
+    This turns on the front end.
+Open http://localhost:3000 to view it in your browser!
 
-# Getting access to the database
+# Developers:
+
+## Getting access to the database
 - Make a MongoDB account and I'll add you to it
 
-# Interacting with the database from frontend
+## Interacting with the database from frontend
 - Add a route in /server/routes/record.js
 - https://www.mongodb.com/languages/express-mongodb-rest-api-tutorial
 - In the page you want to call the db endpoint, import axios at the top of your page:
