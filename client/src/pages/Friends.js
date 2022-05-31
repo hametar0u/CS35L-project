@@ -189,12 +189,12 @@ useEffect(() => {
                 {mostSimilarUser &&
                 <AnimatePresence>
                   <CardWrapper>
-                    <div className="bg-lightgrey w-max rounded-lg">
+                    <div className="bg-lightgrey w-max rounded-lg align-middle">
                         <div className="flex flex-row">
                           <div className="ml-20 mr-0">
                               <Profile name={mostSimilarUser.username} image={mostSimilarUser.information.images.jpg.image_url !== null ? mostSimilarUser.information.images.jpg.image_url : paul1}/>
                           </div>
-                          <div className="flex flex-col gap-5 p-5">
+                          <div className="flex flex-col gap-5 px-5 pt-10 align-middle">
                             <div className="font-bold">
                               {mostSimilarUser.simscore * 100}% Similarity
                             </div>
@@ -212,9 +212,9 @@ useEffect(() => {
                 <div className="flex flex-row gap-2 items-center relative">
                   <CountUp style={{fontWeight: 700, fontSize: 70, color: '#000000'}} end={similarity} useEasing="true" />
                   <div className="text-black text-6xl font-semibold">%</div>
-                  <div className="absolute pt-132 pl-35 -z-10">
+                  <div className="absolute pt-122 pl-31 -z-10">
                     <div className="p-5 gap-5 flex flex-col items-center text-center w-1/4">
-                      <div className="w-82 h-82"><img className="rounded-full w-full h-full" src={userProfile.image !== null ? userProfile.image : paul1}/></div>
+                      <div className="w-73 h-73"><img className="rounded-full w-full h-full" src={userProfile.image !== null ? userProfile.image : paul1}/></div>
                       <div className="text-center pt-2">{userProfile.username}</div>
                     </div>
                   </div>
