@@ -32,11 +32,61 @@ userRoute.route("/AddUserBySharedListId").post(async (req, res) => {
     try {
         const userid = req.session.userprofile.id; //user id stored here
         const access_token = req.session.tokens.access_token; //access token stored here
-        
+        const username = req.session.userprofile.name;
+
+        let currentuser = {}
+        url = `http://localhost:5001/listings/retrieveUserByName`
+        await axios
+            .get(url, {
+                params: {
+                    name: username
+                }
+            })
+            .then((response) => {
+                currentuser = response.data;
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+            console.log(currentuser);
+
+
         dbConnect
             .collection("UserList")
             .findOneAndUpdate({id: userid},
                 {$set: {sharedlist_id: ObjectId(req.body.id)}});
+
+        let information1 = {};
+        await axios
+        .post("http://localhost:5001/listings/getUserById", {username: username})
+        .then((response) => {
+            if (response.data === {}) {
+                res.status(400).send("No user found in MongoDB!");
+                return;
+            }
+            else {
+                information1 = response.data;
+            }
+        });
+        console.log(information1);
+        let profile1 = {
+            name: username,
+            image: information1.images.jpg.image_url,
+            url: information1.url
+        }
+        dbConnect
+            .collection("shared_lists")
+            .findOneAndUpdate({_id: ObjectId(currentuser.sharedlist_id)},
+                {$pull: {users: profile1}});
+        dbConnect
+            .collection("shared_lists")
+            .findOneAndUpdate({_id: ObjectId(req.body.id)},
+                {$push: {users: profile1}})
+        dbConnect
+            .collection("UserList")
+            .findOneAndUpdate({id: current_user.id},
+                {$set: {sharedlist_id: ObjectId(req.body.id)}});
+        
         res.send("Successfully added user to shared list by Id");
     }
     catch {
