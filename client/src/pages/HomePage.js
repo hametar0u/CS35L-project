@@ -21,11 +21,23 @@ const getDifference = (array1, array2) => {
   });
 };
 
+
 const HomePage = () => {
   //main component
   const [error, setError] = useState();
-
   const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    axios.post("/CheckIfNewUser", {}, { withCredentials: true })
+    .then(response => {
+      console.log(response.data);
+    })
+    .catch(err => {
+      console.log(err.response);
+    })
+  }, []);
+
+
   const modalOptions = {
     title: "Want unlimited lists?",
     body: "Join Our Anime List Premium for the low low price of $99999999999!",

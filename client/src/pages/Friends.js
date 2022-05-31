@@ -292,11 +292,7 @@ const CompareUser = () => {
                     {userProfile && (
                       <>
                         <AnimatePresence>
-                          <CardWrapper
-                            onClick={() =>
-                              window.open(userProfile.url, "_blank")
-                            }
-                          >
+                          <CardWrapper>
                             <div className="flex flex-col">
                               <div className="flex flex-row gap-2 items-center">
                                 <CountUp
@@ -323,6 +319,9 @@ const CompareUser = () => {
                                             ? userProfile.image
                                             : paul1
                                         }
+                                        onClick={() => {
+                                          window.open(userProfile.url, "_blank");
+                                        }}
                                       />
                                     </div>
                                     <div className="text-center pt-2">
