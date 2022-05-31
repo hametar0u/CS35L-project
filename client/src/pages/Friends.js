@@ -83,7 +83,11 @@ const handleSubmit = async (e) => {
       }
       else {
         if (response.data.simscore === -1) {
-          alert("no such user!");
+          alert("No such user in our database!");
+          setUserProfile();
+        }
+        else if (response.data.simscore === -2) {
+          alert("User is part of your list!");
           setUserProfile();
         }
         else {
