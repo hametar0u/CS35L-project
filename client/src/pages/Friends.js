@@ -221,7 +221,7 @@ useEffect(() => {
                     <div className="text-black text-6xl font-semibold">%</div>
                   </div>
                   <div className="h-1 relative">
-                    <div className="absolute pt-2 pl-35">
+                    <div className="absolute pt-200 pl-35">
                       <div className="p-5 gap-5 flex flex-col items-center text-center w-1/4">
                         <div className="w-82 h-82"><img className="rounded-full w-full h-full" src={userProfile.image !== null ? userProfile.image : paul1}/></div>
                         <div className="text-center pt-2">{userProfile.username}</div>
