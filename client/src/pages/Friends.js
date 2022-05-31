@@ -215,15 +215,25 @@ useEffect(() => {
             <div className="bg-lightgrey w-full rounded-lg px-10 py-5">
               {userProfile && 
               <>
-                <div className="flex flex-row gap-2 items-center relative">
-                  <CountUp style={{fontWeight: 700, fontSize: 70, color: '#000000'}} end={similarity} useEasing="true" />
-                  <div className="text-black text-6xl font-semibold">%</div>
-                  <div className="absolute pt-122 pl-31 -z-10">
+                <div className="flex flex-col">
+                  <div className="flex flex-row gap-2 items-center">
+                    <CountUp style={{fontWeight: 700, fontSize: 70, color: '#000000'}} end={similarity} useEasing="true" />
+                    <div className="text-black text-6xl font-semibold">%</div>
+                  </div>
+                  <div className="h-1 relative">
+                    <div className="absolute pt-2 pl-35">
+                      <div className="p-5 gap-5 flex flex-col items-center text-center w-1/4">
+                        <div className="w-82 h-82"><img className="rounded-full w-full h-full" src={userProfile.image !== null ? userProfile.image : paul1}/></div>
+                        <div className="text-center pt-2">{userProfile.username}</div>
+                      </div>
+                    </div>
+                  </div>
+                  {/* <div className="absolute pt-122 pl-31 -z-10">
                     <div className="p-5 gap-5 flex flex-col items-center text-center w-1/4">
                       <div className="w-73 h-73"><img className="rounded-full w-full h-full" src={userProfile.image !== null ? userProfile.image : paul1}/></div>
                       <div className="text-center pt-2">{userProfile.username}</div>
                     </div>
-                  </div>
+                  </div> */}
                 </div>
                 <div className="z-40">
                 <Circle
