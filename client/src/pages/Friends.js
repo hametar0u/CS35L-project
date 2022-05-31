@@ -93,9 +93,9 @@ const handleSubmit = async (e) => {
         else {
           setUserProfile(response.data);
           // const simscore = response.data.simscore === 0 ? 1 : response.data.simscore * 100;
-          response.data.simscore = Math.round(response.data.simscore);
-          setSimilarity(response.data.simscore * 100);
-          setProgress(response.data.simscore * 100);
+          response.data.simscore = Math.round(response.data.simscore * 100);
+          setSimilarity(response.data.simscore);
+          setProgress(response.data.simscore);
         }
       }
     })
@@ -127,6 +127,7 @@ const getRecommendedUser = async () => {
           }
         };
       }
+      response.data.simscore = Math.round(response.data.simscore * 100);
       setMostSimilarUser(response.data);
     })
     .catch((err) => {
@@ -201,7 +202,7 @@ useEffect(() => {
                           </div>
                           <div className="flex flex-col gap-5 px-5 pt-10 align-middle">
                             <div className="font-bold">
-                              {mostSimilarUser.simscore * 100}% Similarity
+                              {mostSimilarUser.simscore}% Similarity
                             </div>
                               <div>Reach out to your new friend on <a href={mostSimilarUser.information.url} className="text-blue hover:text-grey"> myanimelist.net</a>.</div>
                           </div>
