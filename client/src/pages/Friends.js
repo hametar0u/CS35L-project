@@ -6,6 +6,7 @@ import Navbar from "../components/Navbar/index";
 import Nav from "../components/Nav";
 import SearchBarProto from "../components/SearchBarTest";
 import paul1 from "../pauls/paul1.png";
+import paul4 from "../pauls/paul4.png";
 import MiniButton from "../components/MiniButton";
 
 import CountUp from 'react-countup';
@@ -121,7 +122,11 @@ const getRecommendedUser = async () => {
           username: "Paul Eggert",
           simscore: 1.20,
           information: {
-            images: paul1,
+            images: {
+              jpg: {
+                image_url: paul4,
+              }
+            },
             url: "https://www.gnu.org/software/diffutils/manual/diffutils.pdf",
           }
         };
