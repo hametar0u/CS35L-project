@@ -177,6 +177,7 @@ userRoute.route("/getSharedLists").post(async (req, res) => {
             .catch((err) => {
                 console.log(err);
             });
+
             console.log(sharedlist);
             console.log("checkpoint 1");
             var count = Object.keys(sharedlist).length;
@@ -190,7 +191,11 @@ userRoute.route("/getSharedLists").post(async (req, res) => {
             }
             let anime = []
             let animeoutput = []
-            let output = {}
+            let output = {
+                anime: [],
+                username: "",
+                id: 0
+            }
             for(let i = 0; i < counter; i++)
             {
                 var count2 = Object.keys(sharedlist[i].anime).length;
@@ -208,6 +213,7 @@ userRoute.route("/getSharedLists").post(async (req, res) => {
                     anime[j] = sharedlist[i].anime[j].main_picture.medium;
                     console.log(anime[j]);
                 }
+                console.log(anime)
                 //check if sharedlist is empty
                 console.log(typeof sharedlist[i].users);
                 console.log("=============================================================");
@@ -251,7 +257,9 @@ userRoute.route("/getSharedLists").post(async (req, res) => {
                     }
                 }
                 animeoutput[i] = output;
+                anime = []
             }
+            console.log(animeoutput);
             output = {
                 animelists: animeoutput
             }
@@ -1224,7 +1232,9 @@ userRoute.route("/CheckIfNewUser").post(async (req, res) => {
     try {
         const userid = req.session.userprofile.id; //user id stored here
         const access_token = req.session.tokens.access_token; //access token stored here
-        //Get user informatioin
+        console.log("CheckIfNewUserCalled");
+        console.log(userid);
+        //Get user information
         let url2 = `http://localhost:5001/listings`
         await axios
             .get(url2)
@@ -1246,6 +1256,10 @@ userRoute.route("/CheckIfNewUser").post(async (req, res) => {
                 currentuser = userlist[i];
             }
         }
+        if(currentuser == {})
+        {
+            return;
+        }
 
         //Check if the current user has a sharedlist_id and a simscore
         if(!currentuser.hasOwnProperty('sharedlist_id') && !currentuser.hasOwnProperty('score'))
@@ -1259,7 +1273,6 @@ userRoute.route("/CheckIfNewUser").post(async (req, res) => {
                         return;
                     }
                     else {
-                        console.log(information1);
                         console.log("============================================v1");
                         information1 = response.data;
                     }
