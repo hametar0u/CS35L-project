@@ -94,10 +94,10 @@ const App = () => {
 
 
           {/* Test Routes */}
-          <Route path="/session" element={<MALAuthTest code={query.get("code")}/>} />
+          {/* <Route path="/session" element={<MALAuthTest code={query.get("code")}/>} />
           <Route path="/auth" element={<MALAuthTest2 code={query.get("code")}/>} />
           <Route path="/usertest" element={<UserTestTest />} />
-          <Route path="/search" element={<SearchBarProto />} />
+          <Route path="/search" element={<SearchBarProto />} /> */}
         </Routes>
       </AnimatePresence>
     </UserContext.Provider>
