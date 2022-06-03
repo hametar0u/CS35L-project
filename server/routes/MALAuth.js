@@ -32,7 +32,7 @@ MAL.route("/auth/v2/login").post(async (req, res, next) => {
     res.redirect(307, "/auth/v2/token");
   } else {
     const access_token = req.session.tokens.access_token;
-    const url = "https://api.myanimelist.net/v2/users/@me";
+    const url = "https://api.myanimelist.net/v2/users/@me?fields=picture";
     const config = {
       headers: {
         Authorization: "Bearer " + access_token,
@@ -65,6 +65,14 @@ MAL.route("/auth/v2/login").post(async (req, res, next) => {
         }
         next(err);
       });
+      await axios
+        .post("http://localhost:5001/CheckIfNewUser", {userid: req.session.userprofile.id, access_token: req.session.tokens.access_token})
+        .then(response => {
+          console.log(response.data);
+        })
+        .catch(err => {
+         console.log(err.response);
+        })
   }
 });
 

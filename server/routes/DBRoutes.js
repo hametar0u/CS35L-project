@@ -516,6 +516,7 @@ userRoute.route("/listings/ReccomendUser").get(async (req, res) => {
                 }
             }
         }
+        //Default case
         if (username == "")
         {
             username = "donald_trump";
@@ -1230,8 +1231,8 @@ userRoute.route("/listings/animeAddByMalID").post(async (req, res) => {
 userRoute.route("/CheckIfNewUser").post(async (req, res) => {
     const dbConnect = dbo.getDb();
     try {
-        const userid = req.session.userprofile.id; //user id stored here
-        const access_token = req.session.tokens.access_token; //access token stored here
+        const userid = req.body.userid; //user id stored here
+        const access_token = req.body.access_token; //access token stored here
         console.log("CheckIfNewUserCalled");
         console.log(userid);
         //Get user information
@@ -1726,7 +1727,7 @@ userRoute.route("/listings/SearchUserMAL").post(async (req, res) => {
             }
         }
         //Grab searched user's anime list from MAL
-        let url = `https://api.myanimelist.net/v2/users/${req.body.name}/animelist?fields=list_status&limit=10`
+        let url = `https://api.myanimelist.net/v2/users/${req.body.name}/animelist?fields=list_status&limit=19`
         let params = {
             headers: {
                 Authorization: "Bearer " + access_token,
