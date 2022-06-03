@@ -14,6 +14,9 @@
 Open http://localhost:3000 to view it in your browser!
 
 # Developers:
+- Chancellor Richey
+- Margaret Capetz
+- Jeffrey Kwan
 
 ## Getting access to the database
 - Make a MongoDB account and I'll add you to it
@@ -25,13 +28,13 @@ Open http://localhost:3000 to view it in your browser!
   - import axios from 'axios';
 - do smt like this 
   ```
-     async function getRecords() {
+   async function getRecords() {
      const response = await axios.get("/listings");
      const json = await response.data;
      console.log(json);
      setRecords(json);
    }
-## key points:
+## Key points:
 - wrap the axios get/post/delete whatever request inside an async function
 - use [path name you specified earlier] as the url
 - put "await" in front of the axios fetch and response
