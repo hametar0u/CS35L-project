@@ -494,23 +494,39 @@ userRoute.route("/listings/ReccomendUser").get(async (req, res) => {
         let username = "";
         let recuserId = 0;
         let otherc = 0;
-        for(let i = 0; i < count; i++)
-        {
-            if(userlist[i].hasOwnProperty('score'))
+        let ratio = 0;
+        if (counter != 0) {
+            for(let i = 0; i < count; i++)
             {
-                
-                count3 = Object.keys(userlist[i].score).length;
-                for(let j = 0; j < count3; j++)
+                if(userlist[i].hasOwnProperty('score'))
                 {
-                    console.log("iterating")
-                    if(userlist[i].score[j] != null)
+                    
+                    count3 = Object.keys(userlist[i].score).length;
+                    for(let j = 0; j < count3; j++)
                     {
-                        console.log("Bypassed null if");
-                        if(userlist[i].score[j].counter >= otherc && userlist[i].score[j].genre == genre && userlist[i].sharedlist_id != user.sharedlist_id)
+                        console.log("iterating")
+                        if(userlist[i].score[j] != null)
                         {
-                            username = userlist[i].info.name;
-                            otherc = userlist[i].score[j].counter;
-                            recuserId = userlist[i].id;
+                            console.log("Bypassed null if");
+                            if(userlist[i].score[j].genre == genre && userlist[i].sharedlist_id != user.sharedlist_id)
+                            {
+                                let newratio
+                                if(userlist[i].score[j].counter > counter)
+                                {
+                                    newratio = counter / userlist[i].score[j].counter
+                                }
+                                else {
+                                    newratio = userlist[i].score[j].counter / counter
+                                }
+
+                                if(newratio > ratio)
+                                {
+                                    username = userlist[i].info.name;
+                                    otherc = userlist[i].score[j].counter;
+                                    recuserId = userlist[i].id;
+                                    ratio = newratio
+                                }
+                            }
                         }
                     }
                 }
@@ -527,14 +543,6 @@ userRoute.route("/listings/ReccomendUser").get(async (req, res) => {
 
         console.log(username);
         console.log(otherc);
-        let ratio = 0;
-        if(otherc > counter)
-        {
-            ratio = counter / otherc;
-        }
-        else{
-            ratio = otherc / counter;
-        }
 
         //get reccomended user's profile
         let information = {};
