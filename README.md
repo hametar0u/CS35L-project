@@ -24,7 +24,8 @@ Open http://localhost:3000 to view it in your browser!
 - In the page you want to call the db endpoint, import axios at the top of your page:
   - import axios from 'axios';
 - do smt like this 
-  ```async function getRecords() {
+  ```
+     async function getRecords() {
      const response = await axios.get("/listings");
      const json = await response.data;
      console.log(json);
