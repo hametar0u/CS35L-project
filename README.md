@@ -29,7 +29,7 @@ Open http://localhost:3000 to view it in your browser!
      const json = await response.data;
      console.log(json);
      setRecords(json);
-   }```
+   }
 ## key points:
 - wrap the axios get/post/delete whatever request inside an async function
 - use [path name you specified earlier] as the url
