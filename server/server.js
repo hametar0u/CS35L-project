@@ -1,7 +1,8 @@
 const express = require("express");
 const app = express();
+const path = require("path");
 const cors = require("cors");
-require("dotenv").config({ path: "./config.env" });
+require("dotenv").config();
 const port = process.env.PORT || 5001;
 
 var whitelist = ['http://localhost:3000'];
@@ -47,6 +48,12 @@ app.use(function (err, req, res, next) {
   console.error(err.stack);
   res.status(432).send('paul eggie is watching you!!');
   next(err);
+});
+
+app.use(express.static(path.join(__dirname, "client", "build")))
+
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "client", "build", "index.html"));
 });
 
 app.listen(port, () => {
