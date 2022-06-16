@@ -3,8 +3,15 @@ import ReactDOM from "react-dom/client";
 import App from "./App";
 import { BrowserRouter } from "react-router-dom";
 
+//constants
+import { LOCAL } from "./hooks/constants";
+
 import axios from 'axios';
-axios.defaults.baseURL = 'http://localhost:5001'; //TODO: change to production link but might have to deal with SSL crap
+if (LOCAL) {
+  axios.defaults.baseURL = 'http://localhost:5001';
+} else {
+  axios.defaults.baseURL = 'https://our-anime-list-beta.herokuapp.com';
+}
 
 const root = ReactDOM.createRoot(
   document.getElementById('root')

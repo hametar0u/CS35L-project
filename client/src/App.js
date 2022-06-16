@@ -17,8 +17,10 @@ import Contact from "./pages/Contact";
 import FindUser from "./pages/FindUser";
 import Nav from "./components/Nav";
 
+//constants
+import { LOCAL } from "./hooks/constants";
+
 import axios from "axios";
-let LOCAL = false;
 if (LOCAL) {
   axios.defaults.baseURL = 'http://localhost:5001';
 } else {
