@@ -1,8 +1,15 @@
+const LOCAL = false;
+
 const express = require("express");
 const app = express();
 const path = require("path");
 const cors = require("cors");
-require("dotenv").config();
+if (!LOCAL) {
+  require("dotenv").config();
+}
+else {
+  require("dotenv").config({ path: "./config.env" });
+}
 const port = process.env.PORT || 5001;
 
 var whitelist = ['http://localhost:3000'];
