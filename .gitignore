@@ -1,2 +1,3 @@
 server/config.env
 client/src/testpages/token.json
+node_modules/*

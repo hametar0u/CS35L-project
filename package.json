@@ -4,12 +4,12 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-        "build": "npm install",
-        "install-client": "cd client && npm install",
-        "heroku-postbuild": "npm run build && npm run install-client",
-        "server": "nodemon server.js",
-        "develop": "concurrently --kill-others-on-fail \"npm run server\" \"npm run start --prefix client\"",
-        "start": "npm run server && npm run start --prefix client",
+    "build": "npm install",
+    "install-client": "cd client && npm install",
+    "heroku-postbuild": "npm run build && npm run install-client",
+    "server": "nodemon server.js",
+    "develop": "concurrently --kill-others-on-fail \"npm run server\" \"npm run start --prefix client\"",
+    "start": "npm run server && npm run start --prefix client",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -23,7 +23,8 @@
     "express": "^4.17.3",
     "express-session": "^1.17.2",
     "https": "^1.0.0",
-    "mongodb": "^4.5.0"
+    "mongodb": "^4.5.0",
+    "nodemon": "^2.0.16"
   },
   "engines": {
     "node": "16.14.0"
