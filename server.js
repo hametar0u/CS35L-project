@@ -13,6 +13,10 @@ else {
 const port = process.env.PORT || 5001;
 
 var whitelist = ['http://localhost:3000'];
+let origin = "https://our-anime-list-beta.herokuapp.com";
+if (LOCAL) {
+  origin = "http://localhost:3000";
+}
 var corsOptions = {
   // origin: function (origin, callback) {
   //   if (whitelist.indexOf(origin) !== -1) {
@@ -21,7 +25,7 @@ var corsOptions = {
   //     callback(new Error('Not allowed by CORS'))
   //   }
   // }
-  origin: "http://localhost:3000",
+  origin: origin,
   credentials: true,
 }
 

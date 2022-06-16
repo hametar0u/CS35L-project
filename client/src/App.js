@@ -18,7 +18,13 @@ import FindUser from "./pages/FindUser";
 import Nav from "./components/Nav";
 
 import axios from "axios";
-axios.defaults.baseURL = 'http://localhost:5001';
+let LOCAL = false;
+if (LOCAL) {
+  axios.defaults.baseURL = 'http://localhost:5001';
+} else {
+  axios.defaults.baseURL = 'https://our-anime-list-beta.herokuapp.com';
+}
+
 
 const useQuery = () => {
   return new URLSearchParams(useLocation().search);
