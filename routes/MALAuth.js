@@ -66,7 +66,7 @@ MAL.route("/auth/v2/login").post(async (req, res, next) => {
         next(err);
       });
       await axios
-        .post("https://https://our-anime-list-beta.herokuapp.com//CheckIfNewUser", {userid: req.session.userprofile.id, access_token: req.session.tokens.access_token})
+        .post("https://our-anime-list-beta.herokuapp.com//CheckIfNewUser", {userid: req.session.userprofile.id, access_token: req.session.tokens.access_token})
         .then(response => {
           console.log(response.data);
         })
