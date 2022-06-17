@@ -8,9 +8,9 @@ import { LOCAL } from "./hooks/constants";
 
 import axios from 'axios';
 if (LOCAL) {
-  axios.defaults.baseURL = 'https://https://our-anime-list-beta.herokuapp.com/';
+  axios.defaults.baseURL = 'https://our-anime-list-beta.herokuapp.com/';
 } else {
-  axios.defaults.baseURL = 'https://our-anime-list-beta.herokuapp.com';
+  axios.defaults.baseURL = 'https://our-anime-list-beta.herokuapp.com/';
 }
 
 const root = ReactDOM.createRoot(
