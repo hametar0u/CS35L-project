@@ -1,5 +1,6 @@
 const express = require("express");
 const session = require("express-session");
+const logger = require("heroku-logger");
 const axios = require("axios");
 const querystring = require("querystring");
 const userRoute = express.Router();
@@ -46,10 +47,10 @@ userRoute.route("/AddUserBySharedListId").post(async (req, res) => {
                 currentuser = response.data;
             })
             .catch((err) => {
-                console.log(err);
+                logger.info(err);
             });
-            console.log("==================================");
-            console.log(currentuser);
+            logger.info("==================================");
+            logger.info(currentuser);
 
 
         dbConnect
@@ -69,7 +70,7 @@ userRoute.route("/AddUserBySharedListId").post(async (req, res) => {
                 information1 = response.data;
             }
         });
-        console.log(information1);
+        logger.info(information1);
         let profile1 = {
             name: username,
             image: information1.images.jpg.image_url,
@@ -83,7 +84,7 @@ userRoute.route("/AddUserBySharedListId").post(async (req, res) => {
             .collection("shared_lists")
             .findOneAndUpdate({_id: ObjectId(req.body.id)},
                 {$push: {users: profile1}})
-        console.log("==================================hi");
+        logger.info("==================================hi");
         let empty = {
             userid: userid,
             access_token: access_token
@@ -92,15 +93,15 @@ userRoute.route("/AddUserBySharedListId").post(async (req, res) => {
         await axios
             .post("https://our-anime-list-beta.herokuapp.com/listings/mainGenre", empty)
             .then((response) => {
-                console.log(response.data);
+                logger.info(response.data);
             })
             .catch((err) => {
-                console.log(err);
+                logger.info(err);
             });
         res.send("Successfully added user to shared list by Id");
     }
     catch {
-        console.log("You are not logged in");
+        logger.info("You are not logged in");
     }
 });
 
@@ -118,7 +119,7 @@ userRoute.route("/getAllUsersOfList").post(async (req, res) => {
                 sharedlist = response.data;
             })
             .catch((err) => {
-                console.log(err);
+                logger.info(err);
             });
         //Grab user's name
         let userlist = {};
@@ -128,7 +129,7 @@ userRoute.route("/getAllUsersOfList").post(async (req, res) => {
                 userlist = response.data;
             })
             .catch((err) => {
-                console.log(err);
+                logger.info(err);
             });
         var count = Object.keys(userlist).length;
         let users_shared_list = {}
@@ -145,7 +146,7 @@ userRoute.route("/getAllUsersOfList").post(async (req, res) => {
         {
             if(sharedlist[i]._id == users_shared_list)
             {
-                console.log(sharedlist[i]);
+                logger.info(sharedlist[i]);
                 listOfUsers = {
                     users: sharedlist[i].users
                 }
@@ -155,7 +156,7 @@ userRoute.route("/getAllUsersOfList").post(async (req, res) => {
 
     }
     catch {
-        console.log("You are not logged in");
+        logger.info("You are not logged in");
 
     }
 })
@@ -164,8 +165,8 @@ userRoute.route("/getAllUsersOfList").post(async (req, res) => {
 userRoute.route("/getSharedLists").post(async (req, res) => {
     try {
         const userprofilename = req.session.userprofile.name;
-        console.log("the name");
-        console.log(userprofilename);
+        logger.info("the name");
+        logger.info(userprofilename);
         const dbConnect = dbo.getDb();
         let sharedlist = {};
         
@@ -175,11 +176,11 @@ userRoute.route("/getSharedLists").post(async (req, res) => {
                 sharedlist = response.data;
             })
             .catch((err) => {
-                console.log(err);
+                logger.info(err);
             });
 
-            console.log(sharedlist);
-            console.log("checkpoint 1");
+            logger.info(sharedlist);
+            logger.info("checkpoint 1");
             var count = Object.keys(sharedlist).length;
             let counter = 0;
             if(count > 10)
@@ -206,22 +207,22 @@ userRoute.route("/getSharedLists").post(async (req, res) => {
                 else {
                     othercounter = count2;
                 }
-                console.log(count2);
+                logger.info(count2);
                 for(let j = 0; j < othercounter; j++)
                 {
                     
                     anime[j] = sharedlist[i].anime[j].main_picture.medium;
-                    console.log(anime[j]);
+                    logger.info(anime[j]);
                 }
-                console.log(anime)
+                logger.info(anime)
                 //check if sharedlist is empty
-                console.log(typeof sharedlist[i].users);
-                console.log("=============================================================");
+                logger.info(typeof sharedlist[i].users);
+                logger.info("=============================================================");
                 var thelength = Object.keys(sharedlist[i].users).length;
-                console.log(thelength);
-                console.log(sharedlist[i].users);
-                console.log(sharedlist[i].users == []);
-                console.log(sharedlist[i].users == {});
+                logger.info(thelength);
+                logger.info(sharedlist[i].users);
+                logger.info(sharedlist[i].users == []);
+                logger.info(sharedlist[i].users == {});
                 if(thelength == 0)
                 {
                     output = {
@@ -259,7 +260,7 @@ userRoute.route("/getSharedLists").post(async (req, res) => {
                 animeoutput[i] = output;
                 anime = []
             }
-            console.log(animeoutput);
+            logger.info(animeoutput);
             output = {
                 animelists: animeoutput
             }
@@ -284,7 +285,7 @@ userRoute.route("/obliterate").get(async (req, res) => {
             userlist = response.data;
         })
         .catch((err) => {
-            console.log(err);
+            logger.info(err);
         });
         var count = Object.keys(userlist).length;
         let user = {}
@@ -292,12 +293,12 @@ userRoute.route("/obliterate").get(async (req, res) => {
         {
             if(userlist[i].id == userid)
             {
-                console.log("logged user");
+                logger.info("logged user");
                 user = userlist[i];
             }
         }
-        console.log("checkpoint 1");
-        console.log(user.sharedlist_id);
+        logger.info("checkpoint 1");
+        logger.info(user.sharedlist_id);
         //Obliterate the list >:)
         dbConnect
             .collection("shared_lists")
@@ -306,7 +307,7 @@ userRoute.route("/obliterate").get(async (req, res) => {
         res.send("Successfully cleared list");
     }
     catch {
-        console.log("User is not logged in");
+        logger.info("User is not logged in");
     }
 })
 
@@ -325,7 +326,7 @@ userRoute.route("/listings/mainGenre").post(async (req, res) => {
                 sharedlist = response.data;
             })
             .catch((err) => {
-                console.log(err);
+                logger.info(err);
             });
             
 
@@ -336,7 +337,7 @@ userRoute.route("/listings/mainGenre").post(async (req, res) => {
             userlist = response.data;
         })
         .catch((err) => {
-            console.log(err);
+            logger.info(err);
         });
 
         //search for user's profile and grab their anime list
@@ -421,7 +422,7 @@ userRoute.route("/listings/mainGenre").post(async (req, res) => {
 //Extension function, not meant for frontend
 userRoute.route("/listings/getUserById").post(async (req, res) => {
     let obj = {};
-    console.log(req.body);
+    logger.info(req.body);
     
     let url = `https://api.jikan.moe/v4/users/${req.body.username}`
         await axios
@@ -430,7 +431,7 @@ userRoute.route("/listings/getUserById").post(async (req, res) => {
                 obj = response.data.data;
             })
             .catch((err) => {
-                console.log(err);
+                logger.info(err);
             });
     res.send(obj);
 })
@@ -448,10 +449,10 @@ userRoute.route("/listings/ReccomendUser").get(async (req, res) => {
         await axios
             .post("https://our-anime-list-beta.herokuapp.com/listings/mainGenre", empty)
             .then((response) => {
-                console.log(response.data);
+                logger.info(response.data);
             })
             .catch((err) => {
-                console.log(err);
+                logger.info(err);
             });
         //Grab user
         let userlist = {};
@@ -461,7 +462,7 @@ userRoute.route("/listings/ReccomendUser").get(async (req, res) => {
             userlist = response.data;
         })
         .catch((err) => {
-            console.log(err);
+            logger.info(err);
         });
         var count = Object.keys(userlist).length;
         let user = {}
@@ -478,8 +479,8 @@ userRoute.route("/listings/ReccomendUser").get(async (req, res) => {
         let counter = 0;
         for(let i = 0; i < count2; i++)
         {
-            console.log("score is");
-            console.log(user.score[i]);
+            logger.info("score is");
+            logger.info(user.score[i]);
             if(user.score[i] != null)
             {
                 if(user.score[i].counter >= counter)
@@ -502,10 +503,10 @@ userRoute.route("/listings/ReccomendUser").get(async (req, res) => {
                 count3 = Object.keys(userlist[i].score).length;
                 for(let j = 0; j < count3; j++)
                 {
-                    console.log("iterating")
+                    logger.info("iterating")
                     if(userlist[i].score[j] != null)
                     {
-                        console.log("Bypassed null if");
+                        logger.info("Bypassed null if");
                         if(userlist[i].score[j].counter >= otherc && userlist[i].score[j].genre == genre && userlist[i].sharedlist_id != user.sharedlist_id)
                         {
                             username = userlist[i].info.name;
@@ -525,8 +526,8 @@ userRoute.route("/listings/ReccomendUser").get(async (req, res) => {
         }
 
 
-        console.log(username);
-        console.log(otherc);
+        logger.info(username);
+        logger.info(otherc);
         let ratio = 0;
         if(otherc > counter)
         {
@@ -544,7 +545,7 @@ userRoute.route("/listings/ReccomendUser").get(async (req, res) => {
                 information = response.data;
             })
             .catch((err) => {
-                console.log(err);
+                logger.info(err);
             });
         obj = {
             username : username,
@@ -574,10 +575,10 @@ userRoute.route("/listings/SpecificUser").post(async (req, res) => {
         await axios
             .post("https://our-anime-list-beta.herokuapp.com/listings/mainGenre", empty)
             .then((response) => {
-                console.log(response.data);
+                logger.info(response.data);
             })
             .catch((err) => {
-                console.log(err);
+                logger.info(err);
             });
         // Grab user
         let userlist = {};
@@ -587,7 +588,7 @@ userRoute.route("/listings/SpecificUser").post(async (req, res) => {
             userlist = response.data;
         })
         .catch((err) => {
-            console.log(err);
+            logger.info(err);
         });
         var count = Object.keys(userlist).length;
         let user = {}
@@ -595,7 +596,7 @@ userRoute.route("/listings/SpecificUser").post(async (req, res) => {
         {
             if(userlist[i].id == userid)
             {
-                console.log("logged user");
+                logger.info("logged user");
                 user = userlist[i];
             }
         }
@@ -604,7 +605,7 @@ userRoute.route("/listings/SpecificUser").post(async (req, res) => {
         let specificuser = {}
         for(let i = 0; i < count; i++)
         {
-            console.log(userlist[i].info.name);
+            logger.info(userlist[i].info.name);
             if(userlist[i].info.name == req.body.name)
             {
                 specificuser = userlist[i];
@@ -634,7 +635,7 @@ userRoute.route("/listings/SpecificUser").post(async (req, res) => {
         let counter = 0;
         for(let i = 0; i < count2; i++)
         {
-            console.log(user.score[i]);
+            logger.info(user.score[i]);
             if(user.score[i] != null)
             {
                 if(user.score[i].counter >= counter)
@@ -682,7 +683,7 @@ userRoute.route("/listings/SpecificUser").post(async (req, res) => {
                     }
                 })
             .catch((err) => {
-                console.log(err);
+                logger.info(err);
             });
         obj = {
             username : req.body.name,
@@ -709,7 +710,7 @@ userRoute.route("/listings/sharedList").get(async (req, res) => {
             if (err) {
                 res.status(400).send("Error fetching shared_lists!");
             } else {
-                //console.log(result);
+                //logger.info(result);
                 res.json(result);
             }
         });
@@ -719,7 +720,7 @@ userRoute.route("/listings/sharedList").get(async (req, res) => {
 userRoute.route("/listings/jikanInfo").post(async (req, res) => {
     let str = ""
     let filter = {};
-    console.log(req.body);
+    logger.info(req.body);
     if(req.body.anime == "") {
         res.send("It is empty");
         return;
@@ -742,7 +743,7 @@ userRoute.route("/listings/jikanInfo").post(async (req, res) => {
                 filter = response.data.data;
             })
             .catch((err) => {
-                console.log(err);
+                logger.info(err);
             });
         var count = Object.keys(filter).length;
         let jikanlist = []
@@ -763,12 +764,12 @@ userRoute.route("/listings/jikanInfo").post(async (req, res) => {
 //Extension function, not meant for frontend
 userRoute.route("/listings/info").get(async (req, res) => {
     const dbConnect = dbo.getDb();
-    console.log(req.query);
+    logger.info(req.query);
     dbConnect
         .collection("UserList")
         .find(req.query)
         .toArray(function (err, result) {
-            //console.log(result);
+            //logger.info(result);
             res.send(result);
     });
 });
@@ -791,11 +792,11 @@ userRoute.route("/getMALinfo").post(async (req, res) => {
                 res.send(response.data);
             })
             .catch((err) => {
-                console.log(err);
+                logger.info(err);
             });
     }
     catch {
-        console.log("You are not logged in");
+        logger.info("You are not logged in");
     }
 })
 
@@ -817,9 +818,9 @@ userRoute.route("/listings/addUser").post(async (req, res) => {
                 current_user = response.data;
             })
             .catch((err) => {
-                console.log(err);
+                logger.info(err);
             });
-            console.log(current_user);
+            logger.info(current_user);
         //Check if user is adding themselves
         if(current_user.info.name == req.body.colabuser)
         {
@@ -839,9 +840,9 @@ userRoute.route("/listings/addUser").post(async (req, res) => {
                 append_user = response.data;
             })
             .catch((err) => {
-                console.log(err);
+                logger.info(err);
             });
-            console.log(append_user);
+            logger.info(append_user);
 
 
         //Check if user doesn't have a shared list
@@ -863,7 +864,7 @@ userRoute.route("/listings/addUser").post(async (req, res) => {
                     }
                 })
             .catch((err) => {
-                console.log(err);
+                logger.info(err);
             });
                 let profile = {
                     name: current_user.info.name,
@@ -924,7 +925,7 @@ userRoute.route("/listings/addUser").post(async (req, res) => {
                     .collection("shared_lists")
                     .insertOne(data, function(err) {
                         if(err) {
-                            console.log(err);
+                            logger.info(err);
                         } else {
                             dbConnect
                                 .collection("UserList")
@@ -983,7 +984,7 @@ userRoute.route("/listings/addUser").post(async (req, res) => {
                         information1 = response.data;
                     }
                 });
-                console.log(information1);
+                logger.info(information1);
                 let profile1 = {
                     name: current_user.info.name,
                     image: information1.images.jpg.image_url,
@@ -1019,7 +1020,7 @@ userRoute.route("/listings/retreiveUserById").get(async (req, res) => {
         .toArray( function (err, response) {
             if(err)
             {
-                console.log(err);
+                logger.info(err);
             }
             else
             {
@@ -1033,14 +1034,14 @@ userRoute.route("/listings/retreiveUserById").get(async (req, res) => {
 //Extension function, not meant for frontend
 userRoute.route("/listings/retrieveUserByName").get(async (req, res) => {
     const dbConnect = dbo.getDb();
-    console.log(req.query.name);
+    logger.info(req.query.name);
         dbConnect
         .collection("UserList")
         .find({'info.name': req.query.name})
         .toArray( function (err, response) {
             if(err)
             {
-                console.log(err);
+                logger.info(err);
             }
             else
             {
@@ -1064,7 +1065,7 @@ userRoute.route("/listings/animeDelete").post(async (req, res) => {
                 userlist = response.data;
             })
             .catch((err) => {
-                console.log(err);
+                logger.info(err);
             });
         var count = Object.keys(userlist).length;
         let currentuser = {};
@@ -1094,7 +1095,7 @@ userRoute.route("/listings/animeDelete").post(async (req, res) => {
             shared = response.data;
         })
         .catch((err) => {
-            console.log(err);
+            logger.info(err);
         });
         var count1 = Object.keys(shared).length;
         let users_shared_list = {};
@@ -1112,7 +1113,7 @@ userRoute.route("/listings/animeDelete").post(async (req, res) => {
         {
             if(users_shared_list.anime[i].id == req.body.malId)
             {
-                console.log("exists");
+                logger.info("exists");
                 exist = true;
                 index = i;
                 break;
@@ -1152,11 +1153,11 @@ userRoute.route("/listings/animeAddByMalID").post(async (req, res) => {
                 userlist = response.data;
             })
             .catch((err) => {
-                console.log(err);
+                logger.info(err);
             });
         //Check if user exists in db
         var count = Object.keys(userlist).length;
-        console.log(count);
+        logger.info(count);
         
         let currentuser = {}
         for(let i = 0; i < count; i++ )
@@ -1184,7 +1185,7 @@ userRoute.route("/listings/animeAddByMalID").post(async (req, res) => {
                 obj = response.data;
             })
             .catch((err) => {
-                console.log(err);
+                logger.info(err);
             });
         //Check if current user has a sharedlist
         if (!currentuser.sharedlist_id) { //if the user doesn't have a sharedlist, create one
@@ -1233,8 +1234,8 @@ userRoute.route("/CheckIfNewUser").post(async (req, res) => {
     try {
         const userid = req.body.userid; //user id stored here
         const access_token = req.body.access_token; //access token stored here
-        console.log("CheckIfNewUserCalled");
-        console.log(userid);
+        logger.info("CheckIfNewUserCalled");
+        logger.info(userid);
         //Get user information
         let url2 = `https://our-anime-list-beta.herokuapp.com/listings`
         await axios
@@ -1243,11 +1244,11 @@ userRoute.route("/CheckIfNewUser").post(async (req, res) => {
                 userlist = response.data;
             })
             .catch((err) => {
-                console.log(err);
+                logger.info(err);
             });
         //Check if user exists in db
         var count = Object.keys(userlist).length;
-        console.log(count);
+        logger.info(count);
         
         let currentuser = {}
         for(let i = 0; i < count; i++ )
@@ -1274,11 +1275,11 @@ userRoute.route("/CheckIfNewUser").post(async (req, res) => {
                         return;
                     }
                     else {
-                        console.log("============================================v1");
+                        logger.info("============================================v1");
                         information1 = response.data;
                     }
                 });
-                console.log(information1);
+                logger.info(information1);
                 let profile1 = {
                     name: currentuser.info.name,
                     image: information1.images.jpg.image_url,
@@ -1291,8 +1292,8 @@ userRoute.route("/CheckIfNewUser").post(async (req, res) => {
                     users: u,
                     anime: newsharedlist
                 }
-                console.log("============================================v1");
-                console.log(data);
+                logger.info("============================================v1");
+                logger.info(data);
                 dbConnect
                     .collection("shared_lists")
                     .insertOne(data, function(err) {
@@ -1314,10 +1315,10 @@ userRoute.route("/CheckIfNewUser").post(async (req, res) => {
             await axios
                 .post("https://our-anime-list-beta.herokuapp.com/listings/mainGenre", empty)
                 .then((response) => {
-                    console.log(response.data);
+                    logger.info(response.data);
                 })
                 .catch((err) => {
-                    console.log(err);
+                    logger.info(err);
                 });
 
         res.send("successfully allocated new user");
@@ -1361,7 +1362,7 @@ userRoute.route("/listings/animeAdd").post(async (req, res) => {
                 genre = response.data.data[0].genres[0].name
             })
             .catch((err) => {
-                console.log(err);
+                logger.info(err);
             });
         let obj = {
             anime: req.body.anime,
@@ -1379,10 +1380,10 @@ userRoute.route("/listings/animeAdd").post(async (req, res) => {
                 userlist = response.data;
             })
             .catch((err) => {
-                console.log(err);
+                logger.info(err);
             });
         var count = Object.keys(userlist).length;
-        console.log(count);
+        logger.info(count);
         
         let currentuser = {}
         for(let i = 0; i < count; i++ )
@@ -1392,7 +1393,7 @@ userRoute.route("/listings/animeAdd").post(async (req, res) => {
                 currentuser = userlist[i];
             }
         }
-        console.log(currentuser);
+        logger.info(currentuser);
         if (currentuser == {}) {
             res.send("This user doesn't exist in the db");
             return;
@@ -1446,7 +1447,7 @@ userRoute.route("/listings/getUserFromMAL").post(async (req, res) => {
                 userlist = response.data;
             })
             .catch((err) => {
-                console.log(err);
+                logger.info(err);
             });
         var count = Object.keys(userlist).length;
         let otheruser = {};
@@ -1482,7 +1483,7 @@ userRoute.route("/listings/getUserFromMAL").post(async (req, res) => {
             .get(url, params)
             .then((response) => {
                 var count = Object.keys(response.data.data).length;
-                console.log(count);
+                logger.info(count);
                 for(let k = 0; k < count; k++) {
                     let node = {
                         id: response.data.data[k].node.id,
@@ -1499,10 +1500,10 @@ userRoute.route("/listings/getUserFromMAL").post(async (req, res) => {
                 else {
                     prev = response.data.paging.prev;
                 }
-                console.log(url);
+                logger.info(url);
             })
             .catch((error) => {
-                console.log(error);
+                logger.info(error);
             });
     } while (prev == "");
             // dbConnect
@@ -1531,7 +1532,7 @@ userRoute.route("/listings/allanimes").post(async (req, res) => {
                 userlist = response.data;
             })
             .catch((err) => {
-                console.log(err);
+                logger.info(err);
             });
         var count = Object.keys(userlist).length;
         let currentuser = {};
@@ -1567,7 +1568,7 @@ userRoute.route("/listings/allanimes").post(async (req, res) => {
             .get(url, params)
             .then((response) => {
                 var count = Object.keys(response.data.data).length;
-                console.log(count);
+                logger.info(count);
                 for(let k = 0; k < count; k++) {
                     let node = {
                         id: response.data.data[k].node.id,
@@ -1586,10 +1587,10 @@ userRoute.route("/listings/allanimes").post(async (req, res) => {
                 else {
                     prev = response.data.paging.prev;
                 }
-                console.log(url);
+                logger.info(url);
             })
             .catch((error) => {
-                console.log(error);
+                logger.info(error);
             });
     } while (prev == "");
             // dbConnect
@@ -1618,7 +1619,7 @@ userRoute.route("/listings/allanimesSharedList").post(async (req, res) => {
                 userlist = response.data;
             })
             .catch((err) => {
-                console.log(err);
+                logger.info(err);
             });
         var count = Object.keys(userlist).length;
         let currentuser = {};
@@ -1642,15 +1643,15 @@ userRoute.route("/listings/allanimesSharedList").post(async (req, res) => {
                 shared = response.data;
             })
             .catch((err) => {
-                console.log(err);
+                logger.info(err);
             });
             var count1 = Object.keys(shared).length;
             let users_shared_list = {};
             let exist = false;
             for(let i = 0; i < count1; i++)
             {
-                console.log(shared[i]._id);
-                console.log(currentuser.sharedlist_id);
+                logger.info(shared[i]._id);
+                logger.info(currentuser.sharedlist_id);
                 if(shared[i]._id == currentuser.sharedlist_id) {
                     exist = true;
                     users_shared_list = shared[i];
@@ -1685,10 +1686,10 @@ userRoute.route("/listings/SearchUserMAL").post(async (req, res) => {
         await axios
             .post("https://our-anime-list-beta.herokuapp.com/listings/mainGenre", empty)
             .then((response) => {
-                console.log(response.data);
+                logger.info(response.data);
             })
             .catch((err) => {
-                console.log(err);
+                logger.info(err);
             });
         //Grab user
         let userlist = {};
@@ -1698,7 +1699,7 @@ userRoute.route("/listings/SearchUserMAL").post(async (req, res) => {
             userlist = response.data;
         })
         .catch((err) => {
-            console.log(err);
+            logger.info(err);
         });
         var count = Object.keys(userlist).length;
         let user = {}
@@ -1716,7 +1717,7 @@ userRoute.route("/listings/SearchUserMAL").post(async (req, res) => {
         let counter = 0;
         for(let i = 0; i < count2; i++)
         {
-            console.log(user.score[i]);
+            logger.info(user.score[i]);
             if(user.score[i] != null)
             {
                 if(user.score[i].counter > counter)
@@ -1742,7 +1743,7 @@ userRoute.route("/listings/SearchUserMAL").post(async (req, res) => {
                 exist = true;
             })
             .catch((err) => {
-                console.log(err);
+                logger.info(err);
             });
             if(exist == false)
             {
@@ -1764,7 +1765,7 @@ userRoute.route("/listings/SearchUserMAL").post(async (req, res) => {
             //         }
             //     })
             //     .catch((err) => {
-            //         console.log(err);
+            //         logger.info(err);
             //     });
             //generate simscore
             let otherc = 0;
@@ -1790,7 +1791,7 @@ userRoute.route("/listings/SearchUserMAL").post(async (req, res) => {
                         }
                     })
                     .catch((err) => {
-                        console.log(err);
+                        logger.info(err);
                     });
             }
             let simscore = 0;
@@ -1832,7 +1833,7 @@ userRoute.route("/listings/getGenre").post(async (req, res) => {
     try{
         //const userid = req.session.userprofile.id; //user id stored here
         //const access_token = req.session.tokens.access_token; //access token stored here
-        console.log(req.body);
+        logger.info(req.body);
         
         //find anime genre
         let genre = ""
@@ -1842,7 +1843,7 @@ userRoute.route("/listings/getGenre").post(async (req, res) => {
                 genre = response.data.genres[0].name
             })
             .catch((err) => {
-                console.log(err);
+                logger.info(err);
             })
             let info = {
                 genre: genre
@@ -1850,7 +1851,7 @@ userRoute.route("/listings/getGenre").post(async (req, res) => {
             res.send(info);
     }
     catch {
-        console.log("user not logged in");
+        logger.info("user not logged in");
     }
 })
 
@@ -1868,7 +1869,7 @@ userRoute.route("/listings/listOfRecommendedAnime").post(async (req, res) => {
                 userlist = response.data;
             })
             .catch((err) => {
-                console.log(err);
+                logger.info(err);
             });
         var count = Object.keys(userlist).length;
         let currentuser = {};
@@ -1902,7 +1903,7 @@ userRoute.route("/listings/listOfRecommendedAnime").post(async (req, res) => {
             .get(url, params)
             .then((response) => {
                 var count = Object.keys(response.data.data).length;
-                console.log(count);
+                logger.info(count);
                 for(let k = 0; k < count; k++) {
                     let node = {
                         id: response.data.data[k].node.id,
@@ -1916,7 +1917,7 @@ userRoute.route("/listings/listOfRecommendedAnime").post(async (req, res) => {
                 }
             })
             .catch((error) => {
-                console.log(error);
+                logger.info(error);
             });
             // dbConnect
             //         .collection("anime_list")
