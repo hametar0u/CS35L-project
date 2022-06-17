@@ -30,6 +30,7 @@ const LandingPage = (props) => {
       code: props.code,
       code_challenge: challenge,
     };
+    console.log(axios.defaults.baseURL);
     await axios
       .post("/auth/v2/login", obj, {
         withCredentials: true,
