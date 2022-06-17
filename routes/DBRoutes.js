@@ -35,7 +35,7 @@ userRoute.route("/AddUserBySharedListId").post(async (req, res) => {
         const username = req.session.userprofile.name;
 
         let currentuser = {}
-        url = `https://our-anime-list-beta.herokuapp.com//listings/retrieveUserByName`
+        url = `https://our-anime-list-beta.herokuapp.com/listings/retrieveUserByName`
         await axios
             .get(url, {
                 params: {
@@ -59,7 +59,7 @@ userRoute.route("/AddUserBySharedListId").post(async (req, res) => {
 
         let information1 = {};
         await axios
-        .post("https://our-anime-list-beta.herokuapp.com//listings/getUserById", {username: username})
+        .post("https://our-anime-list-beta.herokuapp.com/listings/getUserById", {username: username})
         .then((response) => {
             if (response.data === {}) {
                 res.status(400).send("No user found in MongoDB!");
@@ -90,7 +90,7 @@ userRoute.route("/AddUserBySharedListId").post(async (req, res) => {
         }
         //Reallocate genres
         await axios
-            .post("https://our-anime-list-beta.herokuapp.com//listings/mainGenre", empty)
+            .post("https://our-anime-list-beta.herokuapp.com/listings/mainGenre", empty)
             .then((response) => {
                 console.log(response.data);
             })
@@ -113,7 +113,7 @@ userRoute.route("/getAllUsersOfList").post(async (req, res) => {
         let sharedlist = {};
         //Grab shared list
         await axios
-            .get("https://our-anime-list-beta.herokuapp.com//listings/sharedList")
+            .get("https://our-anime-list-beta.herokuapp.com/listings/sharedList")
             .then((response) => {
                 sharedlist = response.data;
             })
@@ -123,7 +123,7 @@ userRoute.route("/getAllUsersOfList").post(async (req, res) => {
         //Grab user's name
         let userlist = {};
         await axios
-            .get("https://our-anime-list-beta.herokuapp.com//listings")
+            .get("https://our-anime-list-beta.herokuapp.com/listings")
             .then((response) => {
                 userlist = response.data;
             })
@@ -170,7 +170,7 @@ userRoute.route("/getSharedLists").post(async (req, res) => {
         let sharedlist = {};
         
         await axios
-            .get("https://our-anime-list-beta.herokuapp.com//listings/sharedList")
+            .get("https://our-anime-list-beta.herokuapp.com/listings/sharedList")
             .then((response) => {
                 sharedlist = response.data;
             })
@@ -279,7 +279,7 @@ userRoute.route("/obliterate").get(async (req, res) => {
         // Grab user
         let userlist = {};
         await axios
-        .get("https://our-anime-list-beta.herokuapp.com//listings")
+        .get("https://our-anime-list-beta.herokuapp.com/listings")
         .then((response) => {
             userlist = response.data;
         })
@@ -320,7 +320,7 @@ userRoute.route("/listings/mainGenre").post(async (req, res) => {
         //grab the list of users and list of shared lists
         let sharedlist = {};
         await axios
-            .get("https://our-anime-list-beta.herokuapp.com//listings/sharedList")
+            .get("https://our-anime-list-beta.herokuapp.com/listings/sharedList")
             .then((response) => {
                 sharedlist = response.data;
             })
@@ -331,7 +331,7 @@ userRoute.route("/listings/mainGenre").post(async (req, res) => {
 
         let userlist = {};
         await axios
-        .get("https://our-anime-list-beta.herokuapp.com//listings")
+        .get("https://our-anime-list-beta.herokuapp.com/listings")
         .then((response) => {
             userlist = response.data;
         })
@@ -446,7 +446,7 @@ userRoute.route("/listings/ReccomendUser").get(async (req, res) => {
             access_token: access_token
         }
         await axios
-            .post("https://our-anime-list-beta.herokuapp.com//listings/mainGenre", empty)
+            .post("https://our-anime-list-beta.herokuapp.com/listings/mainGenre", empty)
             .then((response) => {
                 console.log(response.data);
             })
@@ -456,7 +456,7 @@ userRoute.route("/listings/ReccomendUser").get(async (req, res) => {
         //Grab user
         let userlist = {};
         await axios
-        .get("https://our-anime-list-beta.herokuapp.com//listings")
+        .get("https://our-anime-list-beta.herokuapp.com/listings")
         .then((response) => {
             userlist = response.data;
         })
@@ -539,7 +539,7 @@ userRoute.route("/listings/ReccomendUser").get(async (req, res) => {
         //get reccomended user's profile
         let information = {};
         await axios
-            .post("https://our-anime-list-beta.herokuapp.com//listings/getUserById", {username: username})
+            .post("https://our-anime-list-beta.herokuapp.com/listings/getUserById", {username: username})
             .then((response) => {
                 information = response.data;
             })
@@ -572,7 +572,7 @@ userRoute.route("/listings/SpecificUser").post(async (req, res) => {
         }
         //Reallocate genres
         await axios
-            .post("https://our-anime-list-beta.herokuapp.com//listings/mainGenre", empty)
+            .post("https://our-anime-list-beta.herokuapp.com/listings/mainGenre", empty)
             .then((response) => {
                 console.log(response.data);
             })
@@ -582,7 +582,7 @@ userRoute.route("/listings/SpecificUser").post(async (req, res) => {
         // Grab user
         let userlist = {};
         await axios
-        .get("https://our-anime-list-beta.herokuapp.com//listings")
+        .get("https://our-anime-list-beta.herokuapp.com/listings")
         .then((response) => {
             userlist = response.data;
         })
@@ -671,7 +671,7 @@ userRoute.route("/listings/SpecificUser").post(async (req, res) => {
         }
         let information = {};
                 await axios
-                .post("https://our-anime-list-beta.herokuapp.com//listings/getUserById", {username: req.body.name})
+                .post("https://our-anime-list-beta.herokuapp.com/listings/getUserById", {username: req.body.name})
                 .then((response) => {
                     if (response.data === {}) {
                         res.status(400).send("No user found in MongoDB!");
@@ -806,7 +806,7 @@ userRoute.route("/listings/addUser").post(async (req, res) => {
         const userid = req.session.userprofile.id; //user id stored here
         //Grab user info from User database
         let current_user = {}
-        let url = `https://our-anime-list-beta.herokuapp.com//listings/retreiveUserById`
+        let url = `https://our-anime-list-beta.herokuapp.com/listings/retreiveUserById`
         await axios
             .get(url, {
                 params: {
@@ -828,7 +828,7 @@ userRoute.route("/listings/addUser").post(async (req, res) => {
         }
         //Grab the appended user's info
         let append_user = {}
-        url = `https://our-anime-list-beta.herokuapp.com//listings/retrieveUserByName`
+        url = `https://our-anime-list-beta.herokuapp.com/listings/retrieveUserByName`
         await axios
             .get(url, {
                 params: {
@@ -852,7 +852,7 @@ userRoute.route("/listings/addUser").post(async (req, res) => {
             {
                 let information = {};
                 await axios
-                .post("https://our-anime-list-beta.herokuapp.com//listings/getUserById", {username: current_user.info.name})
+                .post("https://our-anime-list-beta.herokuapp.com/listings/getUserById", {username: current_user.info.name})
                 .then((response) => {
                     if (response.data === {}) {
                         res.status(400).send("No user found in MongoDB!");
@@ -882,7 +882,7 @@ userRoute.route("/listings/addUser").post(async (req, res) => {
             {
                 let information1 = {};
                 await axios
-                .post("https://our-anime-list-beta.herokuapp.com//listings/getUserById", {username: current_user.info.name})
+                .post("https://our-anime-list-beta.herokuapp.com/listings/getUserById", {username: current_user.info.name})
                 .then((response) => {
                     if (response.data === {}) {
                         res.status(400).send("No user found in MongoDB!");
@@ -894,7 +894,7 @@ userRoute.route("/listings/addUser").post(async (req, res) => {
                 });
                 let information2 = {};
                 await axios
-                .post("https://our-anime-list-beta.herokuapp.com//listings/getUserById", {username: append_user.info.name})
+                .post("https://our-anime-list-beta.herokuapp.com/listings/getUserById", {username: append_user.info.name})
                 .then((response) => {
                     if (response.data === {}) {
                         res.status(400).send("No user found in MongoDB!");
@@ -944,7 +944,7 @@ userRoute.route("/listings/addUser").post(async (req, res) => {
         {
             let information = {};
                 await axios
-                .post("https://our-anime-list-beta.herokuapp.com//listings/getUserById", {username: append_user.info.name})
+                .post("https://our-anime-list-beta.herokuapp.com/listings/getUserById", {username: append_user.info.name})
                 .then((response) => {
                     if (response.data === {}) {
                         res.status(400).send("No user found in MongoDB!");
@@ -973,7 +973,7 @@ userRoute.route("/listings/addUser").post(async (req, res) => {
         else {
             let information1 = {};
                 await axios
-                .post("https://our-anime-list-beta.herokuapp.com//listings/getUserById", {username: current_user.info.name})
+                .post("https://our-anime-list-beta.herokuapp.com/listings/getUserById", {username: current_user.info.name})
                 .then((response) => {
                     if (response.data === {}) {
                         res.status(400).send("No user found in MongoDB!");
@@ -1057,7 +1057,7 @@ userRoute.route("/listings/animeDelete").post(async (req, res) => {
         const dbConnect = dbo.getDb();
         //Find current user profile on MongoDB
         let userlist = {}
-        let url2 = `https://our-anime-list-beta.herokuapp.com//listings`
+        let url2 = `https://our-anime-list-beta.herokuapp.com/listings`
         await axios
             .get(url2)
             .then((response) => {
@@ -1089,7 +1089,7 @@ userRoute.route("/listings/animeDelete").post(async (req, res) => {
         //Find user's shared list
         let shared = {}
         await axios 
-        .get("https://our-anime-list-beta.herokuapp.com//listings/sharedList")
+        .get("https://our-anime-list-beta.herokuapp.com/listings/sharedList")
         .then((response) => {
             shared = response.data;
         })
@@ -1145,7 +1145,7 @@ userRoute.route("/listings/animeAddByMalID").post(async (req, res) => {
     try {
         const userid = req.session.userprofile.id; //user id stored here
         const access_token = req.session.tokens.access_token; //access token stored here
-        let url2 = `https://our-anime-list-beta.herokuapp.com//listings`
+        let url2 = `https://our-anime-list-beta.herokuapp.com/listings`
         await axios
             .get(url2)
             .then((response) => {
@@ -1236,7 +1236,7 @@ userRoute.route("/CheckIfNewUser").post(async (req, res) => {
         console.log("CheckIfNewUserCalled");
         console.log(userid);
         //Get user information
-        let url2 = `https://our-anime-list-beta.herokuapp.com//listings`
+        let url2 = `https://our-anime-list-beta.herokuapp.com/listings`
         await axios
             .get(url2)
             .then((response) => {
@@ -1267,7 +1267,7 @@ userRoute.route("/CheckIfNewUser").post(async (req, res) => {
         {
                 let information1 = {};
                 await axios
-                .post("https://our-anime-list-beta.herokuapp.com//listings/getUserById", {username: currentuser.info.name})
+                .post("https://our-anime-list-beta.herokuapp.com/listings/getUserById", {username: currentuser.info.name})
                 .then((response) => {
                     if (response.data === {}) {
                         res.status(400).send("No user found in MongoDB!");
@@ -1312,7 +1312,7 @@ userRoute.route("/CheckIfNewUser").post(async (req, res) => {
                 access_token: access_token
             }
             await axios
-                .post("https://our-anime-list-beta.herokuapp.com//listings/mainGenre", empty)
+                .post("https://our-anime-list-beta.herokuapp.com/listings/mainGenre", empty)
                 .then((response) => {
                     console.log(response.data);
                 })
@@ -1372,7 +1372,7 @@ userRoute.route("/listings/animeAdd").post(async (req, res) => {
 
 
         let userlist = {}
-        let url2 = `https://our-anime-list-beta.herokuapp.com//listings`
+        let url2 = `https://our-anime-list-beta.herokuapp.com/listings`
         await axios
             .get(url2)
             .then((response) => {
@@ -1438,7 +1438,7 @@ userRoute.route("/listings/getUserFromMAL").post(async (req, res) => {
         const userid = req.session.userprofile.id; //user id stored here
         const access_token = req.session.tokens.access_token; //access token stored here
         let userlist = {}
-        let url2 = `https://our-anime-list-beta.herokuapp.com//listings`
+        let url2 = `https://our-anime-list-beta.herokuapp.com/listings`
         //Get specific user from MongoDB (not current user)
         await axios
             .get(url2)
@@ -1523,7 +1523,7 @@ userRoute.route("/listings/allanimes").post(async (req, res) => {
         const userid = req.session.userprofile.id; //user id stored here
         const access_token = req.session.tokens.access_token; //access token stored here
         let userlist = {}
-        let url2 = `https://our-anime-list-beta.herokuapp.com//listings`
+        let url2 = `https://our-anime-list-beta.herokuapp.com/listings`
         //Get current user document
         await axios
             .get(url2)
@@ -1611,7 +1611,7 @@ userRoute.route("/listings/allanimesSharedList").post(async (req, res) => {
         const userid = req.session.userprofile.id; //user id stored here
         const access_token = req.session.tokens.access_token; //access token stored here
         let userlist = {}
-        let url2 = `https://our-anime-list-beta.herokuapp.com//listings`
+        let url2 = `https://our-anime-list-beta.herokuapp.com/listings`
         await axios
             .get(url2)
             .then((response) => {
@@ -1637,7 +1637,7 @@ userRoute.route("/listings/allanimesSharedList").post(async (req, res) => {
         }
         let shared = {}
         await axios
-            .get("https://our-anime-list-beta.herokuapp.com//listings/sharedList")
+            .get("https://our-anime-list-beta.herokuapp.com/listings/sharedList")
             .then((response) => {
                 shared = response.data;
             })
@@ -1683,7 +1683,7 @@ userRoute.route("/listings/SearchUserMAL").post(async (req, res) => {
             access_token: access_token
         }
         await axios
-            .post("https://our-anime-list-beta.herokuapp.com//listings/mainGenre", empty)
+            .post("https://our-anime-list-beta.herokuapp.com/listings/mainGenre", empty)
             .then((response) => {
                 console.log(response.data);
             })
@@ -1693,7 +1693,7 @@ userRoute.route("/listings/SearchUserMAL").post(async (req, res) => {
         //Grab user
         let userlist = {};
         await axios
-        .get("https://our-anime-list-beta.herokuapp.com//listings")
+        .get("https://our-anime-list-beta.herokuapp.com/listings")
         .then((response) => {
             userlist = response.data;
         })
@@ -1753,7 +1753,7 @@ userRoute.route("/listings/SearchUserMAL").post(async (req, res) => {
             //get searched user's profile if they exist on MongoDB
             // let information = {};
             // await axios
-            //     .post("https://our-anime-list-beta.herokuapp.com//listings/getUserById", {username: req.body.name})
+            //     .post("https://our-anime-list-beta.herokuapp.com/listings/getUserById", {username: req.body.name})
             //     .then((response) => {
             //         if (response.data === {}) {
             //             res.status(400).send("No user found in MongoDB!");
@@ -1782,7 +1782,7 @@ userRoute.route("/listings/SearchUserMAL").post(async (req, res) => {
                     id: id
                 }
                 await axios
-                    .post("https://our-anime-list-beta.herokuapp.com//listings/getGenre", item)
+                    .post("https://our-anime-list-beta.herokuapp.com/listings/getGenre", item)
                     .then((response) => {
                         if(genre == response.data.genre)
                         {
@@ -1802,7 +1802,7 @@ userRoute.route("/listings/SearchUserMAL").post(async (req, res) => {
             }
             let information = {};
                     await axios
-                    .post("https://our-anime-list-beta.herokuapp.com//listings/getUserById", {username: req.body.name})
+                    .post("https://our-anime-list-beta.herokuapp.com/listings/getUserById", {username: req.body.name})
                     .then((response) => {
                         if (response.data === {}) {
                             res.status(400).send("No user found in MongoDB!");
@@ -1860,7 +1860,7 @@ userRoute.route("/listings/listOfRecommendedAnime").post(async (req, res) => {
         const userid = req.session.userprofile.id; //user id stored here
         const access_token = req.session.tokens.access_token; //access token stored here
         let userlist = {}
-        let url2 = `https://our-anime-list-beta.herokuapp.com//listings`
+        let url2 = `https://our-anime-list-beta.herokuapp.com/listings`
         //Get current user document
         await axios
             .get(url2)
