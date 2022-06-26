@@ -70,6 +70,8 @@ userRoute.route("/AddUserBySharedListId").post(async (req, res) => {
           return;
         } else {
           information1 = response.data;
+          logger.info("profile image url");
+          logger.info(information1.images.jpg.image_url);
         }
       });
     logger.info(information1);
