@@ -1,3 +1,7 @@
+# OUR SITE IS DEPLOYED NOW
+Check us out at:
+https://our-anime-list-beta.herokuapp.com
+
 # IMPORTANT: make sure you're not on UCLA_WEB when working with the app; the database won't connect properly. 
 
 # Getting started
