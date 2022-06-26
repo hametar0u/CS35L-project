@@ -218,7 +218,11 @@ userRoute.route("/getSharedLists").post(async (req, res) => {
       );
       var thelength = Object.keys(sharedlist[i].users).length;
       logger.info(thelength);
-      logger.info(sharedlist[i].users);
+      logger.info("logging list user username");
+      sharedlist[i].users.forEach(user => {
+        logger.info(user.name);
+      });
+    //   logger.info(sharedlist[i].users);
       logger.info(sharedlist[i].users == []);
       logger.info(sharedlist[i].users == {});
       if (thelength == 0) {
